@@ -1,0 +1,63 @@
+.table-row {
+    cursor: pointer;
+    user-select: none;
+  
+    .table-row-icon {
+      color: rgb(178, 6, 6);
+      opacity: 0;
+      transition: opacity 0.1s ease-in-out; /* Thuộc tính sẽ thay đổi */
+    }
+  
+    &:hover {
+      .table-row-icon {  
+       
+        opacity: 1;
+      }
+    }
+    .table-row-icon-edit {
+      color: #236199;
+      opacity: 0;  
+      transition: opacity 0.1s ease-in-out; 
+    }
+  
+    &:hover {
+      .table-row-icon-edit {
+    
+        opacity: 1;
+     
+      }
+    }
+    &.activeBM{
+      background-color: #6fa441;
+      color: rgb(0, 0, 0);
+    }
+    &.active {
+      background-color: #6fa441 !important;
+      color: rgb(0, 0, 0) !important;
+    }
+    
+    .table-row-icon-edit:hover{
+      transform: scale(1.4);
+      color:  #101010;
+    }
+    .table-row-icon:hover{
+      transform: scale(1.4);
+      color:  #101010;
+    }
+  }
+ 
+  .opacity-7{
+    opacity: 0.7;    
+ 
+
+  }
+    .table-row.active {
+      background-color: #6fa441 !important;
+      color: rgb(0, 0, 0) !important;
+     
+    
+    }
+    
+  
+    
+ 
