@@ -132,7 +132,7 @@ const DangKyGioChuan = () => {
 
   const handleMoveProfileGV = () => {
     if (!loading) {
-      navigate("/truong-bm/thong-tin");
+      navigate("/admin/");
     }
   };
 

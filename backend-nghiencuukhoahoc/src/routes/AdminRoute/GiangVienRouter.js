@@ -59,7 +59,6 @@ const CRUDGiangVien = (app) => {
   router.put("/sua/:MAGV", checkUserJWT, updateGiangVienController);
   router.put(
     "/sua/thongtin/:TENDANGNHAP",
-    checkUserJWT,
 
     update_ChucVu_ChucDanh_GiangVien_Controller
   ); //lam

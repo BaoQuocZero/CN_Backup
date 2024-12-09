@@ -18,9 +18,11 @@ import {
   Table,
   TableHead,
   TableBody,
+  TablePagination,
 } from "@mui/material";
 import axios from "axios";
 import CookiesAxios from "../../CookiesAxios";
+
 const CoQuyDinh = ({ open, handleClose }) => {
   const [maQuyDoi, setMaQuyDoi] = useState("");
   const [maLoaiDanhMuc, setMaLoaiDanhMuc] = useState("");
@@ -33,13 +35,15 @@ const CoQuyDinh = ({ open, handleClose }) => {
   const [data_LoaiTacGia, setData_LoaiTacGia] = useState([]);
   const [data_LoaiDanhMuc, setData_LoaiDanhMuc] = useState([]);
   const [data_CoQuyDinh, setData_CoQuyDinh] = useState([]);
+  const [page, setPage] = useState(0); // State for current page
+  const [rowsPerPage, setRowsPerPage] = useState(5); // State for rows per page
+
   useEffect(() => {
     if (open) {
       fetchData();
     }
   }, [open]);
 
-  // Giả lập dữ liệu quy định
   const fetchData = async () => {
     try {
       const [
@@ -61,9 +65,6 @@ const CoQuyDinh = ({ open, handleClose }) => {
           `${process.env.REACT_APP_URL_SERVER}/api/v1/admin/danhmuc/coquydinh`
         ),
       ]);
-      // console.log("check fetch data_TyLeQuyDoi =>", data_TyLeQuyDoi.data.DT);
-      // console.log("check fetch data_LoaiTacGia =>", data_LoaiTacGia.data.DT);
-      console.log("check fetch data_LoaiDanhMuc =>", data_CoQuyDinh.data.DT);
       setData_LoaiDanhMuc(data_LoaiDanhMuc.data.DT);
       setData_TyLeQuyDoi(data_TyLeQuyDoi.data.DT);
       setData_LoaiTacGia(data_LoaiTacGia.data.DT);
@@ -84,11 +85,20 @@ const CoQuyDinh = ({ open, handleClose }) => {
           SO_TAC_GIA: soTacGia,
         }
       );
-      console.log("check fetch Quy dinh =>", response.data.DT);
       setData_CoQuyDinh(response.data.DT);
+      alert("thêm vào quy định thành công");
     } catch (error) {
       console.error("Error fetching quy dinhs:", error);
     }
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage); // Update the page number when user clicks on page change
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10)); // Update the rows per page
+    setPage(0); // Reset page to 0 when changing rows per page
   };
 
   return (
@@ -158,43 +168,35 @@ const CoQuyDinh = ({ open, handleClose }) => {
                 <TableCell>Tên Quy Đổi</TableCell>
                 <TableCell>Trạng Thái Quy Đổi</TableCell>
                 <TableCell>Tỷ Lệ</TableCell>
-
                 <TableCell>Ghi Chú Quy Đổi</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {Array.isArray(data_CoQuyDinh) && data_CoQuyDinh.length > 0 ? (
-                data_CoQuyDinh.map((qd) => (
+              {data_CoQuyDinh
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((qd) => (
                   <TableRow key={qd.MA_DANH_MUC}>
                     <TableCell>{qd.TEN_LOAI_DANH_MUC}</TableCell>
                     <TableCell>{qd.TEN_LOAI_TAC_GIA}</TableCell>
                     <TableCell>{qd.TEN_QUY_DINH}</TableCell>
                     <TableCell>{qd.TEN_QUY_DOI}</TableCell>
-
                     <TableCell>{qd.TRANG_THAI_QUY_DOI}</TableCell>
                     <TableCell>{qd.TY_LE}</TableCell>
-
                     <TableCell>{qd.GHI_CHU_QUY_DOI}</TableCell>
-                    <TableCell>
-                      {/* <i
-                        className="fa-solid fa-trash"
-                        aria-label="delete"
-                        onClick={() => handleDeleteDanhMucQuyDoi(qd.MA_DANH_MUC)}
-                        style={{ cursor: "pointer" }}
-                      ></i> */}
-                    </TableCell>
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={14} align="center">
-                    Không có dữ liệu
-                  </TableCell>
-                </TableRow>
-              )}
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={data_CoQuyDinh.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Đóng</Button>
@@ -205,4 +207,5 @@ const CoQuyDinh = ({ open, handleClose }) => {
     </Dialog>
   );
 };
+
 export default CoQuyDinh;

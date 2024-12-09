@@ -40,7 +40,7 @@ export default function Router() {
       ),
     },
     {
-      path: "/dang-ky-muc-chuan-gio-giang",
+      path: "/dang-ky-khung-gio-chuan",
       element: (
         <DashboardLayout>
           <Suspense

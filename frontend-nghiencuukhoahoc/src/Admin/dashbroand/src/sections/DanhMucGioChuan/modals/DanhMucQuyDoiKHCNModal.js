@@ -19,6 +19,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  TablePagination,
 } from "@mui/material";
 import CookiesAxios from "../../CookiesAxios";
 import { toast } from "react-toastify";
@@ -41,7 +42,8 @@ const DanhMucQuyDoiKHCNModal = ({ open, handleClose }) => {
     TRANG_THAI_DANH_MUC: "",
     GHI_CHU_DANH_MUC: "",
   });
-
+  const [page, setPage] = useState(0); // Trang hiện tại
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Số lượng mục mỗi trang
   useEffect(() => {
     if (open) {
       fetchDanhMucQuyDoiKHCN();
@@ -114,15 +116,25 @@ const DanhMucQuyDoiKHCNModal = ({ open, handleClose }) => {
     }
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Hàm thay đổi số lượng mục mỗi trang
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset lại trang khi thay đổi số mục mỗi trang
+  };
+
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+    <Dialog open={open} onClose={handleClose} maxWidth="xl" fullWidth>
       <DialogTitle>Danh Mục Quy Đổi KHCN</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Danh sách các danh mục quy đổi hiện tại.
         </DialogContentText>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid item xs={12} sm={6}>
             <FormControl fullWidth margin="normal">
               <InputLabel>Loại Danh Mục</InputLabel>
               <Select
@@ -187,6 +199,16 @@ const DanhMucQuyDoiKHCNModal = ({ open, handleClose }) => {
               fullWidth
               margin="normal"
             />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddDanhMucQuyDoi}
+              style={{ marginTop: "16px" }}
+            >
+              Thêm
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="Lợi Nhuận"
               value={formData.LOI_NHUAN}
@@ -218,7 +240,10 @@ const DanhMucQuyDoiKHCNModal = ({ open, handleClose }) => {
               label="Xếp Hạng Quartiles"
               value={formData.XEP_HANG_QUARTILES}
               onChange={(e) =>
-                setFormData({ ...formData, XEP_HANG_QUARTILES: e.target.value })
+                setFormData({
+                  ...formData,
+                  XEP_HANG_QUARTILES: e.target.value,
+                })
               }
               fullWidth
               margin="normal"
@@ -253,14 +278,6 @@ const DanhMucQuyDoiKHCNModal = ({ open, handleClose }) => {
               fullWidth
               margin="normal"
             />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAddDanhMucQuyDoi}
-              style={{ marginTop: "16px" }}
-            >
-              Thêm
-            </Button>
           </Grid>
           <Grid item xs={12}>
             <TableContainer component={Paper}>
@@ -287,34 +304,39 @@ const DanhMucQuyDoiKHCNModal = ({ open, handleClose }) => {
                 <TableBody>
                   {Array.isArray(danhMucQuyDoiKHCN) &&
                   danhMucQuyDoiKHCN.length > 0 ? (
-                    danhMucQuyDoiKHCN.map((qd) => (
-                      <TableRow key={qd.MA_DANH_MUC}>
-                        <TableCell>{qd.MA_DANH_MUC}</TableCell>
-                        <TableCell>{qd.MA_LOAI_DANH_MUC}</TableCell>
-                        <TableCell>{qd.GIO_CHUAN}</TableCell>
-                        <TableCell>{qd.NOI_DUNG_DANH_MUC}</TableCell>
-                        <TableCell>{qd.ISBN}</TableCell>
-                        <TableCell>{qd.WOS_SCOUPUS}</TableCell>
-                        <TableCell>{qd.HANG_WOS_SCOUPUS}</TableCell>
-                        <TableCell>{qd.LOI_NHUAN}</TableCell>
-                        <TableCell>{qd.DON_VI_TINH}</TableCell>
-                        <TableCell>{qd.GIAI_THUONG}</TableCell>
-                        <TableCell>{qd.XEP_HANG_QUARTILES}</TableCell>
-                        <TableCell>{qd.NAM_THUC_HIEN}</TableCell>
-                        <TableCell>{qd.TRANG_THAI_DANH_MUC}</TableCell>
-                        <TableCell>{qd.GHI_CHU_DANH_MUC}</TableCell>
-                        <TableCell>
-                          <i
-                            className="fa-solid fa-trash"
-                            aria-label="delete"
-                            onClick={() =>
-                              handleDeleteDanhMucQuyDoi(qd.MA_DANH_MUC)
-                            }
-                            style={{ cursor: "pointer" }}
-                          ></i>
-                        </TableCell>
-                      </TableRow>
-                    ))
+                    danhMucQuyDoiKHCN
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      ) // Phân trang
+                      .map((qd) => (
+                        <TableRow key={qd.MA_DANH_MUC}>
+                          <TableCell>{qd.MA_DANH_MUC}</TableCell>
+                          <TableCell>{qd.MA_LOAI_DANH_MUC}</TableCell>
+                          <TableCell>{qd.GIO_CHUAN}</TableCell>
+                          <TableCell>{qd.NOI_DUNG_DANH_MUC}</TableCell>
+                          <TableCell>{qd.ISBN}</TableCell>
+                          <TableCell>{qd.WOS_SCOUPUS}</TableCell>
+                          <TableCell>{qd.HANG_WOS_SCOUPUS}</TableCell>
+                          <TableCell>{qd.LOI_NHUAN}</TableCell>
+                          <TableCell>{qd.DON_VI_TINH}</TableCell>
+                          <TableCell>{qd.GIAI_THUONG}</TableCell>
+                          <TableCell>{qd.XEP_HANG_QUARTILES}</TableCell>
+                          <TableCell>{qd.NAM_THUC_HIEN}</TableCell>
+                          <TableCell>{qd.TRANG_THAI_DANH_MUC}</TableCell>
+                          <TableCell>{qd.GHI_CHU_DANH_MUC}</TableCell>
+                          <TableCell>
+                            <i
+                              className="fa-solid fa-trash"
+                              aria-label="delete"
+                              onClick={() =>
+                                handleDeleteDanhMucQuyDoi(qd.MA_DANH_MUC)
+                              }
+                              style={{ cursor: "pointer" }}
+                            ></i>
+                          </TableCell>
+                        </TableRow>
+                      ))
                   ) : (
                     <TableRow>
                       <TableCell colSpan={14} align="center">
@@ -325,6 +347,17 @@ const DanhMucQuyDoiKHCNModal = ({ open, handleClose }) => {
                 </TableBody>
               </Table>
             </TableContainer>
+
+            {/* Phân trang */}
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={danhMucQuyDoiKHCN.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </Grid>
         </Grid>
       </DialogContent>

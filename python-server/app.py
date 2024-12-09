@@ -4,7 +4,11 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 import traceback
-
+import plotly.express as px
+import plotly.io as pio
+import numpy as np
+import json
+import plotly.graph_objects as go
 app = Flask(__name__)
 CORS(app)  # Kích hoạt CORS cho tất cả các route
 
@@ -109,6 +113,124 @@ def random_forest_predict():
             "EC": -1,
             "DT": []
         }), 500
+
+
+
+
+@app.route('/api/helloworld', methods=['GET'])
+def hello_world():
+    return jsonify(message="Hello World!")
+
+
+
+
+@app.route('/api/plotly', methods=['GET'])
+def plotly_chart():
+    try:
+        # Lấy dữ liệu Canada từ bộ dữ liệu gapminder
+        data_canada = px.data.gapminder().query("country == 'Canada'")
+
+        # Tạo biểu đồ cột với năm trên trục x và dân số trên trục y
+        fig = px.bar(data_canada, x='year', y='pop')
+
+        # Chuyển đổi biểu đồ thành một dict
+        chart_data = fig.to_dict()
+
+        # Hàm đệ quy để chuyển ndarray thành list
+        def convert_ndarray(obj):
+            if isinstance(obj, np.ndarray):
+                return obj.tolist()
+            elif isinstance(obj, dict):
+                return {key: convert_ndarray(value) for key, value in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_ndarray(item) for item in obj]
+            else:
+                return obj
+
+        # Chuyển đổi chart_data
+        chart_data_serializable = convert_ndarray(chart_data)
+
+        # Trả về biểu đồ dưới dạng JSON
+        return jsonify({
+            "EM": "Success",
+            "EC": 0,
+            "DT": chart_data_serializable
+        })
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({
+            "EM": "Lỗi xử lý biểu đồ",
+            "EC": -1,
+            "DT": str(e)
+        }), 500
+
+
+
+
+
+@app.route('/api/chart', methods=['GET'])
+def chart():
+    try:
+        # Dữ liệu mẫu
+        x = ['Winter', 'Spring', 'Summer', 'Fall']
+        y1 = [40, 60, 40, 10]
+        y2 = [20, 10, 10, 60]
+        y3 = [40, 30, 50, 30]
+
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(
+            x=x, y=y1,
+            hoverinfo='x+y',
+            mode='lines',
+            line=dict(width=0.5, color='rgb(131, 90, 241)'),
+            stackgroup='one'
+        ))
+        fig.add_trace(go.Scatter(
+            x=x, y=y2,
+            hoverinfo='x+y',
+            mode='lines',
+            line=dict(width=0.5, color='rgb(111, 231, 219)'),
+            stackgroup='one'
+        ))
+        fig.add_trace(go.Scatter(
+            x=x, y=y3,
+            hoverinfo='x+y',
+            mode='lines',
+            line=dict(width=0.5, color='rgb(184, 247, 212)'),
+            stackgroup='one'
+        ))
+
+        fig.update_layout(yaxis_range=(0, 100))
+        chart_data = fig.to_dict()
+
+        # Hàm đệ quy để chuyển ndarray thành list
+        def convert_ndarray(obj):
+            if isinstance(obj, np.ndarray):
+                return obj.tolist()
+            elif isinstance(obj, dict):
+                return {key: convert_ndarray(value) for key, value in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_ndarray(item) for item in obj]
+            else:
+                return obj
+
+        chart_data_serializable = convert_ndarray(chart_data)
+
+        return jsonify({
+            "EM": "Success",
+            "EC": 0,
+            "DT": chart_data_serializable
+        })
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({
+            "EM": "Lỗi xử lý biểu đồ",
+            "EC": -1,
+            "DT": str(e)
+        }), 500
+
 
 # Chạy server
 if __name__ == '__main__':

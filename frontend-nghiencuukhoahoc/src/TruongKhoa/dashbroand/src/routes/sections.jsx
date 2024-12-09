@@ -12,11 +12,16 @@ const FileExcel = lazy(() => import("../sections/FileExcel/FileExcel"));
 const DangKyDanhMuc = lazy(() =>
   import("../sections/DangKyDanhMuc/DangKyDanhMuc")
 );
+const IndexQuanLydanhsachGV = lazy(() =>
+  import("../sections/quanlydanhsach/CNTTdangky")
+);
 const TrangChu = lazy(() => import("../pages/app"));
 const UserPage = lazy(() => import("../pages/user"));
 const LoginPage = lazy(() => import("../pages/login"));
 const Page404 = lazy(() => import("../pages/page-not-found"));
-
+const IndexQuanLyChonKhung = lazy(() =>
+  import("../sections/QuanLyChonKhung/IndexQuanLyChonKhung")
+);
 export default function Router() {
   const routes = useRoutes([
     {
@@ -85,16 +90,37 @@ export default function Router() {
       ),
     },
     {
-      path: "/test",
+      path: "/tai-khoan-giangvien/thong-tin",
       element: (
         <DashboardLayout>
           <Suspense fallback={<div>Loading...</div>}>
-            <FileExcel />
+            <AccountGV />
           </Suspense>
         </DashboardLayout>
       ),
     },
 
+    {
+      path: "/dang-ky-nghien-cuu",
+      element: (
+        <DashboardLayout>
+          <Suspense fallback={<div>Loading...</div>}>
+            <IndexQuanLyChonKhung />
+          </Suspense>
+        </DashboardLayout>
+      ),
+    },
+
+    {
+      path: "/dang-ky-nghien-cuu-khoa-hoc",
+      element: (
+        <DashboardLayout>
+          <Suspense fallback={<div>Loading...</div>}>
+            <IndexQuanLydanhsachGV />
+          </Suspense>
+        </DashboardLayout>
+      ),
+    },
     //====================================================================================================
 
     {

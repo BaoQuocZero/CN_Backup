@@ -29,7 +29,7 @@ const GVTableDaChonKhung = ({ data, selectNamHoc }) => {
       fetchDetails(selectedGV);
     }
   }, [selectNamHoc]);
-  const rowsPerPage = 20;
+  const rowsPerPage = 10;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

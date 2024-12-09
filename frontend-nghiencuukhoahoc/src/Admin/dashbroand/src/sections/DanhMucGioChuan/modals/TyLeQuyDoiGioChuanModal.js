@@ -16,6 +16,7 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  TablePagination,
 } from "@mui/material";
 import CookiesAxios from "../../CookiesAxios";
 import "./modals.scss";
@@ -31,6 +32,9 @@ const TyLeQuyDoiGioChuanModal = ({ open, handleClose }) => {
   const [thucHienChuan, setThucHienChuan] = useState("");
   const [filterStatus, setFilterStatus] = useState("Tất cả");
   const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(0); // Trang hiện tại
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Số lượng mục mỗi trang
+  const [filteredAndData, setFilteredAndData] = useState([]); // Dữ liệu sau khi lọc và tìm kiếm
 
   useEffect(() => {
     if (open) {
@@ -77,10 +81,12 @@ const TyLeQuyDoiGioChuanModal = ({ open, handleClose }) => {
       );
       console.log("check fetch setTyLeQuyDoi =>", response.data);
       setTyLeQuyDoi(response.data.DT);
+      alert("bạn đã thêm tỉ lệ mới thành công");
     } catch (error) {
       console.error("Error fetching quy dinhs:", error);
     }
   };
+
   const handleEdiStatusTyLeQuyDoi = async (item) => {
     const TrangThai =
       item.TRANG_THAI_QUY_DOI === "Đang áp dụng"
@@ -99,11 +105,31 @@ const TyLeQuyDoiGioChuanModal = ({ open, handleClose }) => {
       console.error("Error fetching quy dinhs:", error);
     }
   };
+
+  // Hàm lọc dữ liệu theo trạng thái và tìm kiếm
   const filteredAndSearchedData = tyLeQuyDoi.filter(
     (item) =>
       (filterStatus === "Tất cả" || item.TRANG_THAI_QUY_DOI === filterStatus) &&
       item.TEN_QUY_DOI.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Hàm xử lý thay đổi số lượng mục mỗi trang
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Đặt lại trang về 0 khi thay đổi số lượng mục mỗi trang
+  };
+
+  // Hàm thay đổi trang
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Lấy dữ liệu của trang hiện tại
+  const dataForCurrentPage = filteredAndSearchedData.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
       <DialogTitle>Tỷ lệ quy đổi giờ chuẩn</DialogTitle>
@@ -171,13 +197,17 @@ const TyLeQuyDoiGioChuanModal = ({ open, handleClose }) => {
               </Select>
             </FormControl>
 
-            <TextField
-              label="Trạng Thái Quy Đổi"
-              fullWidth
-              margin="normal"
-              value={trangThaiQuyDoi}
-              onChange={(e) => setTrangThaiQuyDoi(e.target.value)}
-            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Trạng Thái Quy Đổi</InputLabel>
+              <Select
+                value={trangThaiQuyDoi}
+                onChange={(e) => setTrangThaiQuyDoi(e.target.value)}
+                label="Trạng Thái Quy Đổi"
+              >
+                <MenuItem value="Đang áp dụng">Đang áp dụng</MenuItem>
+                <MenuItem value="Ngưng áp dụng">Ngưng áp dụng</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               label="Ghi Chú Quy Đổi"
               fullWidth
@@ -188,13 +218,11 @@ const TyLeQuyDoiGioChuanModal = ({ open, handleClose }) => {
           </Grid>
 
           <Grid item xs={12} md={6}>
-            {" "}
             <FormControl fullWidth margin="normal">
-              <InputLabel id="vien-chuc-truong-label">Chức Năng</InputLabel>
+              <InputLabel id="filter-status-label">
+                Trạng Thái Quy Đổi
+              </InputLabel>
               <Select
-                labelId="vien-chuc-truong-label"
-                id="vien-chuc-truong-label"
-                label="Viên Chức Trường"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
@@ -203,139 +231,40 @@ const TyLeQuyDoiGioChuanModal = ({ open, handleClose }) => {
                 <MenuItem value="Ngưng áp dụng">Ngưng áp dụng</MenuItem>
               </Select>
             </FormControl>
+
             <TextField
-              label="Tìm Kiếm Tên "
+              label="Tìm Kiếm"
               fullWidth
               margin="normal"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            {filteredAndSearchedData && filteredAndSearchedData.length > 0 ? (
+
+            {dataForCurrentPage.length > 0 ? (
               <List>
-                {filteredAndSearchedData.map((item) => (
-                  <ListItem
-                    key={item.MA_QUY_DOI}
-                    sx={{
-                      // Thay đổi kiểu dáng dựa trên TRANG_THAI_QUY_DOI
-                      opacity:
-                        item.TRANG_THAI_QUY_DOI === "Ngưng áp dụng" ? 0.5 : 1,
-                      backgroundColor:
-                        item.TRANG_THAI_QUY_DOI === "Ngưng áp dụng"
-                          ? "#f0f0f0"
-                          : "inherit",
-                      borderBottom: "1px solid #131212", // Gạch ngang cho mỗi item
-                    }}
-                  >
+                {dataForCurrentPage.map((item) => (
+                  <ListItem key={item.MA_QUY_DOI}>
+                    {/* Hiển thị các thông tin của item */}
                     <ListItemText
-                      primary={
-                        <Typography
-                          variant="body2"
-                          color={
-                            item.TRANG_THAI_QUY_DOI === "Ngưng áp dụng"
-                              ? "textDisabled"
-                              : "textSecondary"
-                          }
-                        >
-                          <Typography
-                            component="span"
-                            sx={{ fontWeight: "bold" }}
-                          >
-                            Tên Quy Đổi:
-                          </Typography>
-                          {` ${item.TEN_QUY_DOI}`}
-                        </Typography>
-                      }
-                      secondary={
-                        <Typography
-                          variant="body1"
-                          color={
-                            item.TRANG_THAI_QUY_DOI === "Ngưng áp dụng"
-                              ? "textDisabled"
-                              : "textPrimary"
-                          }
-                        >
-                          Tỷ Lệ: &nbsp;
-                          <Typography
-                            variant="body1"
-                            component="span"
-                            sx={{ color: "red", fontWeight: "bold" }}
-                          >
-                            {` ${item.TY_LE} `}
-                          </Typography>
-                          <br />
-                          Ghi Chú: &nbsp;
-                          <Typography
-                            variant="body1"
-                            component="span"
-                            sx={{ color: "green", fontWeight: "bold" }}
-                          >
-                            {` ${item.GHI_CHU_QUY_DOI}`}
-                          </Typography>
-                          <br />
-                          Viên Chức Trường: &nbsp;
-                          <Typography
-                            variant="body1"
-                            component="span"
-                            sx={{ color: "green" }}
-                          >
-                            {` ${item.VIEN_CHUC_TRUONG}`}
-                          </Typography>
-                          <br />
-                          Thực Hiện Chuẩn: &nbsp;
-                          <Typography
-                            variant="body1"
-                            component="span"
-                            sx={{ color: "green" }}
-                          >
-                            {` ${item.THUC_HIEN_CHUAN}`}
-                          </Typography>
-                          <br />
-                          Trạng Thái Quy Đổi: &nbsp;
-                          <Typography
-                            variant="body1"
-                            component="span"
-                            sx={{
-                              color: `${
-                                item.TRANG_THAI_QUY_DOI === "Đang áp dụng"
-                                  ? `green`
-                                  : `red`
-                              }`,
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {` ${item.TRANG_THAI_QUY_DOI}`}
-                          </Typography>
-                          &nbsp; &nbsp;
-                          {item.TRANG_THAI_QUY_DOI === "Đang áp dụng" ? (
-                            <i
-                              className="fa-solid fa-arrow-down"
-                              title="Tắt"
-                              style={{ cursor: "pointer" }}
-                              onClick={() => handleEdiStatusTyLeQuyDoi(item)}
-                            ></i>
-                          ) : (
-                            <i
-                              title="Bật"
-                              className="fa-solid fa-arrow-up"
-                              style={{ cursor: "pointer" }}
-                              onClick={() => handleEdiStatusTyLeQuyDoi(item)}
-                            ></i>
-                          )}
-                        </Typography>
-                      }
+                      primary={item.TEN_QUY_DOI}
+                      secondary={item.TY_LE}
                     />
                   </ListItem>
                 ))}
               </List>
             ) : (
-              <Typography
-                variant="body1"
-                component="span"
-                sx={{ color: "green", fontWeight: "bold" }}
-              >
-                Không Có Dữ Liệu
-              </Typography>
+              <Typography variant="body1">Không có dữ liệu</Typography>
             )}
+
+            <TablePagination
+              component="div"
+              count={filteredAndSearchedData.length}
+              page={page}
+              onPageChange={handleChangePage}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              rowsPerPageOptions={[5, 10, 25]} // Các tùy chọn phân trang
+            />
           </Grid>
         </Grid>
       </DialogContent>

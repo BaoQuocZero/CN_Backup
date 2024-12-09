@@ -26,6 +26,9 @@ const IndexQuanLyCTDT = lazy(() =>
   import("../sections/BomonCNTT/CTDT_CNTT/ChuongtrinhDT_CNTT")
 );
 
+const IndexQuanLydanhsachGV = lazy(() =>
+  import("../sections/quanlydanhsach/CNTTdangky")
+);
 const IndexPage = lazy(() => import("../pages/app"));
 const BlogPage = lazy(() => import("../pages/blog"));
 const UserPage = lazy(() => import("../pages/user"));
@@ -201,6 +204,44 @@ export default function Router() {
             }
           >
             <IndexPhanCongCuaToi />
+          </Suspense>
+        </DashboardLayout>
+      ),
+    },
+    {
+      path: "/danhsachgiangvien", // Gợi ý phân công giảng viên.
+      element: (
+        <DashboardLayout>
+          <Suspense
+            fallback={
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height="100%"
+                sx={{ bgcolor: "grey.300" }}
+              />
+            }
+          >
+            <IndexQuanLydanhsachGV />
+          </Suspense>
+        </DashboardLayout>
+      ),
+    },
+    {
+      path: "/tai-khoan-giangvien/thong-tin",
+      element: (
+        <DashboardLayout>
+          <Suspense
+            fallback={
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height="100%"
+                sx={{ bgcolor: "grey.300" }}
+              />
+            }
+          >
+            <AccountGV />
           </Suspense>
         </DashboardLayout>
       ),

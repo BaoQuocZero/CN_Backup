@@ -44,14 +44,18 @@ const XemLichSuChonDanhMuc = ({ dataDang_ky_thuc_hien_quy_doiGV }) => {
   };
 
   return (
-    <TableContainer component={Paper} className="mt-4">
+    <TableContainer
+      component={Paper}
+      className="mt-4"
+      sx={{ fontSize: "1.3rem" }}
+    >
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Tên giảng viên</TableCell>
-            <TableCell>Loại tác giả</TableCell>
-            <TableCell>Tên nghiên cứu</TableCell>
-            <TableCell>Số giờ quy đổi</TableCell>
+            <TableCell sx={{ fontSize: "1.1rem" }}>Tên giảng viên</TableCell>
+            <TableCell sx={{ fontSize: "1.1rem" }}>Loại tác giả</TableCell>
+            <TableCell sx={{ fontSize: "1.1rem" }}>Tên nghiên cứu</TableCell>
+            <TableCell sx={{ fontSize: "1.1rem" }}>Số giờ quy đổi</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -61,10 +65,18 @@ const XemLichSuChonDanhMuc = ({ dataDang_ky_thuc_hien_quy_doiGV }) => {
                 onClick={() => handleRowClick(index, item.TEN_DE_TAI)}
                 style={{ cursor: "pointer" }}
               >
-                <TableCell>{item.TENGV || "N/A"}</TableCell>
-                <TableCell>{item.TEN_LOAI_TAC_GIA || "N/A"}</TableCell>
-                <TableCell>{item.TEN_DE_TAI || "N/A"}</TableCell>
-                <TableCell>{item.SOGIOQUYDOI || "N/A"}</TableCell>
+                <TableCell sx={{ fontSize: "1.0rem" }}>
+                  {item.TENGV || "N/A"}
+                </TableCell>
+                <TableCell sx={{ fontSize: "1.0rem" }}>
+                  {item.TEN_LOAI_TAC_GIA || "N/A"}
+                </TableCell>
+                <TableCell sx={{ fontSize: "1.0rem" }}>
+                  {item.TEN_DE_TAI || "N/A"}
+                </TableCell>
+                <TableCell sx={{ fontSize: "1.0rem" }}>
+                  {item.SOGIOQUYDOI || "N/A"}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell

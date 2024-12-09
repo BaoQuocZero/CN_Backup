@@ -31,9 +31,9 @@ const GiangVien_thuoc_KhoaController = async (req, res) => {
 
 const timkiem_email_taikhoanController = async (req, res) => {
   try {
-    let TEN_NAM_HOC = req.body.select_HocKiNienKhoa.TEN_NAM_HOC;
+    let TEN_NAM_HOC = req.body.TEN_NAM_HOC;
     let TENGV = req.body.TENGIANGVIEN;
-
+    console.log(TENGV);
     let results = await timkiem_email_taikhoan(TENGV, TEN_NAM_HOC);
 
     return res.status(200).json({

@@ -163,7 +163,23 @@ const xem_CHONKHUNG_cho_GIANGVIEN = async (MAGV, TENNAMHOC) => {
   try {
     // console.log("xem_CHONKHUNG_cho_GIANGVIEN MAGV:", MAGV);
     // console.log("xem_CHONKHUNG_cho_GIANGVIEN TENNAMHOC:", TENNAMHOC);
+    if (TENNAMHOC === "Tất cả") {
+      const [results1] = await pool.execute(
+        "SELECT giangvien.*, khunggiochuan.*, namhoc.TENNAMHOC " +
+          "FROM chon_khung " +
+          "JOIN giangvien ON giangvien.MAGV = chon_khung.MAGV " +
+          "JOIN khunggiochuan ON chon_khung.MAKHUNG = khunggiochuan.MAKHUNG " +
+          "JOIN namhoc ON namhoc.MANAMHOC = chon_khung.MANAMHOC " +
+          "WHERE giangvien.MAGV = ? order by namhoc.MANAMHOC DESC",
+        [MAGV]
+      );
 
+      return {
+        EM: "Xem thông tin khung hiện tại thành công",
+        EC: 1,
+        DT: results1,
+      };
+    }
     const [results_MANAMHOC] = await pool.execute(
       "SELECT MANAMHOC FROM namhoc WHERE TENNAMHOC = ?",
       [TENNAMHOC]

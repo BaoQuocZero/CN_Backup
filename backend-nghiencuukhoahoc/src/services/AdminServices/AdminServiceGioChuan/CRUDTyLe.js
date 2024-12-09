@@ -61,7 +61,9 @@ const createTyLeQuyDoi = async (
   TEN_QUY_DOI,
   TY_LE,
   TRANG_THAI_QUY_DOI,
-  GHI_CHU_QUY_DOI
+  GHI_CHU_QUY_DOI,
+  VIEN_CHUC_TRUONG,
+  THUC_HIEN_CHUAN
 ) => {
   // console.log("MA_QUY_DINH:", MA_QUY_DINH);
   // console.log("TEN_QUY_DOI:", TEN_QUY_DOI);
@@ -80,8 +82,17 @@ const createTyLeQuyDoi = async (
     }
 
     let [results, fields] = await pool.execute(
-      `INSERT INTO ty_le_quy_doi_gio_chuan (MA_QUY_DINH, TEN_QUY_DOI, TY_LE, TRANG_THAI_QUY_DOI, GHI_CHU_QUY_DOI) VALUES (?, ?, ?, ?, ?)`,
-      [MA_QUY_DINH, TEN_QUY_DOI, TY_LE, TRANG_THAI_QUY_DOI, GHI_CHU_QUY_DOI]
+      `INSERT INTO ty_le_quy_doi_gio_chuan (MA_QUY_DINH, TEN_QUY_DOI, TY_LE, TRANG_THAI_QUY_DOI, GHI_CHU_QUY_DOI,VIEN_CHUC_TRUONG,
+    THUC_HIEN_CHUAN) VALUES (?, ?, ?, ?, ?,?,?)`,
+      [
+        MA_QUY_DINH,
+        TEN_QUY_DOI,
+        TY_LE,
+        TRANG_THAI_QUY_DOI,
+        GHI_CHU_QUY_DOI,
+        VIEN_CHUC_TRUONG,
+        THUC_HIEN_CHUAN,
+      ]
     );
     const results_data = await selectTyLeQuyDoi();
     // console.log("selectTyLeQuyDoi", results_data);

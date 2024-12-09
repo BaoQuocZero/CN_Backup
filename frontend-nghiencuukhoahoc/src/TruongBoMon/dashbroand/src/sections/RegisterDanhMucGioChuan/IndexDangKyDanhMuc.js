@@ -83,25 +83,25 @@ const IndexDangKyDanhmuc = () => {
             )
           ) {
             setOpenChucNangtheokhungthoigian({
-              XemLSDangKyNghienCuu: "Xem Lịch Sử Đăng Ký Danh Mục",
-              DangKyNghienCuu: "Đăng Ký Danh Mục",
+              XemLSDangKyNghienCuu: "Xem lịch sử đăng ký nghiên cứu",
+              DangKyNghienCuu: "Đăng ký nghiên cứu",
             });
             setIsOpenCheckKhoa(true);
           } else {
             setOpenChucNangtheokhungthoigian({
-              XemLSDangKyNghienCuu: "Xem Lịch Sử Đăng Ký Danh Mục",
+              XemLSDangKyNghienCuu: "Xem lịch sử đăng ký nghiên cứu",
             });
             // console.log("1");
           }
         } else {
           setOpenChucNangtheokhungthoigian({
-            XemLSDangKyNghienCuu: "Xem Lịch Sử Đăng Ký Danh Mục",
+            XemLSDangKyNghienCuu: "Xem lịch sử đăng ký nghiên cứu",
           });
           // console.log("2");
         }
       } else {
         setOpenChucNangtheokhungthoigian({
-          XemLSDangKyNghienCuu: "Xem Lịch Sử Đăng Ký Danh Mục",
+          XemLSDangKyNghienCuu: "Xem lịch sử đăng ký nghiên cứu",
         });
         // console.log("3");
       }

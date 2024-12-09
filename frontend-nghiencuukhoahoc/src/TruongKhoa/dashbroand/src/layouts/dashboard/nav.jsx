@@ -93,7 +93,7 @@ export default function Nav({ openNav, onCloseNav }) {
           {dataProfileGiangvien.TENGV || "Đang tải..."}
         </Typography>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {dataProfileGiangvien.TENCHUCVU || ""}
+          {dataProfileGiangvien.PHANQUYEN || ""}
         </Typography>
       </Box>
     </Box>

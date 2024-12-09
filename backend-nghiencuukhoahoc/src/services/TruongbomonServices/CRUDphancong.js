@@ -3,19 +3,20 @@ const moment = require("moment");
 
 const { timnamhoc_TENNAMHOC } = require("../AdminServices/helpers");
 const e = require("express");
-const select_giangvien_chuachonkhung = async () => {
+const select_giangvien_chuachonkhung = async (TENNAMHOC) => {
   try {
     let [results_ctdt_bomon, fields1] = await pool.execute(
       `SELECT gv.*
-      FROM giangvien gv
-      LEFT JOIN chon_khung ck ON gv.MAGV = ck.MAGV
-      WHERE ck.MAGV IS NULL
-      AND EXISTS (
-      SELECT 1 
-      FROM taikhoan tk 
-      WHERE tk.MAGV = gv.MAGV
-      AND tk.TENDANGNHAP IS NOT NULL
-);`
+FROM giangvien gv
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM chon_khung ck
+    JOIN namhoc nh ON ck.MANAMHOC = nh.MANAMHOC
+    WHERE ck.MAGV = gv.MAGV
+    AND nh.TENNAMHOC = ?
+);
+`,
+      [TENNAMHOC]
     );
     return {
       EM: "Xem thông tin giảng viên chưa chọn khung chuẩn thành công",

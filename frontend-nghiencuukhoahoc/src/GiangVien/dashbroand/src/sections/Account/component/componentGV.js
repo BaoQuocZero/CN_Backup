@@ -52,7 +52,7 @@ const GiangVienProfile = ({ giangVien, CallbackAPiProfileGV }) => {
   };
 
   const handleSaveClick = async () => {
-    console.log("check ten dang nhap", editData.TENDANGNHAP);
+    console.log("check ten dang nhap", editData);
 
     if (isValidPhoneNumber(editData.DIENTHOAI)) {
       try {

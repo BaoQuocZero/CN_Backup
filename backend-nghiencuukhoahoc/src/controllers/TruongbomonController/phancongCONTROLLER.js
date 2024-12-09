@@ -11,7 +11,8 @@ const {
 } = require("../../services/TruongbomonServices/CRUDphancong");
 const get_giangvien_CNTT_chuachonkhung = async (req, res) => {
   try {
-    let results = await select_giangvien_chuachonkhung();
+    const TENNAMHOC = req.body.TENNAMHOC;
+    let results = await select_giangvien_chuachonkhung(TENNAMHOC);
 
     return res.status(200).json({
       EM: results.EM,

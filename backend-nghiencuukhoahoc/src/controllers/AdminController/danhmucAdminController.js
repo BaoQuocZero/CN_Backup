@@ -294,7 +294,7 @@ const addQuyDinh = async (req, res) => {
       DT: null,
     });
   }
-  let
+
   try {
     const results = await createQuyDinh(TEN_QUY_DINH);
     return res.status(201).json({
@@ -617,7 +617,10 @@ const addTyLeQuyDoi = async (req, res) => {
     TY_LE,
     TRANG_THAI_QUY_DOI,
     GHI_CHU_QUY_DOI,
+    VIEN_CHUC_TRUONG,
+    THUC_HIEN_CHUAN,
   } = req.body;
+  console.log("ceck:", req.body);
   if (!MA_QUY_DINH) {
     return res.status(400).json({
       EM: " MA_QUY_DINH  bị rỗng",
@@ -631,7 +634,9 @@ const addTyLeQuyDoi = async (req, res) => {
       TEN_QUY_DOI,
       TY_LE,
       TRANG_THAI_QUY_DOI,
-      GHI_CHU_QUY_DOI
+      GHI_CHU_QUY_DOI,
+      VIEN_CHUC_TRUONG,
+      THUC_HIEN_CHUAN
     );
     return res.status(201).json({
       EM: results.EM,
@@ -782,7 +787,7 @@ const getAll_Co_Quy_Dinh_REQ = async (req, res) => {
   try {
     const MA_LOAI_DANH_MUC = req.body.MA_LOAI_DANH_MUC;
     const MA_LOAI_TAC_GIA = req.body.MA_LOAI_TAC_GIA;
-    if ( !MA_LOAI_DANH_MUC || !MA_LOAI_TAC_GIA) {
+    if (!MA_LOAI_DANH_MUC || !MA_LOAI_TAC_GIA) {
       return res.status(400).json({
         EM: "  !MA_LOAI_DANH_MUC || !MA_LOAI_TAC_GIA bị rỗng",
         EC: 400,

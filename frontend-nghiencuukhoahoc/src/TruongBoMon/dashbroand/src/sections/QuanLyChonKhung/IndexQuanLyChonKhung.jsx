@@ -46,6 +46,7 @@ const IndexPhanCongGiangVien = () => {
   useEffect(() => {
     if (selectNamHoc) {
       fetchGiangVienList(selectNamHoc);
+      fetchListGiangVienChuaChonKhung(selectNamHoc);
     }
   }, [selectNamHoc]);
 
@@ -58,10 +59,11 @@ const IndexPhanCongGiangVien = () => {
     }
   }, [isOpenXemGiangVienChonKhung]);
 
-  const fetchListGiangVienChuaChonKhung = async () => {
+  const fetchListGiangVienChuaChonKhung = async (selectNamHoc) => {
     try {
-      const response = await CookiesAxios.get(
-        `${process.env.REACT_APP_URL_SERVER}/api/v1/truongbomon/giangvien/xem/phancong/chuachonkhung`
+      const response = await CookiesAxios.post(
+        `${process.env.REACT_APP_URL_SERVER}/api/v1/truongbomon/giangvien/xem/phancong/chuachonkhung`,
+        { TENNAMHOC: selectNamHoc }
       );
       console.log("chua chon khung =>", response.data);
       if (response.data.EC === 1) {
