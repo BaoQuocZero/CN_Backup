@@ -67,6 +67,11 @@ const navConfig = [
     path: "/quan-ly",
     icon: icon("ic_blog"),
   },
+  {
+    title: "Test Dev",
+    path: "/dev",
+    icon: icon("ic_blog"),
+  },
   // {
   //   title: 'login',
   //   path: '/login',

@@ -38,6 +38,8 @@ const CreateKhoa = lazy(() =>
   import("../sections/KhoaTVU/CreateKhoa/CreateKhoa")
 );
 
+const DevPage = lazy(() => import("../sections/dev/dev"));
+
 const IndexPage = lazy(() => import("../pages/app"));
 const BlogPage = lazy(() => import("../pages/blog"));
 const UserPage = lazy(() => import("../pages/user"));
@@ -389,16 +391,26 @@ export default function Router() {
         </DashboardLayout>
       ),
     },
-    // {
-    //   path: '/blog',
-    //   element: (
-    //     <DashboardLayout>
-    //       <Suspense fallback={<div>Loading...</div>}>
-    //         <BlogPage />
-    //       </Suspense>
-    //     </DashboardLayout>
-    //   )
-    // },
+
+    {
+      path: "/dev", // Thêm ký tự '*' vào cuối đường dẫn
+      element: (
+        <DashboardLayout>
+          <Suspense
+            fallback={
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height="100%"
+                sx={{ bgcolor: "grey.300" }}
+              />
+            }
+          >
+            <DevPage />
+          </Suspense>
+        </DashboardLayout>
+      ),
+    },
     {
       path: "/login",
       element: <LoginPage />,
@@ -407,10 +419,10 @@ export default function Router() {
       path: "/404",
       element: <Page404 />,
     },
-    // {
-    //   path: '*',
-    //   element: <Navigate to="/dashboard/404" replace />
-    // }
+    {
+      path: '*',
+      element: <Page404 />,
+    }
   ]);
 
   return routes;
