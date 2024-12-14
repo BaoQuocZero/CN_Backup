@@ -1,0 +1,2 @@
+npm start --legacy-peer-deps
+npm i --legacy-peer-deps

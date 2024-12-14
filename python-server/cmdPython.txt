@@ -1,0 +1,7 @@
+Lệnh cài thư viện
+
+pip install -r requirements.txt
+
+hoặc
+
+pip install flask flask_cors pandas scikit-learn plotly numpy
