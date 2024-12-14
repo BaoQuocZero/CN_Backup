@@ -25,6 +25,11 @@ const navConfig = [
     path: "/dang-ky-khung-gio-chuan",
     icon: icon("ic_blog"),
   },
+  {
+    title: "Dev",
+    path: "/dev",
+    icon: icon("ic_blog"),
+  },
 ];
 
 export default navConfig;

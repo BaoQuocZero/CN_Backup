@@ -361,7 +361,7 @@ const ComponenCreateGiangVien = () => {
     setMaBoMon(null);
   };
 
-  const handleSumitEditGV = async (event) => {};
+  const handleSumitEditGV = async (event) => { };
   // -----------------------IS OPEN EXCEL-----------------------------------
 
   const [searchStatus, setSearchStatus] = useState("All");
@@ -488,13 +488,12 @@ const ComponenCreateGiangVien = () => {
               <Select
                 labelId="select-label-trang-thai"
                 id="trang-thai-select"
-                className={`height-selectGV ${
-                  searchStatus === "Đang hoạt động"
-                    ? "text-success"
-                    : searchStatus === "Ngưng hoạt động"
+                className={`height-selectGV ${searchStatus === "Đang hoạt động"
+                  ? "text-success"
+                  : searchStatus === "Ngưng hoạt động"
                     ? "text-danger"
                     : ""
-                }`}
+                  }`}
                 value={searchStatus}
                 label="Trạng thái"
                 onChange={handleStatusChange}
@@ -602,7 +601,8 @@ const ComponenCreateGiangVien = () => {
             <>
               {" "}
               <Col md={6}>
-                <CreateGiangVienForm
+                {/* Không biết đây là gì ? */}
+                {/* <CreateGiangVienForm
                   QuyenGiangVien={QuyenGiangVien}
                   TrangThaiGV={TrangThaiGV}
                   setTrangThaiGV={setTrangThaiGV}
@@ -616,7 +616,7 @@ const ComponenCreateGiangVien = () => {
                   isOpenEditButtonGV={isOpenEditButtonGV}
                   handleSumitEditGV={handleSumitEditGV}
                   handleIsOpenEditButtonGV={handleIsOpenEditButtonGV}
-                />
+                /> */}
               </Col>
             </>
           ))}
@@ -624,6 +624,7 @@ const ComponenCreateGiangVien = () => {
       </Row>{" "}
       <Row>
         <Col md={12}>
+          {/* Đây là cái bảng chứa thông tin giảng viên */}
           <GiangVienList
             searchStatus={searchStatus}
             currentPage={currentPage}

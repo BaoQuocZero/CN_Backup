@@ -124,8 +124,24 @@ const UpdateGiangVienModal = ({
         TimeChucDanh !== thoigianNhan ||
         ChucDanhGiangVien !== tenChucDanh
       ) {
-        toast.error("Muốn update thời gian thì phải update tên chức danh");
-        return;
+        const updatedData = {
+          TENGV: tenGV,
+          DIACHI: diaChiGiangVien,
+          DIENTHOAI: SodienthoaiGV,
+          TENCHUCDANH: ChucDanhGiangVien,
+          TENCHUCVU: chucVuGiangVien,
+          PHANQUYEN: PhanQuyenGiangVien,
+          TENDANGNHAP: tenDangNhapGV,
+          TENBOMON: TenBoMon,
+          TRANGTHAITAIKHOAN: TrangThaiDangNhap,
+          isOpenGetAllApiGV: isOpenGetAllApiGV,
+          THOIGIANNHAN: TimeChucDanh,
+          TUNGAY: TimeChucVu,
+          SOQUYETDINH: SoQuyetDinh,
+        };
+        updateLecturer(updatedData);
+        // toast.error("Muốn update thời gian thì phải update tên chức danh");
+        // return;
       } else if (
         TimeChucVu !== tuNgay &&
         chucVuGiangVien !== tenChucVu &&
@@ -306,7 +322,7 @@ const UpdateGiangVienModal = ({
               label="Tên Chức Danh"
             >
               {dataListChucDanhGiangVien &&
-              dataListChucDanhGiangVien.length > 0 ? (
+                dataListChucDanhGiangVien.length > 0 ? (
                 dataListChucDanhGiangVien.map((chucdanh, index) => (
                   <MenuItem key={index} value={chucdanh.TENCHUCDANH}>
                     {chucdanh.TENCHUCDANH}

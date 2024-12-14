@@ -18,6 +18,7 @@ const UserPage = lazy(() => import("../pages/user"));
 const LoginPage = lazy(() => import("../pages/login"));
 const Page404 = lazy(() => import("../pages/page-not-found"));
 
+const Dev = lazy(() => import("../sections/dev/dev"));
 export default function Router() {
   const routes = useRoutes([
     {
@@ -130,6 +131,25 @@ export default function Router() {
             }
           >
             <IndexDangKyDanhmuc />
+          </Suspense>
+        </DashboardLayout>
+      ),
+    },
+    {
+      path: "/dev", // Thêm ký tự '*' vào cuối đường dẫn
+      element: (
+        <DashboardLayout>
+          <Suspense
+            fallback={
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height="100%"
+                sx={{ bgcolor: "grey.300" }}
+              />
+            }
+          >
+            <Dev />
           </Suspense>
         </DashboardLayout>
       ),
