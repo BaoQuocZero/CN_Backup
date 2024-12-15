@@ -1,72 +1,73 @@
-# Managing and Optimizing Faculty Teaching Hours
+# Quản lý và Tối ưu hóa Giờ Giảng Dạy của Giảng Viên
 
-This project is aimed at managing and optimizing faculty teaching hours using a web application built with React.js and Node.js. The backend uses MySQL for data storage.
+Dự án này nhằm quản lý và tối ưu hóa giờ giảng dạy của giảng viên thông qua một ứng dụng web được xây dựng bằng React.js và Node.js. Phần backend sử dụng MySQL để lưu trữ dữ liệu.
 
-## Table of Contents
+## Bắt đầu
 
-- [Getting Started](#getting-started)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Running the Application](#running-the-application)
-- [Built With](#built-with)
-- [Contributing](#contributing)
-- [License](#license)
+Hướng dẫn dưới đây sẽ giúp bạn sao chép dự án và chạy nó trên máy tính của bạn để phục vụ mục đích phát triển và kiểm thử.
 
-## Getting Started
+### Yêu cầu cần thiết
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+Bạn cần cài đặt các phần mềm sau trên máy tính của mình:
 
-### Prerequisites
-
-You will need the following software installed on your machine:
-
-- Node.js (v14 or higher)
+- Node.js (phiên bản 18 trở lên)
 - MySQL
 - Git
 
-### Installation
+### Cài đặt
 
-1. Clone the repository:
+1. **Clone kho lưu trữ:**
    ```bash
    git clone https://github.com/yourusername/managing-and-optimizing-faculty-teaching-hours.git
    cd managing-and-optimizing-faculty-teaching-hours
+   ```
 
-2. Install backend dependencies:
+2. **Cài đặt các phụ thuộc cho backend:**
    ```bash
    cd backend
    npm install
-3. Install frontend dependencies:
-    ```cd ../frontend
-    npm install 
-4. Install backend dependencies:
-    ```# Server configuration
-    PORT=8081
-    URL_REACT=http://localhost:3000
+   ```
 
-    # Database configuration 
-    HOST_NAME=localhost  
-    NODE_ENV=development
-    DB_HOST=localhost
-    DB_PORT=3306
-    DB_USER=root
-    DB_NAME=faculty_management
-    DB_PASSWORD=yourpassword
+3. **Cài đặt các phụ thuộc cho frontend:**
+   ```bash
+   cd ../frontend
+   npm install
+   ```
 
-    # JWT configuration
-    SECRETKEYADMIN=your_secret_key.
+4. **Cấu hình môi trường cho backend:**
+   Tạo tệp `.env` trong thư mục `backend` với nội dung sau:
+   ```env
+   # Cấu hình server
+   PORT=8081
+   URL_REACT=http://localhost:3000
 
-## Running the Application
-Backend   
- Start the backend server  
+   # Cấu hình cơ sở dữ liệu
+   HOST_NAME=localhost  
+   NODE_ENV=development
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=root
+   DB_NAME=faculty_management
+   DB_PASSWORD=yourpassword
 
-    
-    npm start  
+   # Cấu hình JWT
+   SECRETKEYADMIN=your_secret_key
+   ```
 
-Frontend   
-Start the frontend   
+## Chạy Ứng dụng
 
-    npm start
-   
-## 🚀 About Me
-we are a full stack developer...
+1. **Backend**  
+   Khởi động server backend:
+   ```bash
+   npm start
+   ```
+
+2. **Frontend**  
+   Khởi động ứng dụng frontend:
+   ```bash
+   npm start
+   ```
+
+## 🚀 Giới thiệu về chúng tôi
+
+Chúng tôi là nhà phát triển full-stack với đam mê xây dựng các ứng dụng tối ưu và hiệu quả.
