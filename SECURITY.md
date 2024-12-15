@@ -1,39 +1,40 @@
-# Security Policy
+# Chính sách Bảo mật (Security Policy)
 
-We are doing this project for educational purposes, so all content is an example
+Chúng tôi cam kết duy trì mức độ bảo mật cao nhất cho dự án **Quản lý và Tối ưu hóa Giờ Giảng Dạy của Giảng Viên**. Chính sách này sẽ hướng dẫn bạn cách báo cáo các vấn đề liên quan đến bảo mật để chúng tôi có thể xử lý nhanh chóng và hiệu quả.
 
-## Supported Versions
+## Báo cáo Vấn đề Bảo mật
 
-This section lists the versions of the project currently supported with security updates.
+Nếu bạn phát hiện ra bất kỳ lỗ hổng hoặc vấn đề bảo mật nào, vui lòng thực hiện các bước sau để báo cáo:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :x:                |
-| 5.0.x   | :x:                |
-| 4.0.x   | :x:                |
-| < 4.0   | :x:                |
+1. **Không chia sẻ công khai**: Vui lòng không công khai bất kỳ thông tin nào liên quan đến lỗ hổng bảo mật trước khi chúng tôi xử lý và phát hành bản sửa lỗi.
 
-## Reporting a Vulnerability
+2. **Liên hệ với chúng tôi**: Gửi thông tin chi tiết qua email:
+   - **Email báo cáo bảo mật**: [baoquoczero@gmail.com](mailto:baoquoczero@gmail.com)
+   - Vui lòng cung cấp các thông tin sau trong báo cáo của bạn:
+     - Mô tả vấn đề bảo mật.
+     - Các bước tái hiện lỗ hổng (nếu có).
+     - Tác động tiềm năng của vấn đề.
+     - Thông tin liên hệ để chúng tôi có thể phản hồi.
 
-If you discover a vulnerability in this project, please report it as soon as possible. 
+3. **Thời gian phản hồi**: Chúng tôi sẽ xác nhận rằng đã nhận được báo cáo của bạn trong vòng **48 giờ**. Nếu vấn đề được xác nhận là nghiêm trọng, chúng tôi sẽ làm việc để đưa ra bản sửa lỗi trong thời gian sớm nhất có thể.
 
-### How to Report
-- **Email:** Please send the details to [security@example.com](mailto:security@example.com).
-- **Form:** Alternatively, you can fill out [this form](https://example.com/security-report).
+## Phạm vi Chính sách
 
-### What to Include in Your Report
-- A detailed description of the vulnerability.
-- Steps to reproduce the issue.
-- The impact of the vulnerability.
-- Any potential fixes or mitigations you might suggest.
+Chính sách bảo mật này áp dụng cho các thành phần sau trong dự án:
+- Backend (Node.js, MySQL)
+- Frontend (React.js)
+- API tích hợp
 
-### Response Expectations
-- **Acknowledgement:** You will receive an acknowledgement of your report within 24 hours.
-- **Update Frequency:** We will provide updates on the status of the vulnerability at least once every 7 days.
-- **Resolution Time:** We aim to address and patch reported vulnerabilities within 30 days of acknowledgement.
+## Phần thưởng Báo cáo (Bug Bounty)
 
-### What to Expect
-- **Accepted Reports:** If the vulnerability is accepted, you will receive a detailed plan on how we will address it, along with an estimated timeline.
-- **Declined Reports:** If the vulnerability is declined, you will receive an explanation as to why it was not accepted.
+Chúng tôi đánh giá cao sự đóng góp của bạn trong việc cải thiện bảo mật dự án. Những cá nhân báo cáo các lỗ hổng nghiêm trọng có thể nhận được phần thưởng dưới hình thức ghi nhận công khai hoặc các phần thưởng khác (tuỳ thuộc vào mức độ nghiêm trọng và sự đóng góp).
 
-We greatly appreciate your help in keeping our project secure.
+## Hạn chế Trách nhiệm
+
+Chính sách này không áp dụng cho các vấn đề không liên quan trực tiếp đến dự án, bao gồm nhưng không giới hạn ở:
+- Lỗ hổng trên nền tảng hoặc dịch vụ của bên thứ ba.
+- Cấu hình sai do người dùng tự cài đặt.
+
+---
+
+**Chúng tôi đánh giá cao sự hỗ trợ của cộng đồng trong việc duy trì bảo mật cho dự án. Xin chân thành cảm ơn!** 
