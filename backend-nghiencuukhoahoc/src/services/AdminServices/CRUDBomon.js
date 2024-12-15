@@ -57,7 +57,7 @@ const selectBomon_TENKHOA = async (TENKHOA) => {
       };
     }
   } catch (error) {
-    console.log("check eror =>", error);
+    console.log(error);
     return {
       EM: "Lỗi services selectBomon",
       EC: -1,
@@ -161,9 +161,6 @@ const createBomon = async (makhoa, tenbomon) => {
 
 const updateBomon = async (mabomon, makhoa, tenbomon) => {
   try {
-    // console.log(mabomon);
-    // console.log(tenbomon);
-    // console.log(makhoa);
     let [results1, fields1] = await pool.execute(
       `select * from bomon where MABOMON = ?`,
       [mabomon]
@@ -204,7 +201,6 @@ const deleteBomon = async (mabomon) => {
       `select * from bomon where MABOMON = ?`,
       [mabomon]
     );
-    // console.log(results1.length);
     if (results1.length > 0) {
       let [results, fields] = await pool.execute(
         `DELETE FROM bomon WHERE MABOMON = ?`,

@@ -27,7 +27,6 @@ const getAllMONHOC = async (req, res) => {
 const createMONHOC = async (req, res) => {
   try {
     const dataMonHoc = req.body;
-    console.log(dataMonHoc);
     if (!dataMonHoc.TENMONHOC) {
       return res.status(400).json({
         EM: " tên môn học bị rỗng",

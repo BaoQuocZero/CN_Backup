@@ -68,7 +68,6 @@ const getOnlyDanhMucQuyDoi = async (req, res) => {
         DT: null,
       });
     }
-    // console.log("check id", id);
     const results = await selectOnlyDanhMucQuyDoi(id);
     return res.status(200).json({
       EM: results.EM,
@@ -565,7 +564,6 @@ const editLoaiTacGia = async (req, res) => {
 
 const removeLoaiTacGia = async (req, res) => {
   const { id } = req.params;
-  // console.log("id", id);
   if (!id) {
     return res.status(400).json({
       EM: " id  bị rỗng",
@@ -620,7 +618,6 @@ const addTyLeQuyDoi = async (req, res) => {
     VIEN_CHUC_TRUONG,
     THUC_HIEN_CHUAN,
   } = req.body;
-  console.log("ceck:", req.body);
   if (!MA_QUY_DINH) {
     return res.status(400).json({
       EM: " MA_QUY_DINH  bị rỗng",
@@ -748,11 +745,6 @@ const add_Co_Quy_Dinh_excel = async (req, res) => {
 const addCoQuyDinh = async (req, res) => {
   const { MA_QUY_DOI, MA_LOAI_DANH_MUC, MA_LOAI_TAC_GIA, SO_TAC_GIA } =
     req.body;
-  // console.log("check data MA_QUY_DOI =>", MA_QUY_DOI);
-  // console.log("check data MA_LOAI_DANH_MUC =>", MA_LOAI_DANH_MUC);
-
-  // console.log("check data MA_LOAI_TAC_GIA =>", MA_LOAI_TAC_GIA);
-  // console.log("check data SO_TAC_GIA =>", SO_TAC_GIA);
   try {
     if (!MA_QUY_DOI || !MA_LOAI_DANH_MUC || !MA_LOAI_TAC_GIA) {
       return res.status(400).json({

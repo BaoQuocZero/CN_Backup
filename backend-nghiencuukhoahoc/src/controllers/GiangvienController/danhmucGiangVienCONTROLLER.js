@@ -14,8 +14,6 @@ const select_thongtin_danhmuc = async (req, res) => {
   try {
     const TENDANGNHAP = req.body.TENDANGNHAP;
     const TENNAMHOC = req.body.TENNAMHOC;
-    // console.log("TENNAMHOC", TENNAMHOC);
-    // console.log("TENDANGNHAP", TENDANGNHAP);
     if (!TENDANGNHAP || !TENNAMHOC) {
       return res.status(400).json({
         EM: " TENDANGNHAP  TENNAMHOC bị rỗng",
@@ -42,8 +40,6 @@ const select_thongtin_danhmuc = async (req, res) => {
 const select_loaitacgia_loaidanhmuc = async (req, res) => {
   try {
     const MA_LOAI_DANH_MUC = req.body.MA_LOAI_DANH_MUC;
-    // console.log("req.body: ", req.body)
-    // console.log("TEN_LOAI_DANH_MUC: ", TEN_LOAI_DANH_MUC)
     if (!MA_LOAI_DANH_MUC) {
       return res.status(400).json({
         EM: "MA_LOAI_DANH_MUC bị rỗng",
@@ -69,9 +65,8 @@ const select_loaitacgia_loaidanhmuc = async (req, res) => {
 
 const dangky_danhmuc_Controller = async (req, res) => {
   try {
-    // console.log("req.body dangky_danhmuc_Controller: ", req.body);
+
     let dataDangKyDanhMuc = req.body;
-    // console.log("dataDangKyDanhMuc: ", dataDangKyDanhMuc);
     if (!dataDangKyDanhMuc) {
       return res.status(400).json({
         EM: "dataDangKyDanhMuc bị rỗng",
@@ -137,7 +132,6 @@ const select_thongtin_dangkydanhmuc_giangvien = async (req, res) => {
         DT: null,
       });
     }
-    // console.log("MAGV select_thongtin_dangkydanhmuc_giangvien: ", MAGV);
     let results = await get_thongtin_dangky_giangvien(MAGV, TENNAMHOC);
     return res.status(200).json({
       EM: results.EM,

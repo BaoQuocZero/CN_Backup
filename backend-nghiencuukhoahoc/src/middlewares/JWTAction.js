@@ -4,7 +4,6 @@ var jwt = require("jsonwebtoken");
 const nonSercurePaths = ["/", "/register", "/login", "/logout"];
 const createJWT = (payload) => {
   let key = process.env.SECRETKEYADMIN;
-  // console.log("create key", key);
 
   let token;
   try {
@@ -18,8 +17,6 @@ const createJWT = (payload) => {
 
 const verifyToken = (token) => {
   let key = process.env.SECRETKEYADMIN;
-  // console.log("key", key);
-  // console.log("token", token);
   let decoded = null;
   try {
     decoded = jwt.verify(token, key);
@@ -44,13 +41,10 @@ const checkUserJWT = (req, res, next) => {
   if (nonSercurePaths.includes(req.path)) return next();
   let cookie = req.cookies;
   let tokenFromHeader = extractToken(req);
-  // console.log("Cookie:", cookie);
-  // console.log("Token from Header:", tokenFromHeader);
 
   if ((cookie && cookie.jwt) || tokenFromHeader) {
     let token = cookie && cookie.jwt ? cookie.jwt : tokenFromHeader;
     let decoded = verifyToken(token);
-    // console.log("check decode: ", decoded);
     if (decoded) {
       req.user = decoded;
       req.token = token;
@@ -89,8 +83,6 @@ const checkUserJWT = (req, res, next) => {
 //     let canAccess = roles.some(
 //       (item) => item.url === currentUrl || currentUrl.includes(item.url)
 //     );
-
-//     console.log("check can access", canAccess);
 
 //     if (canAccess === true) {
 //       next();

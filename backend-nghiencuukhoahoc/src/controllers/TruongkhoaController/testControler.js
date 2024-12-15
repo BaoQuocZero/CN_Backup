@@ -16,7 +16,6 @@ const {
 const LoaiDanhMucExcelController = async (req, res) => {
   try {
     let data = req.body;
-    // console.log("data: ", data)
     let results = await Sevicel_LoaiDanhMuc_Excel(data);
 
     return res.status(200).json({
@@ -37,7 +36,6 @@ const LoaiDanhMucExcelController = async (req, res) => {
 const DanhMucExcelController = async (req, res) => {
   try {
     let dataDanhMuc = req.body;
-    // console.log("dataDanhMuc: ", dataDanhMuc)
     let results = await Sevicel_DanhMuc_Excel(dataDanhMuc);
     // let results = {
     //     EM: "Thêm danh mục quy đổi mới thành công",
@@ -62,7 +60,6 @@ const DanhMucExcelController = async (req, res) => {
 const TyLeExcelController = async (req, res) => {
   try {
     let dataTyLe = req.body;
-    // console.log("dataTyLe: ", dataTyLe)
     let results = await Sevicel_TyLe_Excel(dataTyLe);
     return res.status(200).json({
       EM: results.EM,
@@ -82,7 +79,6 @@ const TyLeExcelController = async (req, res) => {
 const CoTyLeExcelController = async (req, res) => {
   try {
     let dataCoTyLe = req.body;
-    // console.log("dataCoTyLe: ", dataCoTyLe)
     let results = await Sevicel_CoTyLe_Excel(dataCoTyLe);
     // let results = {
     //     EM: "Thêm danh mục quy đổi mới thành công",
@@ -108,8 +104,6 @@ const PhanCongControllerTest = async (req, res) => {
   try {
     let data = req.body;
     let HOCKINIENKHOA = req.body.HOCKINIENKHOA;
-    // console.log("data", data);
-    // console.log("HOCKINIENKHOA", HOCKINIENKHOA);
 
     let results = await Sevicel_AutoPhanCong_Test(data);
 
@@ -130,7 +124,6 @@ const PhanCongControllerTest = async (req, res) => {
 
 const Training_RandomForestControllerTest = async (req, res) => {
   try {
-    // console.log("Chạy Training_RandomForestControllerTest")
     let data = req.body;
     let results = await Sevicel_Training_RandomForest_Python(data);
     results.EC !== 1 ? results = await Sevicel_AutoPhanCong_Test(data) : results

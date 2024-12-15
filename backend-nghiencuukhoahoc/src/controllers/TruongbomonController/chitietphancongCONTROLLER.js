@@ -10,7 +10,6 @@ const {
 const selectChitietphancongController_giangvien = async (req, res) => {
   try {
     const MAHKNK = req.body.MAHKNK;
-    // console.log("check MAHKNK", MAHKNK);
     // Kiểm tra dữ liệu đầu vào
     if (!MAHKNK) {
       return res.status(400).json({
@@ -132,11 +131,6 @@ const Xem_Chitietphancong_banthan_Controller = async (req, res) => {
     const MAGV = req.body.MAGV;
     const MAHKNK = req.body.HKNK.MAHKNK;
     const HOCKI = req.body.HKNK.TENHKNK;
-    console.log(HOCKI);
-    console.log(MAHKNK);
-    console.log(MAGV);
-    // console.log("check MAGV", MAGV);
-    // console.log("check MAHKNK", MAHKNK);
     if (!MAGV || !MAHKNK) {
       return res.status(400).json({
         EM: !MAGV

@@ -13,7 +13,6 @@ const {
 const getAllTaiKhoanController = async (req, res) => {
   try {
     const TENBOMON = req.body.TENBOMON;
-    console.log(TENBOMON);
     let results = await getAllTaiKhoan(TENBOMON);
 
     return res.status(200).json({
@@ -141,8 +140,6 @@ const updateTaiKhoanController = async (req, res) => {
     const matkhaucu = req.body.matKhaucu;
     const phanQuyen = req.body.phanQuyen;
     const matkhaumoi = req.body.matKhaumoi;
-    // console.log(req.body);
-    // console.log(req.params.tenDangNhap);
     let results = await updateTaiKhoan(
       tendangnhap,
       matkhaucu,
@@ -183,7 +180,6 @@ const loginTaikhoanAdminController = async (req, res) => {
 
 //login với email từ google
 const loginTaikhoanGOOGLEController = async (req, res) => {
-  // console.log(req.body.tendangnhap);
   try {
     const username = req.body.tendangnhap;
 

@@ -79,7 +79,6 @@ const get_giangvien_CNTT_dachonkhung = async (req, res) => {
 const get_giangvien_CNTT_dachonkhung_chitietonly = async (req, res) => {
   try {
     const TENNAMHOC = req.body.TENNAMHOC;
-    // console.log("check TENNAMHOC", TENNAMHOC);
     if (!TENNAMHOC) {
       return res.status(400).json({
         EM: "Tên năm học không được bỏ trống",
@@ -194,9 +193,6 @@ const create_onlylistgiangvien_phancong = async (req, res) => {
 const phancongtudong_giangvien_Controller = async (req, res) => {
   try {
     const data = req.body;
-
-    // console.log("checkdata: ", data.data);
-
     let results = await phancong_tudong_giangvien(data);
 
     return res.status(200).json({

@@ -33,8 +33,6 @@ const getAllGiangVien_indatabase = async (req, res) => {
   try {
     let page = req.query.page;
     let limit = req.query.limit;
-    console.log("check page ", page);
-    console.log("check limit ", limit);
 
     if (!page || !limit) {
       return res.status(400).json({
@@ -120,7 +118,6 @@ const getOnlyGiangVienbyTENDANGNHAP = async (req, res) => {
 const getOnlyGiangVienbyBoMon = async (req, res) => {
   try {
     const MABOMON = req.params.MABOMON;
-    // console.log(MABOMON);
     if (!MABOMON) {
       return res.status(400).json({
         EM: " MABOMON bị rỗng",
@@ -188,9 +185,6 @@ const updateTrangThaiTaiKhoanGiangVienController = async (req, res) => {
         DT: null,
       });
     }
-    // console.log(MAGV);
-    // console.log("TRANGTHAITAIKHOAN:  ", TRANGTHAITAIKHOAN);
-    // console.log(MABOMON);
     let results = await updateTrangThaiTaiKhoanGiangVien(
       MAGV,
       TRANGTHAITAIKHOAN,
@@ -241,7 +235,6 @@ const updateGiangVienController = async (req, res) => {
 };
 
 const update_ChucVu_ChucDanh_GiangVien_Controller = async (req, res) => {
-  // console.log("check req.body =>>", req.body);
   try {
     const a = req.params.TENDANGNHAP;
     const isOpenGetAllApiGV = req.body.isOpenGetAllApiGV;
@@ -271,9 +264,6 @@ const update_ChucVu_ChucDanh_GiangVien_Controller = async (req, res) => {
       }
     });
 
-    // console.log("TENDANGNHAP: ", a);
-    // console.log("dataGiangVien controller: ", dataGiangVien);
-
     let results = await update_ChucVu_ChucDanh_GiangVien(
       dataGiangVien,
       isOpenGetAllApiGV
@@ -299,8 +289,6 @@ const deleteGiangVienController = async (req, res) => {
     let MAGV = req.query.MAGV;
     let MABOMON = req.query.MABOMON;
     let isOpenGetAllApiGV = req.query.isOpenGetAllApiGV;
-    // console.log(MAGV);
-    // console.log(MABOMON);
     if (!MAGV || !MABOMON) {
       return res.status(400).json({
         EM: " MAGV bị rỗng",
@@ -327,7 +315,6 @@ const deleteGiangVienController = async (req, res) => {
 const searchEmailGiangVienController = async (req, res) => {
   try {
     const TENGIANGVIEN = req.body.TENGIANGVIEN;
-    console.log("TENGIANGVIEN", TENGIANGVIEN);
     if (!TENGIANGVIEN) {
       return res.status(400).json({
         EM: " TENGIANGVIEN bị rỗng",

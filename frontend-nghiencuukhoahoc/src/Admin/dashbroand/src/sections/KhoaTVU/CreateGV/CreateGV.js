@@ -56,7 +56,7 @@ const ComponenCreateGiangVien = () => {
   const [activeRowBM, setActiveRowBM] = useState(null);
   const [isOpenEditButtonGV, setIsOpenEditButtonGV] = useState(false);
   const [activeRowGV, setActiveRowGV] = useState(null);
-  const [disabledGV, setDisableGV] = useState(true);
+  const [disabledGV, setDisableGV] = useState(false);
   const [isOpenGetAllApiGV, setisOpenGetAllApiGV] = useState(true);
 
   // --------------------------ISOPEN---------------------------------------
@@ -602,7 +602,7 @@ const ComponenCreateGiangVien = () => {
               {" "}
               <Col md={6}>
                 {/* Không biết đây là gì ? */}
-                {/* <CreateGiangVienForm
+                <CreateGiangVienForm
                   QuyenGiangVien={QuyenGiangVien}
                   TrangThaiGV={TrangThaiGV}
                   setTrangThaiGV={setTrangThaiGV}
@@ -616,7 +616,7 @@ const ComponenCreateGiangVien = () => {
                   isOpenEditButtonGV={isOpenEditButtonGV}
                   handleSumitEditGV={handleSumitEditGV}
                   handleIsOpenEditButtonGV={handleIsOpenEditButtonGV}
-                /> */}
+                />
               </Col>
             </>
           ))}

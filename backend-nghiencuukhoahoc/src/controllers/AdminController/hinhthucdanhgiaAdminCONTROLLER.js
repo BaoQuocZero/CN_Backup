@@ -34,7 +34,6 @@ const insert_hinhthucdanhgia = async (req, res) => {
         DT: null,
       });
     }
-    // console.log("check ", TENDANHGIA);
     let results = await create_hinhthucdanhgia(TENDANHGIA);
 
     return res.status(200).json({

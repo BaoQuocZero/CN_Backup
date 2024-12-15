@@ -219,8 +219,6 @@ const createBOMON = async (req, res) => {
   try {
     const makhoa = req.body.MAKHOA;
     const tenbomon = req.body.TENBOMON;
-    // console.log(makhoa);
-    // console.log(tenbomon);
     if (!makhoa || !tenbomon) {
       return res.status(400).json({
         EM: " MAKHOA ,tenbomon bị rỗng",
@@ -248,7 +246,6 @@ const createBOMON = async (req, res) => {
 const updateBOMON = async (req, res) => {
   try {
     const mabomon = req.params.mabomon;
-    // console.log("check mabomon", mabomon);
     const makhoa = req.body.makhoa;
     const tenbomon = req.body.tenbomon;
     if (!mabomon) {
@@ -278,7 +275,6 @@ const updateBOMON = async (req, res) => {
 const deleteBOMON = async (req, res) => {
   try {
     const mabomon = req.query.mabomon;
-    // console.log(mabomon);
     if (!mabomon) {
       return res.status(400).json({
         EM: "mabomon bị rỗng",

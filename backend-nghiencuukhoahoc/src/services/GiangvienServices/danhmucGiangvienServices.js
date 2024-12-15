@@ -11,8 +11,6 @@ const {
 
 const get_thongtin_danhmuc = async (TENDANGNHAP, TENNAMHOC) => {
   try {
-    // console.log("TENDANGNHAP get_thongtin_danhmuc: ", TENDANGNHAP);
-    // console.log("TENNAMHOC get_thongtin_danhmuc: ", TENNAMHOC);
     let MANAMHOC = await timnamhoc_TENNAMHOC(TENNAMHOC);
 
     const [results_MAGV] = await pool.execute(
@@ -41,11 +39,11 @@ const get_thongtin_danhmuc = async (TENDANGNHAP, TENNAMHOC) => {
     // Kiểm tra lại câu truy vấn để đảm bảo không sử dụng trường JSON
     const [results1] = await pool.execute(
       "SELECT gv.MAGV, gv.TENGV, nh.*, kgc.GIONGHIENCUUKHOAHOC_CHUAN " +
-        "FROM giangvien AS gv " +
-        "LEFT JOIN chon_khung AS ck ON gv.MAGV = ck.MAGV " +
-        "LEFT JOIN namhoc AS nh ON nh.MANAMHOC = ck.MANAMHOC " +
-        "LEFT JOIN khunggiochuan AS kgc ON kgc.MAKHUNG = ck.MAKHUNG " +
-        "WHERE gv.MAGV = ? AND nh.MANAMHOC = ?",
+      "FROM giangvien AS gv " +
+      "LEFT JOIN chon_khung AS ck ON gv.MAGV = ck.MAGV " +
+      "LEFT JOIN namhoc AS nh ON nh.MANAMHOC = ck.MANAMHOC " +
+      "LEFT JOIN khunggiochuan AS kgc ON kgc.MAKHUNG = ck.MAKHUNG " +
+      "WHERE gv.MAGV = ? AND nh.MANAMHOC = ?",
       [MAGV, MANAMHOC]
     );
 
@@ -124,8 +122,6 @@ const getLoaiTacGiaByLoaiDanhMuc = async (MA_LOAI_DANH_MUC) => {
 
 //xem số lượng đề tài đã đăng ký
 const get_thongtin_dangky_giangvien = async (MAGV, TENNAMHOC) => {
-  // console.log("MAGV get_thongtin_dangky_giangvien:", MAGV);
-  // console.log("TENNAMHOC get_thongtin_dangky_giangvien:", TENNAMHOC);
 
   if (!MAGV || !TENNAMHOC) {
     return {
@@ -150,7 +146,6 @@ const get_thongtin_dangky_giangvien = async (MAGV, TENNAMHOC) => {
     }
 
     const MANAMHOC = results1_NAMHOC[0].MANAMHOC; // Now safe to access
-    // console.log("check MANAMHOC", MANAMHOC);
     const [results1, fields] = await pool.execute(
       `
       SELECT 
@@ -234,12 +229,9 @@ async function callbackMAGV(pool) {
     `SELECT MAGV FROM giangvien WHERE MAGV = ?`,
     [randomMAGV]
   );
-  console.log("Mã bị trùng1: ", checkkq);
   // Nếu mã bị trùng, tạo lại mã mới
   if (checkkq.length > 0 && checkkq[0].MAGV === randomMAGV) {
-    console.log("Mã bị trùng: ", randomMAGV);
     randomMAGV = "GVNT" + getRandomNumber();
-    console.log("Mã mới: ", randomMAGV);
   }
   return randomMAGV;
 }
@@ -257,10 +249,8 @@ const dangky_thongtin_giangvien = async (dataDangKy) => {
       };
     }
 
-    console.log("check datadangky: ", dataDangKy);
 
     for (var i = 0; i < dataDangKy.LISTGIANGVIEN.length; i++) {
-      console.log(dataDangKy.LISTGIANGVIEN[i]);
       const timtacgia = await timtacgia_TEN_LOAI_TAC_GIA(
         dataDangKy.LISTGIANGVIEN[i].loai
       );
@@ -281,7 +271,6 @@ const dangky_thongtin_giangvien = async (dataDangKy) => {
         );
       }
 
-      console.log("check timgv:", timgiangvien);
       if (timgiangvien === undefined) {
         const randomMAGV = await callbackMAGV(pool);
 

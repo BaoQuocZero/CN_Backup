@@ -38,7 +38,6 @@ const selectQuyDinh_TEN_QUY_DINHbyID = async (id) => {
       `select * from quy_dinh where MA_QUY_DINH = ?`,
       [id]
     );
-    // console.log("check select quy dinh results1 =>", results1);
     return results1;
   } catch (error) {
     return {
@@ -49,7 +48,6 @@ const selectQuyDinh_TEN_QUY_DINHbyID = async (id) => {
   }
 };
 const createQuyDinh = async (TEN_QUY_DINH) => {
-  // console.log(" check TEN_QUY_DINH", TEN_QUY_DINH);
   try {
     let results1 = await selectQuyDinh_TEN_QUY_DINH(TEN_QUY_DINH);
     if (results1.length > 0) {
@@ -67,7 +65,6 @@ const createQuyDinh = async (TEN_QUY_DINH) => {
     let [resultsData, fieldsData] = await pool.execute(
       `SELECT * FROM quy_dinh`
     );
-    // console.log("check resultsData", resultsData);
     return {
       EM: "Thêm quy định mới thành công",
       EC: 1,
@@ -105,7 +102,6 @@ const updateQuyDinh = async (id, TRANG_THAI_QUY_DINH) => {
 
 const deleteQuyDinh = async (id) => {
   try {
-    // console.log("check id ", id);
     let results1 = await selectQuyDinh_TEN_QUY_DINHbyID(id);
     if (results1.length === 0) {
       return {

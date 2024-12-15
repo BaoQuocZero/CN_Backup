@@ -24,10 +24,8 @@ const selectLop = async () => {
 
 const CreateLop = async (datalop, TENCHUONGTRINH) => {
   try {
-    console.log("create", datalop);
     const MACHUONGTRINH = await timchuongtrinh_TENCHUONGTRINH(TENCHUONGTRINH);
     const timlop = await timlop_MALOP(datalop.Lop.MALOP);
-    console.log("create", timlop);
     if (timlop.length > 0) {
       return {
         EM: " lớp này đã tồn tại",
@@ -144,8 +142,6 @@ const deleteLop = async (MALOP) => {
 
 const createLopExcel = async (dataLopExcelArray) => {
   try {
-    console.log("cjecl");
-
     let results = [];
     // Kiểm tra thông tin trong file excel
     for (var i = 0; i < dataLopExcelArray.length; i++) {
@@ -218,7 +214,6 @@ const createLopExcel = async (dataLopExcelArray) => {
           dataLopExcelArray[i].SISO,
         ]
       );
-      console.log("cjecl");
       results.push({
         EM: `Tạo lớp hàng loạt thành công`,
         EC: 0,
@@ -229,7 +224,6 @@ const createLopExcel = async (dataLopExcelArray) => {
     let [results1, fields1] = await pool.execute(
       `select bomon.TENBOMON,ctdt.*,lop.* from lop,chuongtrinhdaotao as ctdt,bomon where bomon.MABOMON = ctdt.MABOMON and ctdt.MACHUONGTRINH = lop.MACHUONGTRINH`
     );
-    console.log(results1);
     return {
       EM: "Tất cả lớp đã được tạo",
       EC: 1,
