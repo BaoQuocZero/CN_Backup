@@ -173,7 +173,7 @@ const createTaiKhoan = async (dataTaiKhoan) => {
   } catch (error) {
     return {
       EM: "lỗi services createTaiKhoan",
-      EC: 1,
+      EC: -1,
       DT: [],
     };
   }
@@ -223,7 +223,7 @@ const createOnlyTaiKhoan = async (dataTaiKhoanOnly) => {
     console.log(error);
     return {
       EM: "Lỗi services createTaiKhoan",
-      EC: 1,
+      EC: -1,
       DT: [],
     };
   }

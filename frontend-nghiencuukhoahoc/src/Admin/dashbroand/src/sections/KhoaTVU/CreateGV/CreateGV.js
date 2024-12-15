@@ -90,7 +90,6 @@ const ComponenCreateGiangVien = () => {
           MAKHOA: MaKhoa,
         }
       );
-      //  console.log("Dữ liệu bộ môn theo mã khoa:", response.data.DT);
       setdataListBoMon(response.data.DT);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu bộ môn:", error);
@@ -112,7 +111,6 @@ const ComponenCreateGiangVien = () => {
               },
             }
           );
-          console.log("Dữ liệu bộ môn theo mã khoa:", response.data.DT);
           if (response.data.EC === 1) {
             setdataListGiangVien(response.data.DT.items); // Cập nhật danh sách giảng viên
             setTotalPages(response.data.DT.totalPages); // Cập nhật tổng số trang
@@ -163,8 +161,6 @@ const ComponenCreateGiangVien = () => {
   // KHOA
 
   const handleChose = (id) => {
-    //console.log("check id create khoa =>", id);
-    //console.log(id);
     setActiveRow(id);
     setDisableBM(false);
     setMaKhoa(id);
@@ -213,7 +209,6 @@ const ComponenCreateGiangVien = () => {
           `${process.env.REACT_APP_URL_SERVER}/api/v1/admin/taikhoan/xem/`,
           { TENBOMON: selectBoMon }
         );
-        // console.log("Danh sách tài khoản:", response.data);
         if (response.data.EC == 1) {
           setdataListGiangVien(response.data.DT);
         }
@@ -229,42 +224,35 @@ const ComponenCreateGiangVien = () => {
     // setIsOpenEditButtonBM(true);
   };
 
-  // GiangVien
-
   //tên đăng nhập, trạng thái hoạt động, phân quyền, mã GV, MABOMON
   const handleSumitAddGV = async (event) => {
     event.preventDefault();
-    if (
-      QuyenGiangVien === "Admin" ||
-      QuyenGiangVien === "Giảng Viên" ||
-      QuyenGiangVien === "Trưởng Bộ Môn" ||
-      QuyenGiangVien === "Trưởng Khoa" ||
-      QuyenGiangVien === "Giảng Viên Ngoài Trường"
-    ) {
-      try {
-        const response = await CookiesAxios.post(
-          `${process.env.REACT_APP_URL_SERVER}/api/v1/admin/taikhoan/only/tao`,
-          {
-            TENDANGNHAP: TenDangNhapGV,
-            MAGV: MaGV,
-            PHANQUYEN: QuyenGiangVien,
-            TRANGTHAITAIKHOAN: TrangThaiGV,
-            MABOMON: MaBoMon,
-          }
-        );
-        //    console.log(response.data.EC);
-
-        if (response.data.EC == 1) {
-          setdataListGiangVien(response.data.DT);
-          toast.success("Thêm tài khoản giảng viên thành công !!");
-        } else {
-          toast.error(response.data.EM);
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>> handleSumitAddGV: ", {
+      TENDANGNHAP: TenDangNhapGV,
+      MAGV: MaGV,
+      PHANQUYEN: QuyenGiangVien,
+      TRANGTHAITAIKHOAN: TrangThaiGV,
+      MABOMON: MaBoMon,
+    })
+    try {
+      const response = await CookiesAxios.post(
+        `${process.env.REACT_APP_URL_SERVER}/api/v1/admin/taikhoan/only/tao`,
+        {
+          TENDANGNHAP: TenDangNhapGV,
+          MAGV: MaGV,
+          PHANQUYEN: QuyenGiangVien,
+          TRANGTHAITAIKHOAN: TrangThaiGV,
+          MABOMON: MaBoMon,
         }
-      } catch (error) {
-        console.error("Lỗi khi gửi yêu cầu đến backend:", error);
+      );
+      if (response.data.EC == 1) {
+        setdataListGiangVien(response.data.DT);
+        toast.success("Thêm tài khoản giảng viên thành công !!");
+      } else {
+        toast.error(response.data.EM);
       }
-    } else {
-      toast.error("Phá web là không tốt !!");
+    } catch (error) {
+      console.error("Lỗi khi gửi yêu cầu đến backend:", error);
     }
   };
 
@@ -601,7 +589,7 @@ const ComponenCreateGiangVien = () => {
             <>
               {" "}
               <Col md={6}>
-                {/* Không biết đây là gì ? */}
+                {/* Cái thêm GV Thủ công */}
                 <CreateGiangVienForm
                   QuyenGiangVien={QuyenGiangVien}
                   TrangThaiGV={TrangThaiGV}
@@ -611,6 +599,9 @@ const ComponenCreateGiangVien = () => {
                   TenGV={TenGV}
                   setMaGV={setMaGV}
                   setTenGV={setTenGV}
+                  setMaBoMon={setMaBoMon}
+                  dataListKhoa={dataListKhoa}
+                  dataListBoMon={dataListBoMon}
                   disabledGV={disabledGV}
                   handleSumitAddGV={handleSumitAddGV}
                   isOpenEditButtonGV={isOpenEditButtonGV}

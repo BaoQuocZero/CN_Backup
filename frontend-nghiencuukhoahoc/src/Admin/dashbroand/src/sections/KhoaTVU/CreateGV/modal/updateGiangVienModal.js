@@ -39,25 +39,22 @@ const UpdateGiangVienModal = ({
   useEffect(() => {
     console.log("Check lecturerData =>", lecturerData);
     if (lecturerData) {
-      setTenGV(lecturerData.TENGV);
-      setTenDangNhapGV(lecturerData.TENDANGNHAP);
-      setdiaChiGiangVien(lecturerData.DIACHI);
-      setSodienthoaiGV(lecturerData.DIENTHOAI);
-      setChucDanhGiangVien(lecturerData.TENCHUCDANH);
-      setchucVuGiangVien(lecturerData.TENCHUCVU);
-      setPhanQuyenGiangVien(lecturerData.PHANQUYEN);
-      setTenBoMon(lecturerData.TENBOMON);
-      setTrangThaiDangNhap(lecturerData.TRANGTHAITAIKHOAN);
-      setSoQuyetDinh(lecturerData.SOQUYETDINH);
-      if (lecturerData.THOIGIANNHAN) {
-        setTimeChucDanh(lecturerData.THOIGIANNHAN.split("T")[0]);
-      }
-
-      if (lecturerData.TUNGAY) {
-        setTimeChucVu(lecturerData.TUNGAY.split("T")[0]);
-      }
-
-      // toast.success("Dữ liệu giảng viên đã được tải.");
+      setTenGV(lecturerData.TENGV || ""); // Gán giá trị mặc định nếu undefined
+      setTenDangNhapGV(lecturerData.TENDANGNHAP || "");
+      setdiaChiGiangVien(lecturerData.DIACHI || "");
+      setSodienthoaiGV(lecturerData.DIENTHOAI || "");
+      setChucDanhGiangVien(lecturerData.TENCHUCDANH || "");
+      setchucVuGiangVien(lecturerData.TENCHUCVU || "");
+      setPhanQuyenGiangVien(lecturerData.PHANQUYEN || "");
+      setTenBoMon(lecturerData.TENBOMON || "");
+      setTrangThaiDangNhap(lecturerData.TRANGTHAITAIKHOAN || "");
+      setSoQuyetDinh(lecturerData.SOQUYETDINH || "");
+      setTimeChucDanh(
+        lecturerData.THOIGIANNHAN ? lecturerData.THOIGIANNHAN.split("T")[0] : ""
+      );
+      setTimeChucVu(
+        lecturerData.TUNGAY ? lecturerData.TUNGAY.split("T")[0] : ""
+      );
     } else {
       toast.error("Không có dữ liệu giảng viên.");
     }

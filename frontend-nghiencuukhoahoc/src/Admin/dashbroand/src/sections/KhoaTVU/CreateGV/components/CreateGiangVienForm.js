@@ -1,5 +1,8 @@
 // components/CreateBoMonForm.js
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import CookiesAxios from "../../../CookiesAxios.js";
+
 import { Form, Button, Col } from "react-bootstrap";
 import "../../CreateKhoa/CreateKhoa.scss";
 import Box from "@mui/material/Box";
@@ -9,19 +12,44 @@ import FormControl from "@mui/material/FormControl";
 
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 const CreateGiangVienForm = ({
-  TenGV,
+  QuyenGiangVien,
+  TrangThaiGV,
+  setTrangThaiGV,
   setQuyenGiangVien,
   setTenDangNhapGV,
+  TenGV,
+  setMaGV,
+  setTenGV,
+  setMaBoMon,
+  dataListKhoa,
+  // dataListBoMon,
   disabledGV,
   handleSumitAddGV,
   isOpenEditButtonGV,
   handleSumitEditGV,
   handleIsOpenEditButtonGV,
-  setMaGV,
-  setTrangThaiGV,
-  TrangThaiGV,
-  QuyenGiangVien,
 }) => {
+  const [MaKhoa, setMaKhoa] = useState(null);
+  const [MaBoMon_chon, setMaBoMon_chon] = useState(null);
+  const [dataListBoMon, setdataListBoMon] = useState([]);
+  const getBoMonByMaKhoa = async (MaKhoa) => {
+    try {
+      const response = await CookiesAxios.post(
+        `${process.env.REACT_APP_URL_SERVER}/api/v1/admin/bomon/only/xem`,
+        {
+          MAKHOA: MaKhoa,
+        }
+      );
+      setdataListBoMon(response.data.DT);
+    } catch (error) {
+      console.error("Lỗi khi lấy dữ liệu bộ môn:", error);
+    }
+  };
+  useEffect(() => {
+    if (MaKhoa !== null) {
+      getBoMonByMaKhoa(MaKhoa);
+    }
+  }, [MaKhoa]);
   return (
     <Form onSubmit={handleSumitAddGV} className="mt-2">
       <Form.Group controlId="formDepartmentName" className="mb-2">
@@ -45,6 +73,51 @@ const CreateGiangVienForm = ({
           required
           className="mt-2 mb-2 width-input-50"
         />
+        <Box sx={{ maxWidth: 200 }}>
+          <FormControl fullWidth className="mt-2">
+            <InputLabel id="demo-simple-select-label">Khoa</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              title="Chọn khoa của giảng viên này"
+              value={MaKhoa}
+              label="Khoa"
+              className="height-selectGV"
+              disabled={disabledGV}
+              onChange={(e) => setMaKhoa(e.target.value)}
+            >
+              {dataListKhoa.map((khoa) => (
+                <MenuItem key={khoa.MAKHOA} value={khoa.MAKHOA}>
+                  {khoa.TENKHOA}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Box sx={{ maxWidth: 200 }}>
+          <FormControl fullWidth className="mt-2">
+            <InputLabel id="demo-simple-select-label ">Bộ môn</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              title="Chọn bộ môn của giảng viên này"
+              value={MaBoMon_chon}
+              label="Bộ môn"
+              className="height-selectGV"
+              disabled={disabledGV}
+              onChange={(e) => {
+                setMaBoMon(e.target.value);
+                setMaBoMon_chon(e.target.value);
+              }}
+            >
+              {dataListBoMon.map((bomon) => (
+                <MenuItem key={bomon.MABOMON} value={bomon.MABOMON}>
+                  {bomon.TENBOMON}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth className="mt-2">
             <InputLabel id="demo-simple-select-label ">Phân Quyền</InputLabel>
