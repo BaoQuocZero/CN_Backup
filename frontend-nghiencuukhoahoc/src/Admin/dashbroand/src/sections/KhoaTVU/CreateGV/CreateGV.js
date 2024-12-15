@@ -56,7 +56,7 @@ const ComponenCreateGiangVien = () => {
   const [activeRowBM, setActiveRowBM] = useState(null);
   const [isOpenEditButtonGV, setIsOpenEditButtonGV] = useState(false);
   const [activeRowGV, setActiveRowGV] = useState(null);
-  const [disabledGV, setDisableGV] = useState(false);
+  const [disabledGV, setDisableGV] = useState(true);
   const [isOpenGetAllApiGV, setisOpenGetAllApiGV] = useState(true);
 
   // --------------------------ISOPEN---------------------------------------
@@ -90,6 +90,7 @@ const ComponenCreateGiangVien = () => {
           MAKHOA: MaKhoa,
         }
       );
+      //  console.log("Dữ liệu bộ môn theo mã khoa:", response.data.DT);
       setdataListBoMon(response.data.DT);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu bộ môn:", error);
@@ -111,6 +112,7 @@ const ComponenCreateGiangVien = () => {
               },
             }
           );
+          console.log("Dữ liệu bộ môn theo mã khoa:", response.data.DT);
           if (response.data.EC === 1) {
             setdataListGiangVien(response.data.DT.items); // Cập nhật danh sách giảng viên
             setTotalPages(response.data.DT.totalPages); // Cập nhật tổng số trang
@@ -161,6 +163,8 @@ const ComponenCreateGiangVien = () => {
   // KHOA
 
   const handleChose = (id) => {
+    //console.log("check id create khoa =>", id);
+    //console.log(id);
     setActiveRow(id);
     setDisableBM(false);
     setMaKhoa(id);
@@ -209,6 +213,7 @@ const ComponenCreateGiangVien = () => {
           `${process.env.REACT_APP_URL_SERVER}/api/v1/admin/taikhoan/xem/`,
           { TENBOMON: selectBoMon }
         );
+        // console.log("Danh sách tài khoản:", response.data);
         if (response.data.EC == 1) {
           setdataListGiangVien(response.data.DT);
         }
@@ -224,35 +229,42 @@ const ComponenCreateGiangVien = () => {
     // setIsOpenEditButtonBM(true);
   };
 
+  // GiangVien
+
   //tên đăng nhập, trạng thái hoạt động, phân quyền, mã GV, MABOMON
   const handleSumitAddGV = async (event) => {
     event.preventDefault();
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>> handleSumitAddGV: ", {
-      TENDANGNHAP: TenDangNhapGV,
-      MAGV: MaGV,
-      PHANQUYEN: QuyenGiangVien,
-      TRANGTHAITAIKHOAN: TrangThaiGV,
-      MABOMON: MaBoMon,
-    })
-    try {
-      const response = await CookiesAxios.post(
-        `${process.env.REACT_APP_URL_SERVER}/api/v1/admin/taikhoan/only/tao`,
-        {
-          TENDANGNHAP: TenDangNhapGV,
-          MAGV: MaGV,
-          PHANQUYEN: QuyenGiangVien,
-          TRANGTHAITAIKHOAN: TrangThaiGV,
-          MABOMON: MaBoMon,
+    if (
+      QuyenGiangVien === "Admin" ||
+      QuyenGiangVien === "Giảng Viên" ||
+      QuyenGiangVien === "Trưởng Bộ Môn" ||
+      QuyenGiangVien === "Trưởng Khoa" ||
+      QuyenGiangVien === "Giảng Viên Ngoài Trường"
+    ) {
+      try {
+        const response = await CookiesAxios.post(
+          `${process.env.REACT_APP_URL_SERVER}/api/v1/admin/taikhoan/only/tao`,
+          {
+            TENDANGNHAP: TenDangNhapGV,
+            MAGV: MaGV,
+            PHANQUYEN: QuyenGiangVien,
+            TRANGTHAITAIKHOAN: TrangThaiGV,
+            MABOMON: MaBoMon,
+          }
+        );
+        //    console.log(response.data.EC);
+
+        if (response.data.EC == 1) {
+          setdataListGiangVien(response.data.DT);
+          toast.success("Thêm tài khoản giảng viên thành công !!");
+        } else {
+          toast.error(response.data.EM);
         }
-      );
-      if (response.data.EC == 1) {
-        setdataListGiangVien(response.data.DT);
-        toast.success("Thêm tài khoản giảng viên thành công !!");
-      } else {
-        toast.error(response.data.EM);
+      } catch (error) {
+        console.error("Lỗi khi gửi yêu cầu đến backend:", error);
       }
-    } catch (error) {
-      console.error("Lỗi khi gửi yêu cầu đến backend:", error);
+    } else {
+      toast.error("Phá web là không tốt !!");
     }
   };
 
@@ -349,7 +361,7 @@ const ComponenCreateGiangVien = () => {
     setMaBoMon(null);
   };
 
-  const handleSumitEditGV = async (event) => { };
+  const handleSumitEditGV = async (event) => {};
   // -----------------------IS OPEN EXCEL-----------------------------------
 
   const [searchStatus, setSearchStatus] = useState("All");
@@ -476,12 +488,13 @@ const ComponenCreateGiangVien = () => {
               <Select
                 labelId="select-label-trang-thai"
                 id="trang-thai-select"
-                className={`height-selectGV ${searchStatus === "Đang hoạt động"
-                  ? "text-success"
-                  : searchStatus === "Ngưng hoạt động"
+                className={`height-selectGV ${
+                  searchStatus === "Đang hoạt động"
+                    ? "text-success"
+                    : searchStatus === "Ngưng hoạt động"
                     ? "text-danger"
                     : ""
-                  }`}
+                }`}
                 value={searchStatus}
                 label="Trạng thái"
                 onChange={handleStatusChange}
@@ -589,7 +602,6 @@ const ComponenCreateGiangVien = () => {
             <>
               {" "}
               <Col md={6}>
-                {/* Cái thêm GV Thủ công */}
                 <CreateGiangVienForm
                   QuyenGiangVien={QuyenGiangVien}
                   TrangThaiGV={TrangThaiGV}
@@ -599,9 +611,6 @@ const ComponenCreateGiangVien = () => {
                   TenGV={TenGV}
                   setMaGV={setMaGV}
                   setTenGV={setTenGV}
-                  setMaBoMon={setMaBoMon}
-                  dataListKhoa={dataListKhoa}
-                  dataListBoMon={dataListBoMon}
                   disabledGV={disabledGV}
                   handleSumitAddGV={handleSumitAddGV}
                   isOpenEditButtonGV={isOpenEditButtonGV}
@@ -615,7 +624,6 @@ const ComponenCreateGiangVien = () => {
       </Row>{" "}
       <Row>
         <Col md={12}>
-          {/* Đây là cái bảng chứa thông tin giảng viên */}
           <GiangVienList
             searchStatus={searchStatus}
             currentPage={currentPage}

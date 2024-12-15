@@ -39,22 +39,25 @@ const UpdateGiangVienModal = ({
   useEffect(() => {
     console.log("Check lecturerData =>", lecturerData);
     if (lecturerData) {
-      setTenGV(lecturerData.TENGV || ""); // Gán giá trị mặc định nếu undefined
-      setTenDangNhapGV(lecturerData.TENDANGNHAP || "");
-      setdiaChiGiangVien(lecturerData.DIACHI || "");
-      setSodienthoaiGV(lecturerData.DIENTHOAI || "");
-      setChucDanhGiangVien(lecturerData.TENCHUCDANH || "");
-      setchucVuGiangVien(lecturerData.TENCHUCVU || "");
-      setPhanQuyenGiangVien(lecturerData.PHANQUYEN || "");
-      setTenBoMon(lecturerData.TENBOMON || "");
-      setTrangThaiDangNhap(lecturerData.TRANGTHAITAIKHOAN || "");
-      setSoQuyetDinh(lecturerData.SOQUYETDINH || "");
-      setTimeChucDanh(
-        lecturerData.THOIGIANNHAN ? lecturerData.THOIGIANNHAN.split("T")[0] : ""
-      );
-      setTimeChucVu(
-        lecturerData.TUNGAY ? lecturerData.TUNGAY.split("T")[0] : ""
-      );
+      setTenGV(lecturerData.TENGV);
+      setTenDangNhapGV(lecturerData.TENDANGNHAP);
+      setdiaChiGiangVien(lecturerData.DIACHI);
+      setSodienthoaiGV(lecturerData.DIENTHOAI);
+      setChucDanhGiangVien(lecturerData.TENCHUCDANH);
+      setchucVuGiangVien(lecturerData.TENCHUCVU);
+      setPhanQuyenGiangVien(lecturerData.PHANQUYEN);
+      setTenBoMon(lecturerData.TENBOMON);
+      setTrangThaiDangNhap(lecturerData.TRANGTHAITAIKHOAN);
+      setSoQuyetDinh(lecturerData.SOQUYETDINH);
+      if (lecturerData.THOIGIANNHAN) {
+        setTimeChucDanh(lecturerData.THOIGIANNHAN.split("T")[0]);
+      }
+
+      if (lecturerData.TUNGAY) {
+        setTimeChucVu(lecturerData.TUNGAY.split("T")[0]);
+      }
+
+      // toast.success("Dữ liệu giảng viên đã được tải.");
     } else {
       toast.error("Không có dữ liệu giảng viên.");
     }
@@ -121,24 +124,8 @@ const UpdateGiangVienModal = ({
         TimeChucDanh !== thoigianNhan ||
         ChucDanhGiangVien !== tenChucDanh
       ) {
-        const updatedData = {
-          TENGV: tenGV,
-          DIACHI: diaChiGiangVien,
-          DIENTHOAI: SodienthoaiGV,
-          TENCHUCDANH: ChucDanhGiangVien,
-          TENCHUCVU: chucVuGiangVien,
-          PHANQUYEN: PhanQuyenGiangVien,
-          TENDANGNHAP: tenDangNhapGV,
-          TENBOMON: TenBoMon,
-          TRANGTHAITAIKHOAN: TrangThaiDangNhap,
-          isOpenGetAllApiGV: isOpenGetAllApiGV,
-          THOIGIANNHAN: TimeChucDanh,
-          TUNGAY: TimeChucVu,
-          SOQUYETDINH: SoQuyetDinh,
-        };
-        updateLecturer(updatedData);
-        // toast.error("Muốn update thời gian thì phải update tên chức danh");
-        // return;
+        toast.error("Muốn update thời gian thì phải update tên chức danh");
+        return;
       } else if (
         TimeChucVu !== tuNgay &&
         chucVuGiangVien !== tenChucVu &&
@@ -319,7 +306,7 @@ const UpdateGiangVienModal = ({
               label="Tên Chức Danh"
             >
               {dataListChucDanhGiangVien &&
-                dataListChucDanhGiangVien.length > 0 ? (
+              dataListChucDanhGiangVien.length > 0 ? (
                 dataListChucDanhGiangVien.map((chucdanh, index) => (
                   <MenuItem key={index} value={chucdanh.TENCHUCDANH}>
                     {chucdanh.TENCHUCDANH}
