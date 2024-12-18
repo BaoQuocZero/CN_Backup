@@ -89,19 +89,28 @@ const XemPhanCongGV = () => {
                     phanCong.map((item, index) => (
                         <div key={index} className="card mb-3">
                             <div className="card-body">
-                                {/* <h5 className="card-title">Mã Phân Công: {item.MAPHANCONG}</h5> */}
-                                {/* <p className="card-text"><strong>Mã Giảng Viên:</strong> {item.MAGV}</p> */}
-                                <p className="card-text"><strong>Tên Lớp:</strong> {item.TENLOP}</p>
-                                {/* <p className="card-text"><strong>Mã Môn Học:</strong> {item.MAMONHOC}</p> */}
-                                <p className="card-text"><strong>Tên Môn Học:</strong> {item.TENMONHOC}</p>
-                                <p className="card-text"><strong>Sĩ Số Lớp:</strong> {item.SISO}</p>
-                                <p className="card-text"><strong>Số Giờ Dạy:</strong> {item.TONG_SO_GIO} giờ</p>
-                                <p className="card-text"><strong>Tín Chỉ Lý Thuyết:</strong> {item.SOTINCHILYTHUYET} tín chỉ</p>
-                                <p className="card-text"><strong>Tín Chỉ Thực Hành:</strong> {item.SOTINCHITHUCHANH} tín chỉ</p>
-                                <p className="card-text"><strong>Thời Gian Phân Công:</strong> {new Date(item.THOIGIANLAP).toLocaleString()}</p>
-                                {/* <p className="card-text"><strong>Ghi Chú:</strong> {item.GHICHU}</p> */}
-                                {/* <p className="card-text"><strong>Mã Chương Trình:</strong> {item.MACHUONGTRINH}</p> */}
-                                <p className="card-text"><strong>Năm Tuyển Sinh:</strong> {item.NAMTUYENSINH}</p>
+                                <h5 className="card-title">Mã Phân Công: {item.MAPHANCONG}</h5>
+                                <div className="row">
+                                    {/* Cột 1 */}
+                                    <div className="col-md-6">
+                                        <p className="card-text"><strong>Mã Giảng Viên:</strong> {item.MAGV}</p>
+                                        <p className="card-text"><strong>Tên Lớp:</strong> {item.TENLOP}</p>
+                                        <p className="card-text"><strong>Mã Môn Học:</strong> {item.MAMONHOC}</p>
+                                        <p className="card-text"><strong>Tên Môn Học:</strong> {item.TENMONHOC}</p>
+                                        <p className="card-text"><strong>Sĩ Số Lớp:</strong> {item.SISO}</p>
+                                        <p className="card-text"><strong>Số Giờ Dạy:</strong> {item.TONG_SO_GIO} giờ</p>
+                                    </div>
+
+                                    {/* Cột 2 */}
+                                    <div className="col-md-6">
+                                        <p className="card-text"><strong>Tín Chỉ Lý Thuyết:</strong> {item.SOTINCHILYTHUYET} tín chỉ</p>
+                                        <p className="card-text"><strong>Tín Chỉ Thực Hành:</strong> {item.SOTINCHITHUCHANH} tín chỉ</p>
+                                        <p className="card-text"><strong>Thời Gian Phân Công:</strong> {new Date(item.THOIGIANLAP).toLocaleString()}</p>
+                                        <p className="card-text"><strong>Ghi Chú:</strong> {item.GHICHU}</p>
+                                        <p className="card-text"><strong>Mã Chương Trình:</strong> {item.MACHUONGTRINH}</p>
+                                        <p className="card-text"><strong>Năm Tuyển Sinh:</strong> {item.NAMTUYENSINH}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     ))
