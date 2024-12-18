@@ -35,7 +35,6 @@ const navConfig = [
     path: "/phan-cong-giang-vien",
     icon: icon("ic_blog"),
   },
-
   {
     title: "Đăng Ký Khung Giờ Chuẩn",
     path: "/dang-ky-khung-gio-chuan",

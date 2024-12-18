@@ -29,6 +29,9 @@ const IndexQuanLyCTDT = lazy(() =>
 const IndexQuanLydanhsachGV = lazy(() =>
   import("../sections/quanlydanhsach/CNTTdangky")
 );
+
+const ThongKe = lazy(() => import("../sections/Thongke/thongKe"));
+
 const IndexPage = lazy(() => import("../pages/app"));
 const BlogPage = lazy(() => import("../pages/blog"));
 const UserPage = lazy(() => import("../pages/user"));
@@ -51,7 +54,7 @@ export default function Router() {
               />
             }
           >
-            <IndexPage />
+            <ThongKe />
           </Suspense>
         </DashboardLayout>
       ),
