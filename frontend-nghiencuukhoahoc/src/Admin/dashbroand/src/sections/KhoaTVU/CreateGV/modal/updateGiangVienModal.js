@@ -124,7 +124,23 @@ const UpdateGiangVienModal = ({
         TimeChucDanh !== thoigianNhan ||
         ChucDanhGiangVien !== tenChucDanh
       ) {
-        toast.error("Muốn update thời gian thì phải update tên chức danh");
+        // toast.error("Muốn update thời gian thì phải update tên chức danh");
+        const updatedData = {
+          TENGV: tenGV,
+          DIACHI: diaChiGiangVien,
+          DIENTHOAI: SodienthoaiGV,
+          TENCHUCDANH: ChucDanhGiangVien,
+          TENCHUCVU: chucVuGiangVien,
+          PHANQUYEN: PhanQuyenGiangVien,
+          TENDANGNHAP: tenDangNhapGV,
+          TENBOMON: TenBoMon,
+          TRANGTHAITAIKHOAN: TrangThaiDangNhap,
+          isOpenGetAllApiGV: isOpenGetAllApiGV,
+          THOIGIANNHAN: TimeChucDanh,
+          TUNGAY: TimeChucVu,
+          SOQUYETDINH: SoQuyetDinh,
+        };
+        updateLecturer(updatedData);
         return;
       } else if (
         TimeChucVu !== tuNgay &&
@@ -153,9 +169,25 @@ const UpdateGiangVienModal = ({
         chucVuGiangVien !== tenChucVu ||
         SoQuyetDinh !== soQuyetDinh
       ) {
-        toast.error(
-          "Muốn update thì phải cập nhật cả thời gian, tên chức vụ và số quyết định"
-        );
+        // toast.error(
+        //   "Muốn update thì phải cập nhật cả thời gian, tên chức vụ và số quyết định"
+        // );
+        const updatedData = {
+          TENGV: tenGV,
+          DIACHI: diaChiGiangVien,
+          DIENTHOAI: SodienthoaiGV,
+          TENCHUCDANH: ChucDanhGiangVien,
+          TENCHUCVU: chucVuGiangVien,
+          PHANQUYEN: PhanQuyenGiangVien,
+          TENDANGNHAP: tenDangNhapGV,
+          TENBOMON: TenBoMon,
+          TRANGTHAITAIKHOAN: TrangThaiDangNhap,
+          isOpenGetAllApiGV: isOpenGetAllApiGV,
+          THOIGIANNHAN: TimeChucDanh,
+          TUNGAY: TimeChucVu,
+          SOQUYETDINH: SoQuyetDinh,
+        };
+        updateLecturer(updatedData);
         return;
       } else {
         const updatedData = {
@@ -181,10 +213,10 @@ const UpdateGiangVienModal = ({
     }
   };
 
-  console.log("checkChucDanhGiangVien => ", ChucDanhGiangVien);
+  // console.log("checkChucDanhGiangVien => ", ChucDanhGiangVien);
 
-  console.log("chucVuGiangVien => ", chucVuGiangVien);
-  console.log("tenGV => ", tenGV);
+  // console.log("chucVuGiangVien => ", chucVuGiangVien);
+  // console.log("tenGV => ", tenGV);
   return (
     <Modal
       open={show}
@@ -306,7 +338,7 @@ const UpdateGiangVienModal = ({
               label="Tên Chức Danh"
             >
               {dataListChucDanhGiangVien &&
-              dataListChucDanhGiangVien.length > 0 ? (
+                dataListChucDanhGiangVien.length > 0 ? (
                 dataListChucDanhGiangVien.map((chucdanh, index) => (
                   <MenuItem key={index} value={chucdanh.TENCHUCDANH}>
                     {chucdanh.TENCHUCDANH}

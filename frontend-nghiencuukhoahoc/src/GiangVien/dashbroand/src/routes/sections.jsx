@@ -10,6 +10,8 @@ const AccountGV = lazy(() => import("../sections/Account/AccountGV"));
 const DangKyGioChuan = lazy(() =>
   import("../sections/DangKyGioChuan/IndexDangKyGioChuan")
 );
+const XemPhanCongGV = lazy(() => import("../sections/XemPhanCong/xemPhanCong"));
+
 const FileExcel = lazy(() => import("../sections/FileExcel/FileExcel"));
 
 const IndexPage = lazy(() => import("../pages/app"));
@@ -91,7 +93,7 @@ export default function Router() {
               />
             }
           >
-            {/* Component tương ứng */}
+            <XemPhanCongGV />
           </Suspense>
         </DashboardLayout>
       ),

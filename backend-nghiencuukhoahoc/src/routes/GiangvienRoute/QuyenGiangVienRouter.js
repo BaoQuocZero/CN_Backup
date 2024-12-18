@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   updateThongTinGiangVienController,
+  getPhanCongGV_MAGVControler,
 } = require("../../controllers/GiangvienController/GiangVienController");
 const {
   select_thongtin_danhmuc,
@@ -68,6 +69,7 @@ const QuyenGiangVienRouter = (app) => {
     select_thongtin_danhmuc
   );
 
+  router.post("/xem/phancong", getPhanCongGV_MAGVControler);
   return app.use("/api/v1/quyengiangvien/giangvien", router);
 };
 

@@ -2,6 +2,10 @@ const {
   updateThongTinGiangVien,
 } = require("../../services/GiangvienServices/updateThongTinGiangVien");
 
+const {
+  getPhanCongGV_MAGV,
+} = require("../../services/GiangvienServices/giangVienServices");
+
 const updateThongTinGiangVienController = async (req, res) => {
   try {
     const TENDANGNHAP = req.params.TENDANGNHAP;
@@ -50,6 +54,28 @@ const updateThongTinGiangVienController = async (req, res) => {
   }
 };
 
+const getPhanCongGV_MAGVControler = async (req, res) => {
+  try {
+    const MAGV = req.body.MAGV;
+    // console.log("MAGV: ", MAGV)
+    let results = await getPhanCongGV_MAGV(MAGV);
+
+    return res.status(200).json({
+      EM: results.EM,
+      EC: results.EC,
+      DT: results.DT,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      EM: "Đã xảy ra lỗi máy chủ",
+      EC: 500,
+      DT: null,
+    });
+  }
+};
+
 module.exports = {
   updateThongTinGiangVienController,
+  getPhanCongGV_MAGVControler,
 };
