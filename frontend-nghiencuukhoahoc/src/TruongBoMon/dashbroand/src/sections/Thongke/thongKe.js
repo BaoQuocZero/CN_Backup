@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import CookiesAxios from "../CookiesAxios";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import {
   Bar,
   Line,
@@ -13,6 +16,75 @@ import {
 import "chart.js/auto"; // Đăng ký tự động
 
 const ThongKe = () => {
+  const auth = Cookies.get("accessToken");
+  const [boMon, setBoMon] = useState([]);
+  const [namHoc, setNamHoc] = useState({});
+  const [bieuDotron, setBieuDotron] = useState([]);
+  const [giangVien, setGiangVien] = useState(null);
+
+  const [doughnutData1, setDoughnutData1] = useState({
+    labels: ["Giờ hành chính", "Giờ thực dạy"],
+    datasets: [
+      {
+        data: [5, 5],
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
+      },
+    ],
+  });
+
+  useEffect(() => {
+    const decodeAuth = jwtDecode(auth);
+    fetchDataGV(decodeAuth.taikhoan);
+  }, []);
+
+  useEffect(() => {
+    fetchDataBieuDoTron();
+  }, [giangVien]);
+
+  const fetchDataGV = async (taikhoan) => {
+    try {
+      const response = await CookiesAxios.get(
+        `${process.env.REACT_APP_URL_SERVER}/api/v1/admin/giangvien/only/xemprofile/${taikhoan}`
+      );
+      setGiangVien(response.data.DT);
+    } catch (error) {
+      console.error("Lỗi khi lấy dữ liệu GIANG VIEN:", error);
+    }
+  };
+
+  const fetchDataBieuDoTron = async () => {
+    try {
+      const bieuDotron = await CookiesAxios.post(
+        `${process.env.REACT_APP_URL_SERVER}/api/v1/truongbomon/thongke/bieudotron`,
+        {
+          MABOMON: giangVien.MABOMON, // Gán từ thông tin giảng viên
+          MANAMHOC: 9, // Truyền giá trị MANAMHOC là 16
+        }
+      );
+      if (bieuDotron.data.DT && bieuDotron.data.DT.length > 0) {  
+        setBieuDotron(bieuDotron.data.DT);
+      }
+
+      setDoughnutData1({
+        labels: ["Giờ hành chính", "Giờ thực dạy"],
+        datasets: [
+          {
+            label: "Số giờ:",
+            data: [
+              bieuDotron.data.DT.TotalGioGiangDay || 0,
+              bieuDotron.data.DT.TotalTongSoGio || 0,
+            ],
+            backgroundColor: ["#FF6384", "#36A2EB"],
+            hoverBackgroundColor: ["#FF6384", "#36A2EB"],
+          },
+        ],
+      });
+      
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   // Biểu đồ cột (Bar Chart)
   const barData = {
     labels: ["Toán", "Lý", "Hóa", "Sinh"], // Các môn học
@@ -157,6 +229,30 @@ const ThongKe = () => {
     ],
   };
 
+  const doughnutData2 = {
+    labels: ["Red", "Blue", "Yellow", "Green"],
+    datasets: [
+      {
+        data: [300, 50, 100, 75],
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
+        hoverBackgroundColor: ["#FF7394", "#46B2FB", "#FFDE66", "#5BD0D0"],
+        borderWidth: 2,
+        borderColor: "#ffffff",
+        hoverOffset: 10,
+      },
+    ],
+  };
+
+  const options = {
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+      },
+    },
+    cutout: "40%",
+  };
+
   // Biểu đồ radar (Radar Chart)
   const radarData = {
     labels: ["Speed", "Strength", "Agility", "Endurance", "Skill"],
@@ -242,6 +338,11 @@ const ThongKe = () => {
   return (
     <div className="row">
       <div className="col-md-6">
+        <h2>Doughnut Chart giờ dạy của giảng viên bộ môn</h2>
+        <Doughnut data={doughnutData1} />
+      </div>
+
+      <div className="col-md-6">
         <h2>Bar Chart</h2>
         <Bar data={barData} />
       </div>
@@ -269,6 +370,11 @@ const ThongKe = () => {
       <div className="col-md-6">
         <h2>Doughnut Chart</h2>
         <Doughnut data={doughnutData} />
+      </div>
+
+      <div className="col-md-6">
+        <h2>Doughnut Chart options</h2>
+        <Doughnut data={doughnutData} options={options} />
       </div>
 
       <div className="col-md-6">

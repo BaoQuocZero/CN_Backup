@@ -100,8 +100,6 @@ const RenderData = ({
             `${process.env.REACT_APP_URL_SERVER}/api/v1/quyengiangvien/giangvien/xem/canhan/khunggiochuan`,
             { MAGV: MaGV, TENNAMHOC: selectNamHoc }
           );
-          console.log("response.data.DT22222", MaGV);
-          console.log("response.data.DT", response);
           setDataRenderKhungChuan(response.data.DT);
 
           if (response.data.DT && response.data.DT.length > 0) {

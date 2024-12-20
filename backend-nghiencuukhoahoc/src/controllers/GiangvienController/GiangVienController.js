@@ -57,7 +57,6 @@ const updateThongTinGiangVienController = async (req, res) => {
 const getPhanCongGV_MAGVControler = async (req, res) => {
   try {
     const MAGV = req.body.MAGV;
-    // console.log("MAGV: ", MAGV)
     let results = await getPhanCongGV_MAGV(MAGV);
 
     return res.status(200).json({
