@@ -55,6 +55,11 @@ const navConfig = [
     path: "/tai-khoan-giangvien/thong-tin",
     icon: icon("ic_blog"),
   },
+  {
+    title: "Dev",
+    path: "/Dev",
+    icon: icon("ic_blog"),
+  },
 ];
 
 export default navConfig;

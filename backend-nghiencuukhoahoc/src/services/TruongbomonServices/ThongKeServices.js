@@ -69,9 +69,6 @@ const selectBieuDoTron = async (MABOMON, MANAMHOC) => {
       TotalTongSoGio: totalTongSoGio, //Giờ thực dạy
     };
 
-    console.log("results: ", results[0]);
-    console.log("ThongKe: ", ThongKe);
-
     return {
       EM: "Xem biểu đồ tròn thành công",
       EC: 1,
@@ -87,7 +84,40 @@ const selectBieuDoTron = async (MABOMON, MANAMHOC) => {
   }
 };
 
+const selectBieuDo_PhanCong = async (MABOMON, MAHKNK) => {
+  try {
+    const [results] = await pool.execute(
+      `
+      SELECT 
+          COUNT(DISTINCT CASE WHEN bpc.MAGV IS NOT NULL THEN gv.MAGV END) AS SoGiangVienCoTrongBangPhanCong,
+          COUNT(DISTINCT CASE WHEN bpc.MAGV IS NULL THEN gv.MAGV END) AS SoGiangVienKhongCoTrongBangPhanCong,
+          COUNT(DISTINCT gv.MAGV) AS TongSoGiangVienThuocBoMon
+      FROM 
+          giangvien gv
+      LEFT JOIN bangphancong bpc ON bpc.MAGV = gv.MAGV
+      LEFT JOIN hockynienkhoa hknk ON hknk.MAHKNK = bpc.MAHKNK
+      WHERE 
+          gv.MABOMON = ? AND (hknk.MAHKNK = ? OR hknk.MAHKNK IS NULL);
+      `,
+      [MABOMON, MAHKNK]
+    );
+
+    return {
+      EM: "Xem biểu đồ tròn phân công thành công",
+      EC: 0,
+      DT: results,
+    };
+  } catch (error) {
+    return {
+      EM: "Lỗi services selectBieuDo_PhanCong",
+      EC: -1,
+      DT: [],
+    };
+  }
+};
 
 module.exports = {
   selectBieuDoTron,
+  selectBieuDo_PhanCong,
+
 };
