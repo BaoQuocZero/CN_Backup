@@ -1,14 +1,13 @@
 const {
   selectBieuDoTron,
   selectBieuDo_PhanCong,
+  selectGV_Bomon,
 } = require("../../services/TruongbomonServices/ThongKeServices");
 
 const getBieuDoTron = async (req, res) => {
   try {
     const MABOMON = req.body.MABOMON;
     const MANAMHOC = req.body.MANAMHOC;
-    console.log("MABOMON: ", MABOMON);
-    console.log("MANAMHOC: ", MANAMHOC);
     let results = await selectBieuDoTron(MABOMON, MANAMHOC);
     return res.status(200).json({
       EM: results.EM,
@@ -47,7 +46,31 @@ const getBieuDoTron_PhanCong = async (req, res) => {
   }
 };
 
+const getGV_BoMon = async (req, res) => {
+  try {
+    const MABOMON = req.body.MABOMON;
+    const currentPage = req.body.currentPage;
+    const pageSize = req.body.pageSize;
+    console.log("currentPage: ", currentPage, " pageSize: ", pageSize)
+    let results = await selectGV_Bomon(MABOMON, currentPage, pageSize);
+    return res.status(200).json({
+      EM: results.EM,
+      EC: results.EC,
+      DT: results.DT,
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({
+      EM: "lỗi getGV_BoMon",
+      EC: -1,
+      DT: [],
+    });
+  }
+};
+
 module.exports = {
   getBieuDoTron,
   getBieuDoTron_PhanCong,
+  getGV_BoMon,
 };

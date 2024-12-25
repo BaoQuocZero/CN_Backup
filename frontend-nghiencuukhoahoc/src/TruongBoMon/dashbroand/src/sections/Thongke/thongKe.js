@@ -13,15 +13,32 @@ import {
   PolarArea,
 } from "react-chartjs-2";
 import "chart.js/auto"; // Đăng ký tự động
+
+import ModalChiTietGV from "./modal/ModalChiTietGV";
 import {
   fetchDataGV,
   fetchDataBieuDoTron,
-  fetchDataBieuDoTron_PhanCong
+  fetchDataBieuDoTron_PhanCong,
+  fetchGV_BoMon
 } from "./services/ThongKeServices";
 
 const ThongKe = () => {
   const auth = Cookies.get("accessToken");
   const [giangVien, setGiangVien] = useState(null);
+  const [listgiangVien, setListGiangVien] = useState([]);
+  const [selectedGiangVien, setSelectedGiangVien] = useState(null);
+
+  const [currentPage, setCurrentPage] = useState(1);  // State for current page
+  const [totalPages, setTotalPages] = useState(1);    // State for total pages
+  const pageSize = 2;  // Number of items per page
+
+  const handleViewDetails = (giangVien) => {
+    setSelectedGiangVien(giangVien);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedGiangVien(null);
+  };
 
   const [doughnut_GV_gioGiang, setDoughnut_GV_GioGiang] = useState({
     labels: ["Giờ hành chính", "Giờ thực dạy"],
@@ -119,7 +136,27 @@ const ThongKe = () => {
     };
     getBieuDoTron_PhanCong();
 
-  }, [giangVien]);
+    const getListGV_BoMon = async () => {
+      if (giangVien) {
+        try {
+          const listGV = await fetchGV_BoMon(giangVien.MABOMON, 1, 1000);
+          // console.log("listGV: ", listGV);
+          setListGiangVien(listGV);
+          setTotalPages(Math.ceil(listGV.DT.length / pageSize));  // Update total pages
+        } catch (error) {
+          console.error("Lỗi khi lấy ds GV:", error);
+        }
+      }
+    };
+    getListGV_BoMon();
+
+  }, [giangVien, currentPage]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   return (
     <div className="row">
@@ -131,52 +168,75 @@ const ThongKe = () => {
         <h4>Phân công giảng viên</h4>
         <Pie data={pieData_GV_gioGiang_PhanCong} />
       </div>
-
       <div className="col-md-12 mt-3">
-        <h4>Danh sách Giảng viên</h4>
-        <table className="table table-hover table-bordered table-striped">
-          <thead className="thead-dark">
-            <tr>
-              <th scope="col">Mã Giảng Viên</th>
-              <th scope="col">Tên Giảng Viên</th>
-              <th scope="col">Bộ Môn</th>
-              <th scope="col">Số Giờ Giảng</th>
-              <th scope="col">Tình Trạng</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Ví dụ dữ liệu bảng */}
-            <tr>
-              <td>GV001</td>
-              <td>Nguyễn Văn A</td>
-              <td>Toán</td>
-              <td>30</td>
-              <td><span className="badge badge-success">Đã phân công</span></td>
-            </tr>
-            <tr>
-              <td>GV002</td>
-              <td>Trần Thị B</td>
-              <td>Lý</td>
-              <td>20</td>
-              <td><span className="badge badge-warning">Chưa phân công</span></td>
-            </tr>
-            <tr>
-              <td>GV003</td>
-              <td>Phạm Minh C</td>
-              <td>Hóa</td>
-              <td>25</td>
-              <td><span className="badge badge-success">Đã phân công</span></td>
-            </tr>
-            <tr>
-              <td>GV004</td>
-              <td>Lê Quang D</td>
-              <td>Sinh</td>
-              <td>15</td>
-              <td><span className="badge badge-warning">Chưa phân công</span></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="alert alert-warning" role="alert">
+          Về phần sấp xếp bảng đang chuyển sang dùng DataGrid
+        </div>
+        <div className="container mt-4">
+          <h2 className="text-center mb-4">Danh Sách Giảng Viên</h2>
+          <table className="table table-hover table-bordered table-striped shadow-sm">
+            <thead className="thead-dark">
+              <tr>
+                <th scope="col">Mã Giảng Viên</th>
+                <th scope="col">Tên Giảng Viên</th>
+                <th scope="col">Bộ Môn</th>
+                <th scope="col">Chức vụ</th>
+                <th scope="col">Chức danh</th>
+                <th scope="col">Phân công</th>
+                <th scope="col">Tình Trạng</th>
+                <th scope="col">Chi tiết</th>
+              </tr>
+            </thead>
+            <tbody>
+              {listgiangVien.map((gv, index) => (
+                <tr key={index}>
+                  <td className="text-center font-weight-bold">{gv.MAGV}</td>
+                  <td>{gv.TENGV}</td>
+                  <td>{gv.TENBOMON}</td>
+                  <td>{gv.TENCHUCVU || "Không có"}</td>
+                  <td>{gv.TENCHUCDANH || "Không có"}</td>
+                  <td>{gv.MAPHANCONG || "Không có"}</td>
+                  <td>{gv.TRANGTHAITAIKHOAN || "Không rõ"}</td>
+                  <td>
+                    <button
+                      className="btn btn-info btn-sm"
+                      onClick={() => handleViewDetails(gv)}
+                    >
+                      <i className="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Pagination Controls */}
+          <div class="alert alert-danger" role="alert">
+            Lỗi phân trang đang sửa
+          </div>
+          <div className="pagination-controls">
+            <button
+              className="btn btn-secondary"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+            <span>Page {currentPage} of {totalPages}</span>
+            <button
+              className="btn btn-secondary"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
+
+      {selectedGiangVien && (
+        <ModalChiTietGV giangVien={selectedGiangVien} onClose={handleCloseModal} />
+      )}
     </div>
   );
 };

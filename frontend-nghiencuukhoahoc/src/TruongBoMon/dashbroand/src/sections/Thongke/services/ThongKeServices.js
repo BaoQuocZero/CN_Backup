@@ -39,3 +39,16 @@ export const fetchDataBieuDoTron_PhanCong = async (MABOMON, MAHKNK) => {
         throw error;
     }
 };
+
+export const fetchGV_BoMon = async (MABOMON, currentPage, pageSize) => {
+    try {
+        const response = await CookiesAxios.post(
+            `${process.env.REACT_APP_URL_SERVER}/api/v1/truongbomon/thongke/giangvien`,
+            { MABOMON, currentPage, pageSize }
+        );
+        return response.data.DT; // Trả về dữ liệu biểu đồ tròn
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+    }
+};

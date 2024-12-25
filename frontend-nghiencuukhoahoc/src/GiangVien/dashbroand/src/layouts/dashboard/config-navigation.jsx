@@ -16,6 +16,11 @@ const navConfig = [
     icon: icon("ic_analytics"),
   },
   {
+    title: "Thống kê",
+    path: "/thongke",
+    icon: icon("ic_analytics"),
+  },
+  {
     title: "Phân công của tôi",
     path: "/phan-cong-cua-toi",
     icon: icon("ic_user"),
@@ -23,6 +28,11 @@ const navConfig = [
   {
     title: "Đăng ký mức chuẩn giờ giảng",
     path: "/dang-ky-khung-gio-chuan",
+    icon: icon("ic_blog"),
+  },
+  {
+    title: "Dev",
+    path: "/dev",
     icon: icon("ic_blog"),
   },
 ];

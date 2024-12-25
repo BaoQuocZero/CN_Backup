@@ -41,8 +41,6 @@ const GiangvienCNTTList = () => {
         }
       );
 
-      console.log("API response:", response);
-
       const { totalRows, totalPages } = response.data.DT;
 
       const rowsWithId = totalRows.map((item, index) => ({
@@ -61,8 +59,6 @@ const GiangvienCNTTList = () => {
         PHANQUYEN: item.PHANQUYEN || "N/A",
         TRANGTHAITAIKHOAN: item.TRANGTHAITAIKHOAN || "N/A",
       }));
-
-      console.log("Processed rows:", rowsWithId);
 
       setDataGIANGVIEN(rowsWithId);
       setTotalPages(totalPages);
@@ -159,7 +155,7 @@ const GiangvienCNTTList = () => {
           pageSize={currentLimit}
           rowsPerPageOptions={[5, 10]}
           pagination
-          checkboxSelection
+          // checkboxSelection bỏ cột dấu tích
           disableColumnMenu
         />
       </div>

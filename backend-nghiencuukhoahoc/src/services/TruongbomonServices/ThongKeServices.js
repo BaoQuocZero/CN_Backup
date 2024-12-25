@@ -1,6 +1,4 @@
 const pool = require("../../config/database");
-const moment = require("moment");
-const e = require("express");
 
 const selectBieuDoTron = async (MABOMON, MANAMHOC) => {
   try {
@@ -116,8 +114,56 @@ const selectBieuDo_PhanCong = async (MABOMON, MAHKNK) => {
   }
 };
 
+const selectGV_Bomon = async (MABOMON, page = 1, limit = 10) => {
+  try {
+    const offset = (page - 1) * limit;
+    const [results] = await pool.execute(
+      `
+      SELECT 
+        taikhoan.TENDANGNHAP, 
+        taikhoan.PHANQUYEN, 
+        taikhoan.TRANGTHAITAIKHOAN,
+        giangvien.MAGV, giangvien.TENGV, giangvien.EMAIL,  giangvien.DIENTHOAI, giangvien.DIACHI,
+        chucvu.MACHUCVU, chucvu.TENCHUCVU,
+        chucdanh.MACHUCDANH, chucdanh.TENCHUCDANH,
+        bomon.MABOMON, bomon.TENBOMON,
+        bangphancong.MAPHANCONG, bangphancong.MAHKNK, bangphancong.THOIGIANLAP
+      FROM giangvien
+      LEFT JOIN co_chuc_danh ON co_chuc_danh.MAGV = giangvien.MAGV
+      LEFT JOIN giu_chuc_vu ON giu_chuc_vu.MAGV = giangvien.MAGV
+      LEFT JOIN chucdanh ON chucdanh.MACHUCDANH = co_chuc_danh.MACHUCDANH
+      LEFT JOIN chucvu ON chucvu.MACHUCVU = giu_chuc_vu.MACHUCVU
+      LEFT JOIN bomon ON bomon.MABOMON = giangvien.MABOMON
+      LEFT JOIN taikhoan ON taikhoan.MAGV = giangvien.MAGV
+      LEFT JOIN bangphancong ON bangphancong.MAGV = giangvien.MAGV
+      WHERE bomon.MABOMON = ?     
+      LIMIT ? OFFSET ?
+      `,
+      [MABOMON, limit, offset]
+    );
+
+    // Kiểm tra và thay thế MAGV nếu là null
+    const processedResults = results.map(row => ({
+      ...row,
+      MAGV: row.MAGV ?? 'Không tìm thấy',  // Nếu MAGV là null, gán default_id
+    }));
+
+    return {
+      EM: "Xem danh sách giảng viên thành công",
+      EC: 0,
+      DT: processedResults,
+    };
+  } catch (error) {
+    return {
+      EM: "Lỗi services selectGV_Bomon",
+      EC: -1,
+      DT: [],
+    };
+  }
+};
+
 module.exports = {
   selectBieuDoTron,
   selectBieuDo_PhanCong,
-
+  selectGV_Bomon,
 };
