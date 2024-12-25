@@ -29,6 +29,7 @@ const TruongBoMonThongKe = require("./routes/TruongbomonRoute/ThongKeRouter");
 const CRUDHockinienkhoa = require("./routes/AdminRoute/hockinienkhoaRoute");
 const DangKyDanhMucRoute = require("./routes/GiangvienRoute/DangKyDanhMucSpKHCNRoute");
 const CRUDHinhthucdanhgia = require("./routes/AdminRoute/hinhthucdanhgiaRoute");
+const GiangVienThongke = require("./routes/GiangvienRoute/ThongKeRouter");
 
 const { Sevicel_CheckStatus_Python } = require("./python_status");
 //=================================================================================
@@ -68,6 +69,7 @@ TruongBoMonThongKe(app);
 CRUDHockinienkhoa(app); // route CRUD
 DangKyDanhMucRoute(app); // route chức năng cho quy đổi giờ chuẩn
 CRUDHinhthucdanhgia(app); //route hình thức đánh giá
+GiangVienThongke(app);
 //=====================================================================================================
 
 app.listen(port, () => {

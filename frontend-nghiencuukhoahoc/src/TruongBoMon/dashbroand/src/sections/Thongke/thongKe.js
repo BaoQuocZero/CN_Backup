@@ -84,7 +84,7 @@ const ThongKe = () => {
           const data = await fetchDataBieuDoTron(giangVien.MABOMON, 9); // 9 là giá trị MANAMHOC mặc định
 
           setDoughnut_GV_GioGiang({
-            labels: ["Giờ hành chính", "Giờ đã phân công"],
+            labels: ["Tổng giờ hành chính bộ môn", "Tổng giờ đã phân công"],
             datasets: [
               {
                 label: "Số giờ",
@@ -160,11 +160,11 @@ const ThongKe = () => {
 
   return (
     <div className="row">
-      <div className="col-md-4">
+      <div className="col-md-6">
         <h4>Số giờ phân công.</h4>
         <Doughnut data={doughnut_GV_gioGiang} />
       </div>
-      <div className="col-md-4">
+      <div className="col-md-6">
         <h4>Phân công giảng viên</h4>
         <Pie data={pieData_GV_gioGiang_PhanCong} />
       </div>

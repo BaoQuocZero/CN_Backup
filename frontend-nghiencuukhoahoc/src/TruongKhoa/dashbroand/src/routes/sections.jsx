@@ -15,6 +15,9 @@ const DangKyDanhMuc = lazy(() =>
 const IndexQuanLydanhsachGV = lazy(() =>
   import("../sections/quanlydanhsach/CNTTdangky")
 );
+const Dev = lazy(() => import("../sections/dev/dev"));
+const ThongKe = lazy(() => import("../sections/ThongKe/ThongKe"));
+
 const TrangChu = lazy(() => import("../pages/app"));
 const UserPage = lazy(() => import("../pages/user"));
 const LoginPage = lazy(() => import("../pages/login"));
@@ -30,7 +33,8 @@ export default function Router() {
       element: (
         <DashboardLayout>
           <Suspense fallback={<div>Loading...</div>}>
-            <TrangChu />
+            {/* <TrangChu /> */}
+            <ThongKe />
           </Suspense>
         </DashboardLayout>
       ),
@@ -42,7 +46,7 @@ export default function Router() {
       element: (
         <DashboardLayout>
           <Suspense fallback={<div>Loading...</div>}>
-            <TrangChu />
+            <ThongKe />
           </Suspense>
         </DashboardLayout>
       ),
@@ -117,6 +121,16 @@ export default function Router() {
         <DashboardLayout>
           <Suspense fallback={<div>Loading...</div>}>
             <IndexQuanLydanhsachGV />
+          </Suspense>
+        </DashboardLayout>
+      ),
+    },
+    {
+      path: "/dev",
+      element: (
+        <DashboardLayout>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Dev />
           </Suspense>
         </DashboardLayout>
       ),
