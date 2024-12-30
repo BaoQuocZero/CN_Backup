@@ -1,0 +1,101 @@
+Xêm toàn Quản lý chương trình đào tạo, mọi học kỳ
+MO_TA_HOC_KY ko có
+file mẫu ex dùng mã
+Thêm các chức năng liên quan đến báo cáo kết thúc cho gv, theo năm, học kỳ
+Trên bao gồm dưới
+
+
+AD
+kê theo khoa
+kê số giờ dạy/số đăng ký
+các lớp chưa phân công
+tổng chương trình đt, các lớp trong đó 
+mỗi khoa có nhiêu ctđt
+
+GV
+kê theo năm, nhiều năm
+kê theo học kỳ
+Liệt ke phân công có cái bảng
+kê theo môn, từng dạy lớp nào, đã báo kt bao môn trên các môn đc phân
+
+TK 
+kê theo bộ môn
+kê theo năm
+kê theo học kỳ
+
+BM
+kê theo năm
+kê theo học kỳ
+gv đc phân công bao tiết, từng người, vược bao nhiêu so với ngưỡng đăng ký
+đã báo kết thúc tới đâu
+
+Tối đa 60 trang, tối thiểu 30 trang
+Về hình chương 1 Hình 1.1 , 1.2, 1.3 Bảng cũng thế
+Phân cấp chi tiết hơn, dài mục lục
+
+Về phần trước chương 1
+Tóm tắt nói ngắn gọn làm bằng gì như nào
+In nghiên tên đề tài
+Mục tiêu nghiên cứu không đánh số
+Dùng dấu - + để lùi đầu dòng
+Mục tiêu nghiên cứu Tin học hóa quy trình .... của giảng viên (ngắn gọn, mơ hồ tý)
+Phương phấp nghiên cứu
+- nghiên cứu lý thuyết
+- nghiên cứu thực nghiệm
+- Thuyết kế + Thực nghiệm
+Đối tượng nghiên cứu Quy định .... về ....
+Công nghệ sử dụng Tên công nghệ (Chỉ tên), phần bên trong mới giới thiệu dài
+Phạm vi nghiên cứu Đề tài ...  áp dụng trong khoa KTCN trường TVU
+
+Về Chương 1
+Những gì về cái chung nhất của dự án
+Ví dụ: về nodejs công nghệ dùng, cái hiện tại trường đang dùng Quy định (nói ngắn)
+
+Về Chương 2
+Nói chi tiết về công nghệ sử dụng Nodejs, ... (Không để hình logo => bị hỏi)
+Nói trọng tâm
+Đề mục khác cấp nên khác định dạng, Đậm, nghiên, cỡ chữ
+Tránh để ảnh code, copy code vào luôn bỏ vào khung chỉnh fron lại
+Tên hình cỡ 13, nghiên hoặc không
+
+Chèn Danh mục tham khảo vào
+Danh mục thâm khỏa kiểu IEEE (i ba e), sấp xếp lại
+Sách (cục bộ sấp theo tên tác giả)
+web
+khác
+
+Tránh viết in đậm kiểu trước dấu 2 chấm
+ **React**: là cái này.
+
+Không dùng văn nói, chữ bạn
+Cần danh mục từ viết tắt: HTML, CSS là viết tắt
+
+Viết đoạn văn, hạn chế gạch đầu hàng
+Dán cái hình cho rõ và nhìn thấy
+Hình bụ quá thì cho 1 trang luôn
+
+Tiêu đề bảng hiện lại khi sang trang (tự động)
+Giải thích các bảng sau tên bảng
+ví dụ
+Khoa : lưu trữ thông tin khoa
+[Bảng][Bảng][Bảng]
+[Bảng][Bảng][Bảng]
+
+Cần có
+Mô hình vật lý
+Mô hình luồng DFD
+Mô tả các bảng
+Mô hình quan hệ => mô hình mức logic ???? không rõ
+
+Phần Thiết kế giao diện Chương 3
+Thêm các ảnh phác thảo giao diện (Lưu ý là ảnh phác thảo)
+Chỉ cần các trang chức năng
+
+Lưu ý không hề thiếu dữ liệu thực tế
+
+Phần hạn chế càng ít càng tốt, kết quả đạt được nhiều hơn
+
+Về phụ lục (không đánh số trang)
+Cung cấp hướng dẫn cài đặt cả trên git
+
+

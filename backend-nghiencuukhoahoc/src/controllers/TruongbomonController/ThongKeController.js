@@ -51,7 +51,6 @@ const getGV_BoMon = async (req, res) => {
     const MABOMON = req.body.MABOMON;
     const currentPage = req.body.currentPage;
     const pageSize = req.body.pageSize;
-    console.log("currentPage: ", currentPage, " pageSize: ", pageSize)
     let results = await selectGV_Bomon(MABOMON, currentPage, pageSize);
     return res.status(200).json({
       EM: results.EM,
