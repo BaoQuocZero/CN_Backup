@@ -5,11 +5,16 @@ import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import CookiesAxios from "../CookiesAxios";
 
+import ModalBaoCao from "./modal/ModalBaoCao.jsx";
+
 const XemPhanCongGV = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [giangVien, setGiangVien] = useState(null);
     const [phanCong, setPhanCong] = useState({});
+
+    const [selectedMonHoc, setSelectedMonHoc] = useState(null);
+    const [openModal, setOpenModal] = useState(false);
 
     // Lấy thông tin giảng viên từ token
     useEffect(() => {
@@ -50,7 +55,7 @@ const XemPhanCongGV = () => {
     const fetchDataPhanCongGV = async (MAGV) => {
         try {
             const response = await CookiesAxios.post(
-                `${process.env.REACT_APP_URL_SERVER}/api/v1/quyengiangvien/giangvien/xem/phancong`,
+                `${process.env.REACT_APP_URL_SERVER}/api/v1/quyengiangvien/thongke/getPhanCongGV_MAGV`,
                 { MAGV }
             );
             if (response.data.EC === 1) {
@@ -67,13 +72,32 @@ const XemPhanCongGV = () => {
         }
     };
 
+    const handleBaoCao = (monHoc) => {
+        setSelectedMonHoc(monHoc); // Cập nhật trạng thái khi chọn môn học
+        setOpenModal(true);
+    };
+
+    const handleSave = async (fromKetThuc) => {
+        try {
+            console.log("fromKetThuc: ", fromKetThuc)
+            const response = await CookiesAxios.post(
+                `${process.env.REACT_APP_URL_SERVER}/api/v1/quyengiangvien/thongke/createBaoCaoKetThuc`,
+                { fromKetThuc }
+            );
+            setOpenModal(false);
+            fetchDataPhanCongGV(giangVien.MAGV); // Làm mới danh sách
+        } catch (error) {
+            console.error("Error saving dánh giá:", error);
+        }
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
 
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
+    // if (error) {
+    //     return <div>Error: {error.message}</div>;
+    // }
 
     return (
         <>
@@ -81,37 +105,62 @@ const XemPhanCongGV = () => {
                 <h1 className="mb-4">Thông tin phân công</h1>
 
                 {phanCong && phanCong.length > 0 ? (
-                    phanCong.map((item, index) => (
-                        <div key={index} className="card mb-3">
-                            <div className="card-body">
-                                <h5 className="card-title">Mã Phân Công Số: {item.MAPHANCONG}</h5>
-                                <h5 className="card-title">Được Phân Vào: {new Date(item.THOIGIANLAP).toLocaleString()}</h5>
-                                <div className="row">
-                                    {/* Cột 1 */}
-                                    <div className="col-md-6">
-                                        <p className="card-text"><strong>Tên Lớp:</strong> {item.TENLOP}</p>
-                                        <p className="card-text"><strong>Sĩ Số Lớp:</strong> {item.SISO}</p>
-                                        <p className="card-text"><strong>Số Giờ Dạy:</strong> {item.TONG_SO_GIO} giờ</p>
-                                        <p className="card-text"><strong>Năm Tuyển Sinh:</strong> {item.NAMTUYENSINH}</p>
-                                    </div>
-
-                                    {/* Cột 2 */}
-                                    <div className="col-md-6">
-                                        <p className="card-text"><strong>Tên Môn Học:</strong> {item.TENMONHOC}</p>
-                                        <p className="card-text"><strong>Tín Chỉ Lý Thuyết:</strong> {item.SOTINCHILYTHUYET} tín chỉ</p>
-                                        <p className="card-text"><strong>Tín Chỉ Thực Hành:</strong> {item.SOTINCHITHUCHANH} tín chỉ</p>
-                                        <p className="card-text"><strong>Thời Gian Phân Công:</strong> {new Date(item.THOIGIANLAP).toLocaleString()}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))
+                    <table className="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tên GV</th>
+                                <th>Email</th>
+                                <th>Điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Thời gian lập</th>
+                                <th>Tên học kỳ</th>
+                                <th>Năm học</th>
+                                <th>Môn học</th>
+                                <th>Lớp</th>
+                                <th>Tổng số giờ</th>
+                                <th>Kết thúc</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {phanCong.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.TENGV}</td>
+                                    <td>{item.EMAIL}</td>
+                                    <td>{item.DIENTHOAI}</td>
+                                    <td>{item.DIACHI}</td>
+                                    <td>{new Date(item.THOIGIANLAP).toLocaleDateString()}</td>
+                                    <td>{item.TENHKNK}</td>
+                                    <td>{item.TEN_NAM_HOC}</td>
+                                    <td>{item.TENMONHOC}</td>
+                                    <td>{item.MALOP}</td>
+                                    <td>{item.TONG_SO_GIO}</td>
+                                    <td>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => handleBaoCao(item)}
+                                        >
+                                            Báo cáo
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 ) : (
                     <div className="alert alert-warning" role="alert">
                         Không có phân công nào.
                     </div>
                 )}
             </div>
+            {/* Render Modal */}
+            <ModalBaoCao
+                monHoc={selectedMonHoc}
+                open={openModal}
+                onSave={handleSave}
+                onClose={() => setOpenModal(false)}
+            />
         </>
     );
 };
