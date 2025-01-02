@@ -21,7 +21,7 @@ const getBieuDo_GioGiang = async (MAGV) => {
             hockynienkhoa ON hockynienkhoa.MAHKNK = bangphancong.MAHKNK
         JOIN 
             chitietphancong ON chitietphancong.MAPHANCONG = bangphancong.MAPHANCONG
-        WHERE giangvien.MAGV = 00242
+        WHERE giangvien.MAGV = ?
         GROUP BY 
             giangvien.MAGV, 
             giangvien.TENGV,
