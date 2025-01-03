@@ -3,6 +3,13 @@ const pool = require("../../config/database");
 const getBieuDo_GioGiang = async (MAGV) => {
 
     try {
+
+        const [resultsNamHoc] = await pool.execute(
+            `
+        SELECT * FROM hockynienkhoa
+        `
+        );
+
         const [results] = await pool.execute(
             `
         SELECT 
@@ -15,11 +22,11 @@ const getBieuDo_GioGiang = async (MAGV) => {
             SUM(chitietphancong.TONG_SO_GIO) AS TONG_GIO
         FROM 
             giangvien
-        JOIN 
+        LEFT JOIN 
             bangphancong ON bangphancong.MAGV = giangvien.MAGV
-        JOIN 
+        LEFT JOIN 
             hockynienkhoa ON hockynienkhoa.MAHKNK = bangphancong.MAHKNK
-        JOIN 
+        LEFT JOIN 
             chitietphancong ON chitietphancong.MAPHANCONG = bangphancong.MAPHANCONG
         WHERE giangvien.MAGV = ?
         GROUP BY 
@@ -35,10 +42,25 @@ const getBieuDo_GioGiang = async (MAGV) => {
             [MAGV]
         );
 
+        const mergeResults = (resultsNamHoc, results) => {
+            return resultsNamHoc.map((hocKy) => {
+                const matchedResult = results.find((result) => result.MAHKNK === hocKy.MAHKNK);
+                return {
+                    ...hocKy,
+                    MAGV: matchedResult?.MAGV || null,
+                    TENGV: matchedResult?.TENGV || null,
+                    TONG_GIO: matchedResult?.TONG_GIO || 0, // Mặc định là 0 nếu không có thông tin
+                };
+            });
+        };
+
+        // Gọi hàm mergeResults để kết hợp dữ liệu
+        const mergedData = mergeResults(resultsNamHoc, results);
+
         return {
             EM: "Lấy thông tin thành công",
             EC: 1,
-            DT: results,
+            DT: mergedData,
         };
     } catch (error) {
         console.log("error getBieuDo_GioGiang >>>", error);
@@ -50,38 +72,62 @@ const getBieuDo_GioGiang = async (MAGV) => {
     }
 };
 
-const getBieuDo_GioGiangChonKhung = async (MAGV) => {
-
+const getBieuDo_GioGiangChonKhung = async (MAGV, SelectNamHoc_HocKiNienKhoa) => {
     try {
-        const [results] = await pool.execute(
+        const [resultsKhungGio] = await pool.execute(
             `
         SELECT
             giangvien.MAGV,
-            giangvien.TENGV,
-            namhoc.MANAMHOC,
             namhoc.TENNAMHOC,
-            khunggiochuan.GIOGIANGDAY_HANHCHINH,
-            SUM(chitietphancong.TONG_SO_GIO) AS TONG_GIO
+            khunggiochuan.GIOGIANGDAY_HANHCHINH
         FROM
             giangvien
-        LEFT JOIN bangphancong ON bangphancong.MAGV = giangvien.MAGV
-        LEFT JOIN chitietphancong ON chitietphancong.MAPHANCONG = bangphancong.MAPHANCONG
         LEFT JOIN chon_khung ON chon_khung.MAGV = giangvien.MAGV
         LEFT JOIN namhoc ON namhoc.MANAMHOC = chon_khung.MANAMHOC
         LEFT JOIN khunggiochuan ON khunggiochuan.MAKHUNG = chon_khung.MAKHUNG
         WHERE
-            giangvien.MAGV = ?
+            giangvien.MAGV = ? AND namhoc.TENNAMHOC = ?
+        `,
+            [MAGV, SelectNamHoc_HocKiNienKhoa]
+        );
+
+        const [resultsHocKiNienKhoa] = await pool.execute(
+            `
+        SELECT
+            giangvien.MAGV,
+            hockynienkhoa.*,
+            SUM(chitietphancong.TONG_SO_GIO) AS TONG_GIO
+        FROM
+            giangvien
+        LEFT JOIN bangphancong ON bangphancong.MAGV = giangvien.MAGV
+        LEFT JOIN hockynienkhoa ON hockynienkhoa.MAHKNK = bangphancong.MAHKNK
+        LEFT JOIN chitietphancong ON chitietphancong.MAPHANCONG = bangphancong.MAPHANCONG
+        WHERE
+            giangvien.MAGV = ? AND hockynienkhoa.TEN_NAM_HOC = ?
         GROUP BY
             giangvien.MAGV,
             giangvien.TENGV;
         `,
-            [MAGV]
+            [MAGV, SelectNamHoc_HocKiNienKhoa]
         );
+
+        // Gộp dữ liệu
+        const mergedData = resultsKhungGio.map((khung) => {
+            const hocKi = resultsHocKiNienKhoa.find(
+                (hoc) =>
+                    hoc.MAGV === khung.MAGV &&
+                    hoc.TEN_NAM_HOC === khung.TENNAMHOC
+            );
+            return {
+                ...khung,
+                ...(hocKi || {}), // Nếu không có khớp, thêm một object rỗng
+            };
+        });
 
         return {
             EM: "Lấy thông tin thành công",
             EC: 1,
-            DT: results,
+            DT: mergedData,
         };
     } catch (error) {
         console.log("error getBieuDo_GioGiangChonKhung >>>", error);
@@ -255,10 +301,38 @@ const createBaoCaoKetThuc = async (dataKetThuc) => {
     }
 };
 
+const getNamHoc_HocKiNienKhoa = async () => {
+    try {
+        const [results] = await pool.execute(
+            `
+SELECT namhoc.* 
+FROM hockynienkhoa
+JOIN namhoc ON namhoc.TENNAMHOC = hockynienkhoa.TEN_NAM_HOC
+GROUP BY namhoc.TENNAMHOC
+ORDER BY hockynienkhoa.NGAYBATDAUNIENKHOA ASC
+            `
+        );
+
+        return {
+            EM: "Lấy thông tin thành công",
+            EC: 1,
+            DT: results,
+        };
+    } catch (error) {
+        console.log("error getHinhThucDanhGia >>>", error);
+        return {
+            EM: "Đã xảy ra lỗi trong quá trình lấy thông tin",
+            EC: 0,
+            DT: [],
+        };
+    }
+};
+
 module.exports = {
     getBieuDo_GioGiang,
     getBieuDo_GioGiangChonKhung,
     getPhanCongGV_MAGV,
     getHinhThucDanhGia,
     createBaoCaoKetThuc,
+    getNamHoc_HocKiNienKhoa,
 };

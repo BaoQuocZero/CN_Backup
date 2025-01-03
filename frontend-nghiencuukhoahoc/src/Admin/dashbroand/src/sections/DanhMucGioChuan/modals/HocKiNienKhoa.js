@@ -122,7 +122,7 @@ const HockyNienKhoaModal = ({ open, handleClose }) => {
           <Grid item xs={12} md={6}>
             <Box sx={{ maxWidth: 330 }}>
               <FormControl fullWidth className="profile-email-input">
-                <InputLabel id="select-label-trang-thai">Năm học</InputLabel>
+                <InputLabel id="select-label-trang-thai">Học kì</InputLabel>
                 <Select
                   labelId="select-label-trang-thai"
                   id="trang-thai-select"
@@ -149,17 +149,17 @@ const HockyNienKhoaModal = ({ open, handleClose }) => {
                   <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DatePicker
                       views={["year"]} // Chỉ hiển thị lựa chọn năm
-                      label="Tên Năm Học"
+                      label="Năm Học"
                       value={moment(newHockyNienKhoa.TEN_NAM_HOC, "YYYY")}
                       onChange={(newValue) =>
                         setNewHockyNienKhoa({
                           ...newHockyNienKhoa,
                           TEN_NAM_HOC: newValue
                             ? `Năm Học ${moment(newValue).format(
-                                "YYYY"
-                              )} - ${moment(newValue)
-                                .add(1, "year")
-                                .format("YYYY")}`
+                              "YYYY"
+                            )} - ${moment(newValue)
+                              .add(1, "year")
+                              .format("YYYY")}`
                             : ``,
                         })
                       }

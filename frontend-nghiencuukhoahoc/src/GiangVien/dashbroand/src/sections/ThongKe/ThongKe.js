@@ -17,14 +17,19 @@ import "chart.js/auto"; // Đăng ký tự động
 import {
     fetchDataGV,
     fetchBieuDo_GioGiang,
-    fetchBieuDo_GioGiangChonKhung
+    fetchBieuDo_GioGiangChonKhung,
+    fetchDataNamHoc,
 } from "./services/ThongKeServices";
+
+import BieuDoGioGiangDay from "./Components/BieuDoGioGiangDay";
 
 const ThongKe = () => {
     const auth = Cookies.get("accessToken");
     const [giangVien, setGiangVien] = useState(null);
+    // const [NamHoc_HocKiNienKhoa, setNamHoc_HocKiNienKhoa] = useState([]);
+    // const [SelectNamHoc_HocKiNienKhoa, setSelectNamHoc_HocKiNienKhoa] = useState(null);
     const [bieuDoDataLine, setBieuDoDataLine] = useState(null);
-    const [bieuDoDataTron, setBieuDoDataTron] = useState(null);
+    // const [bieuDoDataTron, setBieuDoDataTron] = useState(null);
 
     // Fetch giảng viên
     useEffect(() => {
@@ -45,6 +50,12 @@ const ThongKe = () => {
     // Fetch dữ liệu biểu đồ khi giảng viên có dữ liệu
     useEffect(() => {
         if (!giangVien) return;
+        // const getNamHoc_HocKiNienKhoa = async () => {
+        //     const NamHoc_HocKiNienKhoa = await fetchDataNamHoc();
+        //     setSelectNamHoc_HocKiNienKhoa(NamHoc_HocKiNienKhoa[0]);
+        //     setNamHoc_HocKiNienKhoa(NamHoc_HocKiNienKhoa);
+        // };
+        // getNamHoc_HocKiNienKhoa();
 
         const getBieuDo_GioGiang = async () => {
             try {
@@ -81,33 +92,33 @@ const ThongKe = () => {
             }
         };
         getBieuDo_GioGiang();
-        const getBieuDo_GioGiangChonKhung = async () => {
-            try {
-                const data = await fetchBieuDo_GioGiangChonKhung(giangVien.MAGV);
-                console.log("Data: ", data);
 
-                // Lấy giá trị GIOGIANGDAY_HANHCHINH và TONG_GIO từ dữ liệu
-                const labels = ['Giờ giảng dạy hành chính', 'Số giờ đã đăng ký']; // Nhãn cho biểu đồ
-                const values = [
-                    data[0].GIOGIANGDAY_HANHCHINH, // Giá trị Giờ giảng dạy hành chính
-                    parseInt(data[0].TONG_GIO) // Giá trị Tổng số giờ giảng dạy
-                ];
+        // const getBieuDo_GioGiangChonKhung = async () => {
+        //     try {
+        //         const data = await fetchBieuDo_GioGiangChonKhung(giangVien.MAGV, SelectNamHoc_HocKiNienKhoa);
 
-                // Cập nhật dữ liệu cho biểu đồ
-                setBieuDoDataTron({
-                    labels: labels, // Nhãn cho biểu đồ
-                    datasets: [
-                        {
-                            data: values, // Dữ liệu cho biểu đồ
-                            backgroundColor: ["#FF6384", "#36A2EB"], // Màu sắc cho các phần trong biểu đồ
-                        },
-                    ],
-                });
-            } catch (error) {
-                console.error("Lỗi khi lấy dữ liệu biểu đồ:", error);
-            }
-        };
-        getBieuDo_GioGiangChonKhung();
+        //         // Lấy giá trị GIOGIANGDAY_HANHCHINH và TONG_GIO từ dữ liệu
+        //         const labels = ['Giờ giảng dạy hành chính', 'Số giờ đã đăng ký']; // Nhãn cho biểu đồ
+        //         const values = [
+        //             data[0].GIOGIANGDAY_HANHCHINH, // Giá trị Giờ giảng dạy hành chính
+        //             parseInt(data[0].TONG_GIO) // Giá trị Tổng số giờ giảng dạy
+        //         ];
+
+        //         // Cập nhật dữ liệu cho biểu đồ
+        //         setBieuDoDataTron({
+        //             labels: labels, // Nhãn cho biểu đồ
+        //             datasets: [
+        //                 {
+        //                     data: values, // Dữ liệu cho biểu đồ
+        //                     backgroundColor: ["#FF6384", "#36A2EB"], // Màu sắc cho các phần trong biểu đồ
+        //                 },
+        //             ],
+        //         });
+        //     } catch (error) {
+        //         console.error("Lỗi khi lấy dữ liệu biểu đồ:", error);
+        //     }
+        // };
+        // getBieuDo_GioGiangChonKhung();
 
 
     }, [giangVien]);
@@ -123,12 +134,7 @@ const ThongKe = () => {
                 )}
             </div>
             <div className="col-md-5">
-                <h2>Biểu đồ giờ giảng dạy</h2>
-                {bieuDoDataTron ? (
-                    <PolarArea data={bieuDoDataTron} />
-                ) : (
-                    <p>Đang tải dữ liệu biểu đồ...</p>
-                )}
+                <BieuDoGioGiangDay />
             </div>
         </div>
     );
