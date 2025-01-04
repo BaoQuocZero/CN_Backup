@@ -109,6 +109,7 @@ const get_monhoc_lop_hocki = async (req, res) => {
     const SOHOCKI = req.body.HOCKINIENKHOA.TENHKNK;
     const MAHKNK = req.body.HOCKINIENKHOA.MAHKNK;
     const TEN_NAM_HOC = req.body.HOCKINIENKHOA.TEN_NAM_HOC;
+    // console.log("req.body: ", req.body)
     if (!MALOP || !SOHOCKI) {
       return res.status(400).json({
         EM: "Dữ liệu không hợp lệ",

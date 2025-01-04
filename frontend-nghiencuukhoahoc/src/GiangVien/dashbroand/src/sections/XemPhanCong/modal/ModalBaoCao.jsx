@@ -15,7 +15,7 @@ const ModalBaoCao = ({ monHoc, open, onSave, onClose }) => {
         LANDANHGIA: "",
         NGAYDANHGIA: "",
         NGAYBAOCAOKETTHUC: "",
-        TRANG_THAI_DANG_KY: "",
+        TRANG_THAI_DANG_KY: "Chờ duyệt",
         MADANHGIAKETTHUC: "",
         TENDANHGIA: "",
     });
@@ -33,7 +33,7 @@ const ModalBaoCao = ({ monHoc, open, onSave, onClose }) => {
                 LANDANHGIA: monHoc?.LANDANHGIA || "",  // Lần đánh giá (nếu có)
                 NGAYDANHGIA: monHoc?.NGAYDANHGIA ? monHoc?.NGAYDANHGIA.slice(0, 10) : "", // Lấy 10 ký tự đầu (yyyy-mm-dd)
                 NGAYBAOCAOKETTHUC: monHoc?.NGAYBAOCAOKETTHUC ? monHoc?.NGAYBAOCAOKETTHUC.slice(0, 10) : "", // Lấy 10 ký tự đầu (yyyy-mm-dd)
-                TRANG_THAI_DANG_KY: monHoc?.TRANG_THAI_DANG_KY || "",  // Trạng thái đăng ký (nếu có)
+                TRANG_THAI_DANG_KY: monHoc?.TRANG_THAI_DANG_KY || "Không rõ",  // Trạng thái đăng ký (nếu có)
                 MADANHGIAKETTHUC: monHoc?.MADANHGIAKETTHUC || "",
                 TENDANHGIA: monHoc?.TENDANHGIA || "",  // Tên đánh giá (nếu có)
             });
@@ -194,7 +194,7 @@ const ModalBaoCao = ({ monHoc, open, onSave, onClose }) => {
                                                 onChange={handleChange}
                                             />
                                         </div>
-                                        {/* <div className="col-md-12 mb-3">
+                                        <div className="col-md-12 mb-3">
                                             <label htmlFor="TRANG_THAI_DANG_KY" className="form-label">Trạng thái đăng ký</label>
                                             <input
                                                 type="text"
@@ -203,8 +203,9 @@ const ModalBaoCao = ({ monHoc, open, onSave, onClose }) => {
                                                 name="TRANG_THAI_DANG_KY"
                                                 value={formData.TRANG_THAI_DANG_KY}
                                                 onChange={handleChange}
+                                                readOnly
                                             />
-                                        </div> */}
+                                        </div>
                                     </div>
                                 </div>
 

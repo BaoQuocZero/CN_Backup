@@ -59,6 +59,7 @@ const XemPhanCongGV = () => {
                 { MAGV }
             );
             if (response.data.EC === 1) {
+                console.log("response.data.DT: ", response.data.DT)
                 setPhanCong(response.data.DT);
                 setLoading(false);
             } else {
@@ -79,13 +80,14 @@ const XemPhanCongGV = () => {
 
     const handleSave = async (fromKetThuc) => {
         try {
-            console.log("fromKetThuc: ", fromKetThuc)
+            // console.log("fromKetThuc: ", fromKetThuc)
             const response = await CookiesAxios.post(
                 `${process.env.REACT_APP_URL_SERVER}/api/v1/quyengiangvien/thongke/createBaoCaoKetThuc`,
                 { fromKetThuc }
             );
             setOpenModal(false);
             fetchDataPhanCongGV(giangVien.MAGV); // Làm mới danh sách
+            toast.success(response.data.EM);
         } catch (error) {
             console.error("Error saving dánh giá:", error);
         }
@@ -109,11 +111,8 @@ const XemPhanCongGV = () => {
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Tên GV</th>
-                                <th>Email</th>
-                                <th>Điện thoại</th>
-                                <th>Địa chỉ</th>
-                                <th>Thời gian lập</th>
+
+                                <th>Ngày bắt đầu</th>
                                 <th>Tên học kỳ</th>
                                 <th>Năm học</th>
                                 <th>Môn học</th>
@@ -126,23 +125,42 @@ const XemPhanCongGV = () => {
                             {phanCong.map((item, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>
-                                    <td>{item.TENGV}</td>
-                                    <td>{item.EMAIL}</td>
-                                    <td>{item.DIENTHOAI}</td>
-                                    <td>{item.DIACHI}</td>
-                                    <td>{new Date(item.THOIGIANLAP).toLocaleDateString()}</td>
+                                    <td>{new Date(item.NGAYBATDAUNIENKHOA).toLocaleDateString()}</td>
                                     <td>{item.TENHKNK}</td>
                                     <td>{item.TEN_NAM_HOC}</td>
                                     <td>{item.TENMONHOC}</td>
                                     <td>{item.MALOP}</td>
                                     <td>{item.TONG_SO_GIO}</td>
                                     <td>
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => handleBaoCao(item)}
-                                        >
-                                            Báo cáo
-                                        </button>
+                                        {item.MADANHGIAKETTHUC ? (
+                                            <>
+                                                {item.TRANG_THAI_DANG_KY === "Không rõ" ? (
+                                                    <>
+                                                        <button
+                                                            className="btn btn-warning"
+                                                            onClick={() => handleBaoCao(item)}
+                                                        >
+                                                            Sửa Báo cáo
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <span className="text-danger">
+                                                            Báo cáo đã duyệt
+                                                        </span>
+                                                    </>
+                                                )}
+                                            </>
+                                        ) : (
+                                            <>
+                                                <button
+                                                    className="btn btn-primary"
+                                                    onClick={() => handleBaoCao(item)}
+                                                >
+                                                    Tạo Báo cáo
+                                                </button>
+                                            </>
+                                        )}
                                     </td>
                                 </tr>
                             ))}

@@ -161,121 +161,224 @@ function tinhSoThuTuHocKi(n, SOHOCKI) {
   return 2 * (nNumber - 1) + soHocKiNumber;
 }
 
+// const select_lophoc_monhoc = async (MALOP, SOHOCKI, MAHKNK, TEN_NAM_HOC) => {
+//   try {
+//     const sothutu = SOHOCKI.split(" ");
+//     const number = sothutu[sothutu.length - 1];
+
+//     let [results_malop, fields_malop] = await pool.execute(
+//       `SELECT NAMTUYENSINH from lop where MALOP = ?`,
+//       [MALOP]
+//     );
+
+//     const currentYear = moment().year();
+
+//     let n = currentYear - results_malop[0].NAMTUYENSINH;
+
+//     let SOTHUTUHOCKI = tinhSoThuTuHocKi(n, number);
+
+//     let [results_chitietphancong, fields_chitietphancong] = await pool.execute(
+//       `SELECT chitietphancong.* from chitietphancong,bangphancong where chitietphancong.MALOP = ?  and bangphancong.MAHKNK = ? and bangphancong.MAPHANCONG = chitietphancong.MAPHANCONG`,
+//       [MALOP, MAHKNK]
+//     );
+
+//     if (results_chitietphancong.length === 0) {
+//       let [results_ctdt_bomon, fields1] = await pool.execute(
+//         `select * from lop,
+//       monhoc,
+//       chuongtrinhdaotao as ctdt,
+//       thuoc 
+//       where lop.MACHUONGTRINH = ctdt.MACHUONGTRINH 
+//       and ctdt.MACHUONGTRINH = thuoc.MACHUONGTRINH 
+//       and thuoc.MAMONHOC = monhoc.MAMONHOC
+//       and thuoc.SOTHUTUHOCKI = ?
+//       and lop.MALOP = ?`,
+//         [SOTHUTUHOCKI, MALOP]
+//       );
+//       return {
+//         EM: "Xem thông tin môn học theo lớp thành công",
+//         EC: 1,
+//         DT: results_ctdt_bomon,
+//       };
+//     } else {
+//       let [results_ctdt_bomon, fields1] = await pool.execute(
+//         ` 
+//       select giangvien.*,chitietphancong.*, bangphancong.*,lop.*,monhoc.*,hockynienkhoa.* 
+//       from giangvien, chitietphancong,bangphancong,lop,monhoc,hockynienkhoa,thuoc
+//       where giangvien.MAGV = bangphancong.MAGV
+//       and bangphancong.MAPHANCONG = chitietphancong.MAPHANCONG
+//       and lop.MALOP = chitietphancong.MALOP
+//       and monhoc.MAMONHOC = chitietphancong.MAMONHOC
+//       and bangphancong.MAHKNK = hockynienkhoa.MAHKNK
+//       and monhoc.MAMONHOC = thuoc.MAMONHOC
+//       and lop.MALOP = ? 
+//       and hockynienkhoa.MAHKNK = ? 
+//       and thuoc.SOTHUTUHOCKI = ?
+
+//   `,
+//         [MALOP, MAHKNK, SOTHUTUHOCKI]
+//       );
+
+//       // ------------TÔI LẤY CHỌN GIỜ CHỌN KHUNG--------------------------PHUC NOTE
+//       let [results_MANAMHOC, fields_MANAMHOC] = await pool.execute(
+//         `select MANAMHOC from namhoc where TENNAMHOC =?`,
+//         [TEN_NAM_HOC]
+//       );
+//       // console.log("results_MANAMHOC", results_MANAMHOC);
+//       if (results_MANAMHOC.length === 0) {
+//         return {
+//           EM: "Xem thông tin môn học theo lớp thành công, nhưng bị lỗi năm học",
+//           EC: 1,
+//           DT: results_ctdt_bomon,
+//         };
+//       }
+//       let [results_chonkhung, fields_chonkhung] = await pool.execute(
+//         `select * from chon_khung where MANAMHOC =?`,
+//         [results_MANAMHOC[0].MANAMHOC]
+//       );
+
+//       // Truy vấn thêm thông tin từ bảng khunggiochuan dựa trên MAKHUNG của giảng viên
+//       for (let i = 0; i < results_chonkhung.length; i++) {
+//         const MAKHUNG = results_chonkhung[i].MAKHUNG;
+
+//         // Truy vấn GIOGIANGDAY_CHUAN từ bảng khunggiochuan
+//         let [results_khunggiochuan, fields_khunggiochuan] = await pool.execute(
+//           `select GIOGIANGDAY_CHUAN from khunggiochuan where MAKHUNG = ?`,
+//           [MAKHUNG]
+//         );
+
+//         // Gắn GIOGIANGDAY_CHUAN vào results_chonkhung
+//         if (results_khunggiochuan.length > 0) {
+//           results_chonkhung[i].GIOGIANGDAY_CHUAN =
+//             results_khunggiochuan[0].GIOGIANGDAY_CHUAN;
+//         } else {
+//           results_chonkhung[i].GIOGIANGDAY_CHUAN = null; // Nếu không tìm thấy thông tin
+//         }
+//       }
+
+//       // ------------TÔI LẤY CHỌN GIỜ CHỌN KHUNG--------------------------
+//       results_ctdt_bomon = results_ctdt_bomon.map((item) => {
+//         const chonkhung = results_chonkhung.find(
+//           (khung) => khung.MAGV === item.MAGV
+//         );
+
+//         return {
+//           ...item,
+//           chonkhung: chonkhung || null, // Gắn chonkhung, bao gồm cả GIOGIANGDAY_CHUAN
+//         };
+//       });
+//       // ------------TÔI LẤY CHỌN GIỜ CHỌN KHUNG--------------------------PHUC NOTE
+
+//       // Do giảng viên chưa có danh sách chọn khung nên...tui cmt lại
+//       return {
+//         EM: "Xem thông tin môn học theo lớp thành công",
+//         EC: 1,
+//         DT: results_ctdt_bomon,
+//       };
+//     }
+//   } catch (error) {
+//     console.log("check", error);
+//     return {
+//       EM: "Lỗi services select_lophoc_monhoc",
+//       EC: -1,
+//       DT: [],
+//     };
+//   }
+// };
+
+//bảng phân công
+
 const select_lophoc_monhoc = async (MALOP, SOHOCKI, MAHKNK, TEN_NAM_HOC) => {
   try {
-    const sothutu = SOHOCKI.split(" ");
-    const number = sothutu[sothutu.length - 1];
+    console.log("MALOP: ", MALOP)
+    console.log("SOHOCKI: ", SOHOCKI)
+    console.log("MAHKNK: ", MAHKNK)
+    console.log("TEN_NAM_HOC: ", TEN_NAM_HOC)
+    // MALOP:  DA20TTA
+    // SOHOCKI:  Học Kì 2
+    // MAHKNK:  40
+    // TEN_NAM_HOC:  Năm Học 2024 - 2025
 
-    let [results_malop, fields_malop] = await pool.execute(
-      `SELECT NAMTUYENSINH from lop where MALOP = ?`,
+    let [results_lop, fields_lop] = await pool.execute(
+      `SELECT * FROM lop WHERE lop.MALOP =  ?`,
       [MALOP]
     );
+    console.log("results_lop: ", results_lop)
+    // results_lop:  [
+    //   {
+    //     MALOP: 'DA20TTA',
+    //     MACHUONGTRINH: 1,
+    //     TENLOP: 'Đại học Công nghệ thông tin A 2020',
+    //     NAMTUYENSINH: 2020,
+    //     SISO: 30
+    //   }
+    // ]
 
-    const currentYear = moment().year();
+    if (results_lop.length > 0) {
+      // Lấy NAMTUYENSINH và chuyển thành ngày đầu tiên của năm
+      const namTuyenSinh = results_lop[0].NAMTUYENSINH;
+      const ngayBatDau = `${namTuyenSinh}-01-01`;
 
-    let n = currentYear - results_malop[0].NAMTUYENSINH;
-
-    let SOTHUTUHOCKI = tinhSoThuTuHocKi(n, number);
-
-    let [results_chitietphancong, fields_chitietphancong] = await pool.execute(
-      `SELECT chitietphancong.* from chitietphancong,bangphancong where chitietphancong.MALOP = ?  and bangphancong.MAHKNK = ? and bangphancong.MAPHANCONG = chitietphancong.MAPHANCONG`,
-      [MALOP, MAHKNK]
-    );
-
-    if (results_chitietphancong.length === 0) {
-      let [results_ctdt_bomon, fields1] = await pool.execute(
-        `select * from lop,
-      monhoc,
-      chuongtrinhdaotao as ctdt,
-      thuoc 
-      where lop.MACHUONGTRINH = ctdt.MACHUONGTRINH 
-      and ctdt.MACHUONGTRINH = thuoc.MACHUONGTRINH 
-      and thuoc.MAMONHOC = monhoc.MAMONHOC
-      and thuoc.SOTHUTUHOCKI = ?
-      and lop.MALOP = ?`,
-        [SOTHUTUHOCKI, MALOP]
-      );
-      return {
-        EM: "Xem thông tin môn học theo lớp thành công",
-        EC: 1,
-        DT: results_ctdt_bomon,
-      };
-    } else {
-      let [results_ctdt_bomon, fields1] = await pool.execute(
-        ` 
-      select giangvien.*,chitietphancong.*, bangphancong.*,lop.*,monhoc.*,hockynienkhoa.* 
-      from giangvien, chitietphancong,bangphancong,lop,monhoc,hockynienkhoa,thuoc
-      where giangvien.MAGV = bangphancong.MAGV
-      and bangphancong.MAPHANCONG = chitietphancong.MAPHANCONG
-      and lop.MALOP = chitietphancong.MALOP
-      and monhoc.MAMONHOC = chitietphancong.MAMONHOC
-      and bangphancong.MAHKNK = hockynienkhoa.MAHKNK
-      and monhoc.MAMONHOC = thuoc.MAMONHOC
-      and lop.MALOP = ? 
-      and hockynienkhoa.MAHKNK = ? 
-      and thuoc.SOTHUTUHOCKI = ?
-  
-  `,
-        [MALOP, MAHKNK, SOTHUTUHOCKI]
+      let [results_hockynienkhoa, fields_hockynienkhoa] = await pool.execute(
+        `
+        SELECT hockynienkhoa.* 
+        FROM hockynienkhoa
+        WHERE hockynienkhoa.NGAYBATDAUNIENKHOA >= ?
+        ORDER BY hockynienkhoa.NGAYBATDAUNIENKHOA ASC`,
+        [ngayBatDau]
       );
 
-      // ------------TÔI LẤY CHỌN GIỜ CHỌN KHUNG--------------------------PHUC NOTE
-      let [results_MANAMHOC, fields_MANAMHOC] = await pool.execute(
-        `select MANAMHOC from namhoc where TENNAMHOC =?`,
-        [TEN_NAM_HOC]
+      console.log("results_hockynienkhoa: ", results_hockynienkhoa);
+      // Tìm phần tử trong results_hockynienkhoa
+      const index = results_hockynienkhoa.findIndex(
+        (item) =>
+          item.TENHKNK === SOHOCKI &&
+          item.TEN_NAM_HOC.toLowerCase() === TEN_NAM_HOC.toLowerCase()
       );
-      // console.log("results_MANAMHOC", results_MANAMHOC);
-      if (results_MANAMHOC.length === 0) {
+
+      if (index !== -1) {
+        console.log(
+          `Phần tử thỏa mãn điều kiện nằm ở vị trí: ${index}, dữ liệu: `,
+          results_hockynienkhoa[index]
+        );
+
+        let [results, fields] = await pool.execute(
+          `
+SELECT 
+lop.*,
+chuongtrinhdaotao.MACHUONGTRINH, chuongtrinhdaotao.TENCHUONGTRINH,
+thuoc.SOTHUTUHOCKI,
+monhoc.*
+FROM lop 
+LEFT JOIN chuongtrinhdaotao ON chuongtrinhdaotao.MACHUONGTRINH = lop.MACHUONGTRINH
+LEFT JOIN thuoc ON thuoc.MACHUONGTRINH = chuongtrinhdaotao.MACHUONGTRINH
+LEFT JOIN monhoc ON monhoc.MAMONHOC = thuoc.MAMONHOC
+WHERE lop.MALOP = ? AND thuoc.SOTHUTUHOCKI = ?
+          `,
+          [MALOP, index + 1]
+        );
+
         return {
-          EM: "Xem thông tin môn học theo lớp thành công, nhưng bị lỗi năm học",
+          EM: "Tìm thấy học kỳ niên khóa thỏa mãn điều kiện",
           EC: 1,
-          DT: results_ctdt_bomon,
+          DT: results,
         };
-      }
-      let [results_chonkhung, fields_chonkhung] = await pool.execute(
-        `select * from chon_khung where MANAMHOC =?`,
-        [results_MANAMHOC[0].MANAMHOC]
-      );
-
-      // Truy vấn thêm thông tin từ bảng khunggiochuan dựa trên MAKHUNG của giảng viên
-      for (let i = 0; i < results_chonkhung.length; i++) {
-        const MAKHUNG = results_chonkhung[i].MAKHUNG;
-
-        // Truy vấn GIOGIANGDAY_CHUAN từ bảng khunggiochuan
-        let [results_khunggiochuan, fields_khunggiochuan] = await pool.execute(
-          `select GIOGIANGDAY_CHUAN from khunggiochuan where MAKHUNG = ?`,
-          [MAKHUNG]
-        );
-
-        // Gắn GIOGIANGDAY_CHUAN vào results_chonkhung
-        if (results_khunggiochuan.length > 0) {
-          results_chonkhung[i].GIOGIANGDAY_CHUAN =
-            results_khunggiochuan[0].GIOGIANGDAY_CHUAN;
-        } else {
-          results_chonkhung[i].GIOGIANGDAY_CHUAN = null; // Nếu không tìm thấy thông tin
-        }
-      }
-
-      // ------------TÔI LẤY CHỌN GIỜ CHỌN KHUNG--------------------------
-      results_ctdt_bomon = results_ctdt_bomon.map((item) => {
-        const chonkhung = results_chonkhung.find(
-          (khung) => khung.MAGV === item.MAGV
-        );
-
+      } else {
+        console.log("Không tìm thấy phần tử thỏa mãn điều kiện.");
         return {
-          ...item,
-          chonkhung: chonkhung || null, // Gắn chonkhung, bao gồm cả GIOGIANGDAY_CHUAN
+          EM: "Không tìm thấy học kỳ niên khóa thỏa mãn điều kiện",
+          EC: 0,
+          DT: null,
         };
-      });
-      // ------------TÔI LẤY CHỌN GIỜ CHỌN KHUNG--------------------------PHUC NOTE
-
-      // Do giảng viên chưa có danh sách chọn khung nên...tui cmt lại
+      }
+    } else {
       return {
-        EM: "Xem thông tin môn học theo lớp thành công",
-        EC: 1,
-        DT: results_ctdt_bomon,
+        EM: "Không tìm thấy thông tin lớp học",
+        EC: -1,
+        DT: [],
       };
     }
+
   } catch (error) {
     console.log("check", error);
     return {
@@ -285,8 +388,6 @@ const select_lophoc_monhoc = async (MALOP, SOHOCKI, MAHKNK, TEN_NAM_HOC) => {
     };
   }
 };
-
-//bảng phân công
 
 const create_listgiangvien_phancong = async (MAGV) => {
   try {
