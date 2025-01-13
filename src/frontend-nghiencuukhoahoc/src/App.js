@@ -5,8 +5,9 @@ import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./Authentication/AuthContext";
 import "react-toastify/dist/ReactToastify.css";
 import LoginAdmin from "../src/Admin/dashbroand/src/pages/login.jsx";
-
+import ResetPassword from "../src/Admin/dashbroand/src/sections/resetPassword/resetPassword.jsx";
 import PrivateRoute from "./Authentication/PrivateRoute.js";
+
 function App() {
   return (
     <AuthProvider>
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginAdmin />} />
           <Route path="/login" element={<LoginAdmin />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/admin/*" element={<PrivateRoute />} />
           <Route path="/giang-vien/*" element={<PrivateRoute />} />
           <Route path="/truong-bm/*" element={<PrivateRoute />} />

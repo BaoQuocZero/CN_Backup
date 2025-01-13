@@ -50,3 +50,16 @@ export const fetchBieuDo_GioGiangChonKhung = async (MAGV, SelectNamHoc_HocKiNien
         throw error;
     }
 };
+
+export const fetchPhanCongGVThongKe = async (MAGV, SelectNamHoc_HocKiNienKhoa) => {
+    try {
+        const response = await CookiesAxios.post(
+            `${process.env.REACT_APP_URL_SERVER}/api/v1/quyengiangvien/thongke/PhanCongGVThongKe`,
+            { MAGV, SelectNamHoc_HocKiNienKhoa }
+        );
+        return response.data.DT;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+    }
+};

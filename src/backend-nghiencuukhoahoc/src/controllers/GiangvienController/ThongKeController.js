@@ -5,6 +5,7 @@ const {
     getHinhThucDanhGia,
     createBaoCaoKetThuc,
     getNamHoc_HocKiNienKhoa,
+    PhanCongGVThongKe,
 } = require("../../services/GiangvienServices/ThongKeServices");
 
 const getBieuDo_GioGiangControler = async (req, res) => {
@@ -125,6 +126,27 @@ const getNamHoc_HocKiNienKhoaController = async (req, res) => {
     }
 };
 
+const PhanCongGVThongKeController = async (req, res) => {
+    try {
+        const MAGV = req.body.MAGV;
+        const SelectNamHoc_HocKiNienKhoa = req.body.SelectNamHoc_HocKiNienKhoa;
+        let results = await PhanCongGVThongKe(MAGV, SelectNamHoc_HocKiNienKhoa);
+
+        return res.status(200).json({
+            EM: results.EM,
+            EC: results.EC,
+            DT: results.DT,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            EM: "Đã xảy ra lỗi máy chủ",
+            EC: 500,
+            DT: null,
+        });
+    }
+};
+
 module.exports = {
     getBieuDo_GioGiangControler,
     getBieuDo_GioGiangChonKhungController,
@@ -132,4 +154,5 @@ module.exports = {
     getHinhThucDanhGiaController,
     createBaoCaoKetThucController,
     getNamHoc_HocKiNienKhoaController,
+    PhanCongGVThongKeController,
 };

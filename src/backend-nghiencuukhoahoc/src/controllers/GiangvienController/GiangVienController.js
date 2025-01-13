@@ -4,6 +4,9 @@ const {
 
 const {
   getPhanCongGV_MAGV,
+  doiMatKhau_GV,
+  quenMatKhau_GV,
+  resetPassword
 } = require("../../services/GiangvienServices/giangVienServices");
 
 const updateThongTinGiangVienController = async (req, res) => {
@@ -74,7 +77,72 @@ const getPhanCongGV_MAGVControler = async (req, res) => {
   }
 };
 
+const DoiMatKhauController = async (req, res) => {
+  try {
+    const TENDANGNHAP = req.body.TENDANGNHAP;
+    const MATKHAU_CU = req.body.MATKHAU_CU;
+    const MATKHAU_MOI = req.body.MATKHAU_MOI;
+    let results = await doiMatKhau_GV(TENDANGNHAP, MATKHAU_CU, MATKHAU_MOI);
+
+    return res.status(200).json({
+      EM: results.EM,
+      EC: results.EC,
+      DT: results.DT,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      EM: "Đã xảy ra lỗi máy chủ",
+      EC: 500,
+      DT: null,
+    });
+  }
+};
+
+const QuenMatKhauController = async (req, res) => {
+  try {
+    const TENDANGNHAP = req.body.TENDANGNHAP;
+    let results = await quenMatKhau_GV(TENDANGNHAP);
+
+    return res.status(200).json({
+      EM: results.EM,
+      EC: results.EC,
+      DT: results.DT,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      EM: "Đã xảy ra lỗi máy chủ",
+      EC: 500,
+      DT: null,
+    });
+  }
+};
+
+const ResetPasswordController = async (req, res) => {
+  try {
+    const TENDANGNHAP = req.body.TENDANGNHAP;
+    const MATKHAU_MOI = req.body.MATKHAU_MOI;
+    let results = await resetPassword(TENDANGNHAP, MATKHAU_MOI);
+
+    return res.status(200).json({
+      EM: results.EM,
+      EC: results.EC,
+      DT: results.DT,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      EM: "Đã xảy ra lỗi máy chủ.",
+      EC: 500,
+      DT: null,
+    });
+  }
+};
 module.exports = {
   updateThongTinGiangVienController,
   getPhanCongGV_MAGVControler,
+  DoiMatKhauController,
+  QuenMatKhauController,
+  ResetPasswordController
 };

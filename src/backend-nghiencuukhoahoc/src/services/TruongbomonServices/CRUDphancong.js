@@ -429,6 +429,7 @@ const phancong_tudong_giangvien = async (data_phancong) => {
       DT: [],
     };
   } catch (error) {
+    console.log("error: ", error)
     return {
       EM: "Lỗi services create_listgiangvien_phancong",
       EC: -1,
@@ -439,8 +440,8 @@ const phancong_tudong_giangvien = async (data_phancong) => {
 
 const update_phancong_giangvien = async (dataOld, dataNew) => {
   try {
-    // console.log("dataOld : ", dataOld);
-    // console.log("dataNew: ", dataNew);
+    console.log("dataOld : ", dataOld);
+    console.log("dataNew: ", dataNew);
     const currentTime = moment().format("YYYY-MM-DD");
 
     const [select_chitietphancong_dataOld] = await pool.execute(
@@ -456,10 +457,11 @@ LEFT JOIN chitietphancong ON chitietphancong.MAPHANCONG = bangphancong.MAPHANCON
 LEFT JOIN hockynienkhoa ON hockynienkhoa.MAHKNK = bangphancong.MAHKNK
 WHERE giangvien.MAGV = ? AND chitietphancong.MALOP = ? AND chitietphancong.MAMONHOC = ?
       `,
-      [dataOld.MAGV, dataOld.MALOP, dataOld.MAMONHOC]
+      [dataOld.MAGV ? dataOld.MAGV : "", dataOld.MALOP, dataOld.MAMONHOC]
     );
 
     if (select_chitietphancong_dataOld.length === 0 || select_chitietphancong_dataOld[0].MACHITIETPHANCONG === null) {
+
       return {
         EM: "Không tìm thấy giảng viên cũ",
         EC: 0,

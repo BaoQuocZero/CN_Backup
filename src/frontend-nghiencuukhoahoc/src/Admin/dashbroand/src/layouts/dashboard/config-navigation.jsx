@@ -68,10 +68,15 @@ const navConfig = [
     icon: icon("ic_blog"),
   },
   {
-    title: "Test Dev",
-    path: "/dev",
+    title: "Đổi mật khẩu",
+    path: "/doimatkhau",
     icon: icon("ic_blog"),
   },
+  // {
+  //   title: "Test Dev",
+  //   path: "/dev",
+  //   icon: icon("ic_blog"),
+  // },
   // {
   //   title: 'login',
   //   path: '/login',

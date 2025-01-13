@@ -391,7 +391,30 @@ const LoginTaikhoan = async (tenDangnhap, matKhau) => {
           },
         };
       }
-      // const isCorrectPass = await bcrypt.compare(matKhau, results[0].MATKHAU);
+
+      if (!results[0].MATKHAU) { // Nếu không có mật khẩu trong DB
+        return {
+          EM: "Đăng nhập thất bại, tài khoản hoặc mật khẩu không đúng.",
+          EC: 0,
+          DT: {
+            access_token: null,
+            data: [],
+          },
+        };
+      }
+      // So sánh mật khẩu
+      const isCorrectPass = await bcrypt.compare(matKhau, results[0].MATKHAU);
+
+      if (!isCorrectPass) { // Nếu mật khẩu sai
+        return {
+          EM: "Đăng nhập thất bại, tài khoản hoặc mật khẩu không đúng",
+          EC: 0,
+          DT: {
+            access_token: null,
+            data: [],
+          },
+        };
+      }
 
       let payload = {
         taikhoan: results[0].TENDANGNHAP,
@@ -401,7 +424,70 @@ const LoginTaikhoan = async (tenDangnhap, matKhau) => {
       };
       let token = createJWT(payload);
       return {
-        EM: "đăng nhập thành công",
+        EM: "Đăng nhập thành công",
+        EC: 1,
+        DT: {
+          access_token: token,
+          data: results,
+        },
+      };
+    } else {
+      return {
+        EM: "Đăng nhập thất bại, tài khoản không đúng",
+        EC: 0,
+        DT: {
+          access_token: null,
+          data: [],
+        },
+      };
+    }
+  } catch (error) {
+    console.error("Error in LoginTaikhoan:", error);
+    return {
+      EM: "lỗi services LoginTaikhoan",
+      EC: 1,
+      DT: [],
+    };
+  }
+};
+
+const LoginTaikhoanGG = async (tenDangnhap) => {
+  try {
+    const checkmail = isValidEmail(tenDangnhap);
+    if (!checkmail) {
+      return {
+        EM: "định dạng mail không đúng",
+        EC: 0,
+        DT: [],
+      };
+    }
+
+    const [results, fields] = await pool.execute(
+      "SELECT * FROM `taikhoan` WHERE `TENDANGNHAP` = ?",
+      [tenDangnhap]
+    );
+
+    if (results.length > 0) {
+      if (results[0].TRANGTHAITAIKHOAN === "Ngưng hoạt động") {
+        return {
+          EM: "Đăng nhập thất bại, tài khoản của bạn đã bị ngưng hoạt động",
+          EC: 0,
+          DT: {
+            access_token: null,
+            data: [],
+          },
+        };
+      }
+
+      let payload = {
+        taikhoan: results[0].TENDANGNHAP,
+        //  matkhau: results[0].MATKHAU, cái này không cần mật khẩu => phúc note
+        phanquyen: results[0].PHANQUYEN,
+        trangthai: results[0].TRANGTHAITAIKHOAN,
+      };
+      let token = createJWT(payload);
+      return {
+        EM: "Đăng nhập thành công",
         EC: 1,
         DT: {
           access_token: token,
@@ -525,6 +611,7 @@ module.exports = {
   createTaiKhoanExcel,
   updateTaiKhoan,
   LoginTaikhoan,
+  LoginTaikhoanGG,
   LoginTaikhoanwithGOOGLE,
   createOnlyTaiKhoan,
   getAllTaiKhoantheoPHANQUYEN,

@@ -35,6 +35,7 @@ const IndexQuanLydanhsachGV = lazy(() =>
 
 const ThongKe = lazy(() => import("../sections/Thongke/thongKe"));
 const ThongKeGV = lazy(() => import("../sections/Thongke/ThongKeGV/ThongKe"));
+const DoiMatKhau = lazy(() => import("../sections/DoimatKhau/DoiMatKhau"));
 
 const Dev = lazy(() => import("../sections/dev/dev"));
 
@@ -270,6 +271,25 @@ export default function Router() {
             }
           >
             <AccountGV />
+          </Suspense>
+        </DashboardLayout>
+      ),
+    },
+    {
+      path: "/doimatkhau",
+      element: (
+        <DashboardLayout>
+          <Suspense
+            fallback={
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height="100%"
+                sx={{ bgcolor: "grey.300" }}
+              />
+            }
+          >
+            <DoiMatKhau />
           </Suspense>
         </DashboardLayout>
       ),

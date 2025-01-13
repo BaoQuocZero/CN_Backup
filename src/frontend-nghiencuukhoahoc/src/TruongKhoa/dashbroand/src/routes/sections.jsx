@@ -19,6 +19,7 @@ const Dev = lazy(() => import("../sections/dev/dev"));
 const ThongKe = lazy(() => import("../sections/ThongKe/ThongKe"));
 const ThongKeGV = lazy(() => import("../sections/ThongKe/ThongKeGV/ThongKe"));
 const ThongKeBoMon = lazy(() => import("../sections/ThongKe/ThongKeBoMon/thongKe"));
+const DoiMatKhau = lazy(() => import("../sections/DoimatKhau/DoiMatKhau"));
 
 const TrangChu = lazy(() => import("../pages/app"));
 const UserPage = lazy(() => import("../pages/user"));
@@ -41,7 +42,25 @@ export default function Router() {
         </DashboardLayout>
       ),
     },
-
+    {
+      path: "/doimatkhau",
+      element: (
+        <DashboardLayout>
+          <Suspense
+            fallback={
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height="100%"
+                sx={{ bgcolor: "grey.300" }}
+              />
+            }
+          >
+            <DoiMatKhau />
+          </Suspense>
+        </DashboardLayout>
+      ),
+    },
     {
       path: "/thong-ke", //Trang chủ
 

@@ -14,12 +14,14 @@ import {
     PolarArea,
 } from "react-chartjs-2";
 import "chart.js/auto"; // Đăng ký tự động
+import { DataGrid } from "@mui/x-data-grid";
 
 import {
     fetchDataGV,
     fetchBieuDo_GioGiang,
     fetchBieuDo_GioGiangChonKhung,
     fetchDataNamHoc,
+    fetchPhanCongGVThongKe,
 } from "./services/ThongKeServices";
 
 import BieuDoGioGiangDay from "./Components/BieuDoGioGiangDay";
@@ -29,7 +31,24 @@ const ThongKeGV = () => {
     const location = useLocation();
     const giangVien = location.state?.giangVien;
     const [bieuDoDataLine, setBieuDoDataLine] = useState(null);
+    const [NamHoc_HocKiNienKhoa, setNamHoc_HocKiNienKhoa] = useState([]);
+    const [SelectNamHoc_HocKiNienKhoa, setSelectNamHoc_HocKiNienKhoa] = useState(null);
+    const [PhanCongGVThongKe, setPhanCongGVThongKe] = useState([]);
 
+
+
+    useEffect(() => {
+        const getNamHoc_HocKiNienKhoa = async () => {
+            try {
+                const NamHoc_HocKiNienKhoa = await fetchDataNamHoc();
+                setNamHoc_HocKiNienKhoa(NamHoc_HocKiNienKhoa);
+            } catch (error) {
+                console.error("Lỗi khi lấy danh sách năm học:", error);
+            }
+        };
+
+        getNamHoc_HocKiNienKhoa();
+    }, []);
     // Fetch dữ liệu biểu đồ khi giảng viên có dữ liệu
     useEffect(() => {
         if (!giangVien) return;
@@ -72,6 +91,37 @@ const ThongKeGV = () => {
 
     }, [giangVien]);
 
+    useEffect(() => {
+        if (!SelectNamHoc_HocKiNienKhoa) return;
+
+        const getBieuDo_GioGiangChonKhung = async () => {
+            try {
+                const data = await fetchPhanCongGVThongKe(giangVien.MAGV, SelectNamHoc_HocKiNienKhoa);
+                const dataWithId = data?.map((gv, index) => ({
+                    ...gv,
+                    id: index + 1,
+                }));
+                setPhanCongGVThongKe(dataWithId)
+            } catch (error) {
+                console.error("Lỗi khi lấy dữ liệu biểu đồ:", error);
+            }
+        };
+
+        getBieuDo_GioGiangChonKhung();
+    }, [SelectNamHoc_HocKiNienKhoa]);
+
+    const columns = [
+        { field: "id", headerName: "ID", width: 100 },
+        { field: "TENMONHOC", headerName: "Môn", width: 200 },
+        { field: "TENHKNK", headerName: "Học kỳ", width: 100 },
+        { field: "MALOP", headerName: "Mã lớp", width: 100 },
+        { field: "TENLOP", headerName: "Tên lớp", width: 200 },
+        { field: "NAMTUYENSINH", headerName: "Khóa", width: 100 },
+        { field: "NGAYDANHGIA", headerName: "Ngày đánh giá", width: 150 },
+        { field: "NGAYBAOCAOKETTHUC", headerName: "Ngày báo cáo", width: 150 },
+        { field: "TENDANHGIA", headerName: "Loại đánh giá", width: 150 },
+    ];
+
     if (!giangVien) {
         return <div>Không có dữ liệu giảng viên.</div>;
     }
@@ -101,6 +151,28 @@ const ThongKeGV = () => {
             </div>
             <div className="col-md-5">
                 <BieuDoGioGiangDay giangVien={giangVien} />
+            </div>
+
+            <div className="col-md-12">
+                <div className="form-group">
+                    <label htmlFor="selectNamHocHocKi">Chọn Năm Học - Học Kỳ:</label>
+                    <select
+                        id="selectNamHocHocKi"
+                        className="form-control"
+                        value={SelectNamHoc_HocKiNienKhoa || ""}
+                        onChange={(e) => setSelectNamHoc_HocKiNienKhoa(e.target.value)}
+                    >
+                        <option value="">-- Chọn --</option>
+                        {NamHoc_HocKiNienKhoa.map((item, index) => (
+                            <option key={index} value={item.TENNAMHOC}>
+                                {item.TENNAMHOC}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div style={{ height: 300, width: "100%" }}>
+                    <DataGrid rows={PhanCongGVThongKe} columns={columns} pageSize={5} />
+                </div>
             </div>
         </div>
     );

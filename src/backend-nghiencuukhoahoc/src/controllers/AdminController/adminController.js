@@ -4,6 +4,7 @@ const {
   createTaiKhoanExcel,
   updateTaiKhoan,
   LoginTaikhoan,
+  LoginTaikhoanGG,
   LoginTaikhoanwithGOOGLE,
   createOnlyTaiKhoan,
   getAllTaiKhoantheoPHANQUYEN,
@@ -183,7 +184,7 @@ const loginTaikhoanGOOGLEController = async (req, res) => {
   try {
     const username = req.body.tendangnhap;
 
-    const results = await LoginTaikhoan(username);
+    const results = await LoginTaikhoanGG(username);
     if (results && results.DT && results.DT.access_token) {
       res.cookie("jwt", results.DT.access_token, {
         httpOnly: true,

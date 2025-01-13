@@ -12,6 +12,7 @@ const DangKyGioChuan = lazy(() =>
 );
 const XemPhanCongGV = lazy(() => import("../sections/XemPhanCong/xemPhanCong"));
 const ThongKe = lazy(() => import("../sections/ThongKe/ThongKe"));
+const DoimatKhau = lazy(() => import("../sections/DoimatKhau/DoiMatKhau"));
 const Dev = lazy(() => import("../sections/dev/dev"));
 
 const FileExcel = lazy(() => import("../sections/FileExcel/FileExcel"));
@@ -153,6 +154,25 @@ export default function Router() {
             }
           >
             <ThongKe />
+          </Suspense>
+        </DashboardLayout>
+      ),
+    },
+    {
+      path: "/doimatkhau",
+      element: (
+        <DashboardLayout>
+          <Suspense
+            fallback={
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height="100%"
+                sx={{ bgcolor: "grey.300" }}
+              />
+            }
+          >
+            <DoimatKhau />
           </Suspense>
         </DashboardLayout>
       ),

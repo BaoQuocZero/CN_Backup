@@ -31,10 +31,15 @@ const navConfig = [
     icon: icon("ic_blog"),
   },
   {
-    title: "Dev",
-    path: "/dev",
+    title: "Đổi mật khẩu",
+    path: "/doimatkhau",
     icon: icon("ic_blog"),
   },
+  // {
+  //   title: "Dev",
+  //   path: "/dev",
+  //   icon: icon("ic_blog"),
+  // },
 ];
 
 export default navConfig;

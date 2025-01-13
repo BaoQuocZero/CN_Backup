@@ -102,7 +102,7 @@ const CRUDgiangvien_CNTT = (app) => {
   );
 
   router.post("/phancong/tudong/giangvien", checkUserJWT, phancongtudong_giangvien_Controller);
-  router.post("/phancong/update/giangvien", checkUserJWT, update_phancong_giangvienController);
+  router.post("/phancong/update/giangvien", update_phancong_giangvienController);
 
   router.post("/xem/phancong/gio/giangvien", select_giophancong_giangvienkhac_CONTROLLER);
 

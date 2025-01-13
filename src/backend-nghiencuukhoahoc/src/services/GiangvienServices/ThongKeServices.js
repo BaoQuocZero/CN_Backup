@@ -333,6 +333,100 @@ ORDER BY hockynienkhoa.NGAYBATDAUNIENKHOA ASC
     }
 };
 
+const getPhanCongGV_NamHoc = async (MAGV) => {
+    try {
+        const [results] = await pool.execute(
+            `
+SELECT 
+gv.*,
+bpc.MAPHANCONG, bpc.THOIGIANLAP,
+hknk.*,
+ctpc.MACHITIETPHANCONG, ctpc.TONG_SO_GIO,
+mh.MAMONHOC, mh.TENMONHOC,
+l.MALOP, l.TENLOP,
+bcktm.*,
+htdg.*
+FROM giangvien gv
+LEFT JOIN bangphancong bpc ON bpc.MAGV = gv.MAGV
+LEFT JOIN hockynienkhoa hknk ON hknk.MAHKNK = bpc.MAHKNK
+LEFT JOIN chitietphancong ctpc ON ctpc.MAPHANCONG = bpc.MAPHANCONG
+LEFT JOIN monhoc mh ON mh.MAMONHOC = ctpc.MAMONHOC
+LEFT JOIN lop l ON l.MALOP = ctpc.MALOP
+LEFT JOIN bao_cao_ket_thuc_mon bcktm ON bcktm.MACHITIETPHANCONG = ctpc.MACHITIETPHANCONG
+LEFT JOIN hinhthucdanhgia htdg ON htdg.MADANHGIAKETTHUC = bcktm.MADANHGIAKETTHUC
+WHERE gv.MAGV = ?
+ORDER BY hknk.NGAYBATDAUNIENKHOA DESC;
+        `,
+            [MAGV]
+        );
+
+        return {
+            EM: "Lấy thông tin thành công",
+            EC: 1,
+            DT: results,
+        };
+    } catch (error) {
+        console.log("error getPhanCongGV_MAGV >>>", error);
+        return {
+            EM: "Đã xảy ra lỗi trong quá trình lấy thông tin",
+            EC: 0,
+            DT: [],
+        };
+    }
+};
+
+const PhanCongGVThongKe = async (MAGV, SelectNamHoc_HocKiNienKhoa) => {
+    try {
+
+
+
+
+        const [results] = await pool.execute(
+            `
+SELECT
+giangvien.MAGV,
+hockynienkhoa.TEN_NAM_HOC, hockynienkhoa.TENHKNK, hockynienkhoa.NGAYBATDAUNIENKHOA,
+monhoc.MAMONHOC, monhoc.TENMONHOC,
+lop.MALOP, lop.TENLOP, lop.NAMTUYENSINH,
+bao_cao_ket_thuc_mon.LANDANHGIA, bao_cao_ket_thuc_mon.NGAYDANHGIA, bao_cao_ket_thuc_mon.NGAYBAOCAOKETTHUC,
+hinhthucdanhgia.MADANHGIAKETTHUC, hinhthucdanhgia.TENDANHGIA
+FROM giangvien
+LEFT JOIN chon_khung ON chon_khung.MAGV = giangvien.MAGV
+LEFT JOIN bangphancong ON bangphancong.MAGV = giangvien.MAGV
+LEFT JOIN hockynienkhoa ON hockynienkhoa.MAHKNK = bangphancong.MAHKNK
+LEFT JOIN chitietphancong ON chitietphancong.MAPHANCONG = bangphancong.MAPHANCONG
+LEFT JOIN monhoc ON monhoc.MAMONHOC = chitietphancong.MAMONHOC
+LEFT JOIN lop ON lop.MALOP = chitietphancong.MALOP
+LEFT JOIN bao_cao_ket_thuc_mon ON bao_cao_ket_thuc_mon.MACHITIETPHANCONG = chitietphancong.MACHITIETPHANCONG
+LEFT JOIN hinhthucdanhgia ON hinhthucdanhgia.MADANHGIAKETTHUC = bao_cao_ket_thuc_mon.MADANHGIAKETTHUC
+WHERE giangvien.MAGV = ? AND hockynienkhoa.TEN_NAM_HOC = ?
+GROUP BY 
+giangvien.MAGV,
+hockynienkhoa.TEN_NAM_HOC, hockynienkhoa.TENHKNK, hockynienkhoa.NGAYBATDAUNIENKHOA,
+monhoc.MAMONHOC, monhoc.TENMONHOC,
+lop.MALOP, lop.TENLOP, lop.NAMTUYENSINH,
+bao_cao_ket_thuc_mon.LANDANHGIA, bao_cao_ket_thuc_mon.NGAYDANHGIA, bao_cao_ket_thuc_mon.NGAYBAOCAOKETTHUC,
+hinhthucdanhgia.MADANHGIAKETTHUC, hinhthucdanhgia.TENDANHGIA
+ORDER BY hockynienkhoa.NGAYBATDAUNIENKHOA DESC
+        `,
+            [MAGV, SelectNamHoc_HocKiNienKhoa]
+        );
+
+        return {
+            EM: "Lấy thông tin thành công",
+            EC: 1,
+            DT: results,
+        };
+    } catch (error) {
+        console.log("error getBieuDo_GioGiangChonKhung >>>", error);
+        return {
+            EM: "Đã xảy ra lỗi trong quá trình lấy thông tin",
+            EC: 0,
+            DT: [],
+        };
+    }
+};
+
 module.exports = {
     getBieuDo_GioGiang,
     getBieuDo_GioGiangChonKhung,
@@ -340,4 +434,5 @@ module.exports = {
     getHinhThucDanhGia,
     createBaoCaoKetThuc,
     getNamHoc_HocKiNienKhoa,
+    PhanCongGVThongKe,
 };

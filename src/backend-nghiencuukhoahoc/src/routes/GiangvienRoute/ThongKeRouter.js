@@ -6,6 +6,7 @@ const {
     getHinhThucDanhGiaController,
     createBaoCaoKetThucController,
     getNamHoc_HocKiNienKhoaController,
+    PhanCongGVThongKeController,
 } = require("../../controllers/GiangvienController/ThongKeController");
 const { checkUserJWT } = require("../../middlewares/JWTAction");
 const ThongKeGV = (app) => {
@@ -14,6 +15,7 @@ const ThongKeGV = (app) => {
     router.post("/getBieuDo_GioGiangChonKhung", checkUserJWT, getBieuDo_GioGiangChonKhungController);
     router.post("/getPhanCongGV_MAGV", checkUserJWT, getPhanCongGV_MAGV_Controller);
     router.post("/createBaoCaoKetThuc", checkUserJWT, createBaoCaoKetThucController);
+    router.post("/PhanCongGVThongKe", checkUserJWT, PhanCongGVThongKeController);
 
     router.get("/getHinhThucDanhGia", getHinhThucDanhGiaController);
     router.get("/getNamHoc_HocKiNienKhoa", getNamHoc_HocKiNienKhoaController);
